@@ -1,11 +1,14 @@
 # How to write a daily lesson
 
-Every morning one new file, `data/lessons/day-NN.json`, is added. The dashboard (`index.html`) renders it. `data/lessons/day-01.json` is the reference example: match its structure, depth and tone exactly.
+Every morning one new file, `data/lessons/day-NN.json`, is added. The FAANG Prep dashboard (`index.html`) renders it. `data/lessons/day-01.json` is the reference example: match its structure, depth and tone exactly.
 
 ## The reader
 Aastha: about 8 years as a software engineer (TCS for client NCDEX, then about 6 years at JPMorgan, SDE1 to SDE3). Her stack: Java, Spring Boot, AWS (EKS, ECS, Lambda, Step Functions, Kinesis), Kafka, Airflow, Python/PySpark, Databricks, Oracle, Postgres, MySQL, Cassandra. Her key projects: the Income Attribution (IA) platform at JPMorgan (designed from scratch; a Kinesis-triggered PySpark pipeline on general-ledger refresh; a Spring Boot web app with pivot views for finance controllers; replaced a manual Excel process across Trading, Sales, Payments and Securities) and a netting engine (Airflow, Spring Boot, Kafka, Kubernetes, postings to SAP). She has not interviewed for 6 years. Interview language: Java. Targets: Google, Amazon, Microsoft, Meta, banks (UBS, Morgan Stanley, Nomura) and startups. She resigns around mid-January 2027.
 
-## Teaching style (most important)
+## Interview first (most important)
+Everything is preparation for interviews. Every track of every lesson must include `interview_angle` {asked_at, how_it_comes_up, strong_answer, pitfalls}: where this is asked (name companies: Google, Amazon, Microsoft, Meta, UBS, Morgan Stanley, Nomura, startups), how the question is actually phrased, what a strong answer sounds like, and the common mistakes. Explanations should keep pointing back to "this is what you'll say in the interview". Interview questions get model answers she can say out loud in 30–60 seconds. Where it fits, give her a line she can use about her own experience (the IA platform, the netting engine, Spring Boot on EKS, Kafka, Kinesis, Airflow), phrased honestly as "if you did X, say Y".
+
+## Teaching style
 - **Start from scratch, then build up.** She knows a lot, but it has been years since she prepared, so assume nothing. Every subtopic starts with the plain idea, then adds detail until it reaches interview level.
 - **No unexplained jargon.** The first time a term appears, explain it in plain words (in the sentence, or in brackets). Add it to the day's glossary.
 - **Structured, not a wall of text.** 3–6 subtopics per track, in a logical order. Each subtopic: a one-line summary (`in_one_line`), then 2–5 blocks. Prefer tables, steps and flows to long paragraphs. Paragraphs at most 3 short sentences.
@@ -33,4 +36,4 @@ Aastha: about 8 years as a software engineer (TCS for client NCDEX, then about 6
 - Run `python3 build/validate.py data/lessons/day-NN.json data/news.json` and fix everything it reports before publishing.
 
 ## AI news (`data/news.json`)
-4 items from the last 7 days that matter to a software engineer job-hunting in big tech: AI in interviews and hiring, coding agents, major model releases, AI in banking. Each: date, tag (Hiring, Interviews, Models, Tools, Banking, Policy), headline, 1–2 sentence summary, "why it matters for you" in 1–2 sentences, source name, real URL from your search results. Never invent news or links.
+Exactly 2 items (the dashboard shows them as small rows), from the last 7 days that matter to a software engineer job-hunting in big tech: AI in interviews and hiring, coding agents, major model releases, AI in banking. Each: date, tag (Hiring, Interviews, Models, Tools, Banking, Policy), a short headline, a 1-sentence summary, "why it matters for you" in 1 short sentence tied to her interviews, source name, real URL from your search results. Never invent news or links.

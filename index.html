@@ -4,119 +4,145 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Aastha's FAANG Prep</title>
+<title>FAANG Prep</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* VOICE: a calm study companion; clear, never noisy.
-   IDEA: a course workbook: a contents page, chapters per track, numbered sections.
-   PICTURE: the "today" spread: four track chapters side by side, each a numbered list of subtopics.
-   COLOUR: white paper, near-black ink, ultramarine for navigation; one dark colour per track.
-   TYPE: Spectral for titles, Inter for reading. LAYOUT: one reading column with a sticky contents rail on wide screens. */
+/* VOICE: an encouraging study companion, colourful but calm, always interview-minded.
+   IDEA: a course workbook where each track is a coloured chapter tab.
+   PICTURE: today's four chapters as bold coloured cards, plus a progress ring.
+   COLOUR: white paper, near-black ink; four committed track colours (green, teal, violet, orange) used as solid bands.
+   TYPE: Spectral titles, Inter text. LAYOUT: one column; sticky contents rail on wide screens. */
 :root{color-scheme:light dark;
---bg:light-dark(#ffffff,#0d0e18);--paper:light-dark(#f6f7fb,#151729);--line:light-dark(#d6d9e3,#2b2f48);
+--bg:light-dark(#ffffff,#0d0e18);--paper:light-dark(#f5f6fb,#151729);--line:light-dark(#d6d9e3,#2b2f48);
 --ink:light-dark(#111827,#eef0f7);--ink2:light-dark(#1f2937,#d7dbe8);--accent:light-dark(#1d2bd8,#9aa6ff);
---dsa:light-dark(#047857,#5fd3a8);--java:light-dark(#0e7490,#5ccfe6);--design:light-dark(#6d28d9,#c4a8ff);--ai:light-dark(#c2410c,#ffab7a);
---tint:light-dark(#eef1ff,#1c2040);--codebg:#0f172a;--codefg:#f1f5f9}
+--dsa:#047857;--java:#0e7490;--design:#6d28d9;--ai:#c2410c;
+--dsaT:light-dark(#e7f6ef,#0f2a22);--javaT:light-dark(#e4f4f8,#0d2730);--designT:light-dark(#f0eafe,#211a3a);--aiT:light-dark(#fdeee6,#33200f)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
-html{scroll-padding-top:80px}
+html{scroll-padding-top:84px}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:clip}
 h1,h2,h3{font-family:Spectral,Georgia,serif;line-height:1.15;text-wrap:balance;margin:0}
-h1{font-size:clamp(28px,4vw,40px);font-weight:600}h2{font-size:clamp(22px,3vw,28px);font-weight:600}h3{font-size:20px;font-weight:600}
-a{color:var(--accent);font-weight:600}
-button{font:inherit}
+h1{font-size:clamp(28px,4vw,42px);font-weight:600}h2{font-size:clamp(22px,3vw,28px);font-weight:600}h3{font-size:20px;font-weight:600}
+a{color:var(--accent);font-weight:600}button{font:inherit}
 code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 4px;overflow-wrap:anywhere}
 .top{background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.bar{max-width:1240px;margin:0 auto;padding:12px max(4vw,14px);display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;justify-content:space-between}
-.brand{font-family:Spectral,Georgia,serif;font-size:22px;font-weight:600;color:var(--ink);text-decoration:none}
-.prog{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2)}
-.meter{width:160px;height:10px;border-radius:6px;background:var(--paper);border:1px solid var(--line);overflow:hidden}.meter i{display:block;height:100%;background:var(--accent)}
-#nav{max-width:1240px;margin:0 auto;padding:0 max(4vw,14px) 10px;display:flex;gap:6px;overflow-x:auto}
-#nav a{flex:none;text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:9px 14px;border-radius:999px;border:1px solid var(--line);min-height:40px;display:inline-flex;align-items:center;gap:8px}
-#nav a.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-#nav a .dot{width:9px;height:9px;border-radius:50%}
-main{max-width:1240px;margin:0 auto;padding:28px max(4vw,14px) 80px}
+.bar{max-width:1240px;margin:0 auto;padding:10px max(4vw,14px);display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.brand{font-family:Spectral,Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo{display:inline-grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px}.logo i{border-radius:3px}
+#nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+#nav a{text-decoration:none;color:var(--ink);font-size:15px;font-weight:600;padding:8px 14px;border-radius:999px;min-height:42px;display:inline-flex;align-items:center}
+#nav a.on{background:var(--ink);color:var(--bg)}
+main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
+.hero{border-radius:20px;padding:clamp(20px,3vw,34px);background:linear-gradient(120deg,var(--dsaT),var(--javaT) 35%,var(--designT) 68%,var(--aiT));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.hero .eyebrow{font-size:14px;font-weight:700;margin:0 0 8px}
 .lead{font-size:18px;color:var(--ink2);max-width:760px;margin:10px 0 0}
-.eyebrow{font-size:14px;font-weight:600;color:var(--ink2);margin:0 0 6px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin-top:22px}
-.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}@media(min-width:900px){.g4{grid-template-columns:1fr 1fr}}
-.card{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
-.card .tag{font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:8px}
-.card h3{font-size:21px}
-.card ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:15px}
-.card ol a{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600;text-decoration:none;cursor:pointer}
+.ring{width:132px;height:132px;position:relative}.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 30px/1 Spectral,serif}.ring b small{font:600 13px Inter,sans-serif;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:22px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}@media(min-width:900px){.g2{grid-template-columns:1fr 1fr}}
+.tcard{border-radius:16px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;background:var(--bg)}
+.tcard header{background:var(--tc);color:#fff;padding:16px 18px}
+.tcard header .k{font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:8px;opacity:.95}
+.tcard header h3{color:#fff;margin-top:6px;font-size:21px}
+.tcard .body{padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1;background:var(--tt)}
+.tcard ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+.tcard ol a{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--tc);text-underline-offset:3px}
+.ask{font-size:14px;border-left:4px solid var(--tc);padding:6px 10px;background:var(--bg);border-radius:0 8px 8px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:10px;border:2px solid var(--tc,var(--ink));background:var(--tc,var(--ink));color:#fff;font-weight:600;text-decoration:none;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink)}
-.btn:focus-visible,#nav a:focus-visible,.rail a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:22px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:20px}
+.panel.c{background:var(--paper)}
 .dots{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .check{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex:none}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--dsa);flex:none}
 .done-text{text-decoration:line-through;color:var(--ink2)}
-.lesson{display:grid;grid-template-columns:240px minmax(0,1fr);gap:36px;margin-top:20px}
-.rail{position:sticky;top:120px;align-self:start;font-size:14px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 140px);overflow:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chips details{border:1px solid var(--line);border-radius:999px;background:var(--bg);margin:0}
+.chips details[open]{border-radius:12px;max-width:420px}
+.chips summary{padding:6px 12px;font-size:14px;min-height:36px;list-style:none}.chips summary::-webkit-details-marker{display:none}
+.chips details>div{padding:0 12px 10px;font-size:14px}
+.news{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.nrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:baseline;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.nrow .tg{font-size:12px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px}
+.nrow a{color:var(--ink);font-weight:600}.nrow p{grid-column:2;margin:0;font-size:14px;color:var(--ink2)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.tabs a{text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border-radius:999px;border:2px solid var(--c);color:var(--ink);min-height:40px;display:inline-flex;align-items:center}
+.tabs a.on{background:var(--c);color:#fff}
+.band{background:var(--tc);color:#fff;border-radius:18px;padding:clamp(18px,3vw,30px);margin-top:12px}
+.band h1{color:#fff}.band p{margin:6px 0 0}.band a{color:#fff}
+.lesson{display:grid;grid-template-columns:230px minmax(0,1fr);gap:32px;margin-top:22px}
+.rail{position:sticky;top:96px;align-self:start;font-size:14px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 120px);overflow:auto}
 .rail a{color:var(--ink);font-weight:500;text-decoration:none;padding:6px 10px;border-left:3px solid var(--line)}
-.rail a:hover{border-left-color:var(--tc)}
-.rail b{margin:12px 0 4px;font-size:13px}
-.crumb{font-size:14px;color:var(--ink2)}.crumb a{color:var(--ink2)}
-.why{border-left:4px solid var(--tc);background:var(--paper);padding:14px 18px;border-radius:0 12px 12px 0;margin-top:16px}
+.rail a:hover{border-left-color:var(--tc);background:var(--tt)}
+.rail b{margin:10px 0 4px;font-size:13px}
+.why{background:var(--tt);border-radius:14px;padding:14px 18px;margin-top:16px}
+.iv{border:2px solid var(--tc);border-radius:14px;margin-top:14px;overflow:hidden}
+.iv h3{background:var(--tc);color:#fff;font:700 15px Inter,sans-serif;padding:10px 16px}
+.iv dl{margin:0;padding:12px 16px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 14px}.iv dt{font-weight:700}.iv dd{margin:0}
 .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;margin-top:12px;font-size:15px}
-.links div{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.sub{margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
-.sub .num{display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--tc);color:var(--bg);font-weight:700;align-items:center;justify-content:center;margin-right:10px;font-family:Inter,sans-serif;font-size:15px;flex:none}
-.sub h2{display:flex;align-items:center}
-.oneline{font-size:18px;font-weight:600;margin:12px 0}
+.links div{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.sub{margin-top:30px;padding-top:22px;border-top:1px solid var(--line)}
+.sub h2{display:flex;align-items:center;gap:10px}
+.num{display:inline-flex;width:34px;height:34px;border-radius:10px;background:var(--tc);color:#fff;font:700 16px Inter,sans-serif;align-items:center;justify-content:center;flex:none}
+.oneline{font-size:18px;font-weight:600;margin:12px 0;padding:8px 12px;background:var(--tt);border-radius:10px;max-width:780px}
 .sub p{max-width:760px}
 .steps{counter-reset:s;list-style:none;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:10px;max-width:780px}
-.steps li{counter-increment:s;position:relative;padding:10px 14px 10px 52px;border:1px solid var(--line);border-radius:10px}
-.steps li:before{content:counter(s);position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:8px;background:var(--tint);color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:center}
+.steps li{counter-increment:s;position:relative;padding:10px 14px 10px 52px;border:1px solid var(--line);border-radius:12px}
+.steps li:before{content:counter(s);position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:8px;background:var(--tc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
 .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:16px 0}
-.flow .box{flex:1 1 140px;border:2px solid var(--tc);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.flow .box{flex:1 1 140px;border:2px solid var(--tc);border-radius:12px;padding:10px 12px;background:var(--tt)}
 .flow .box b{display:block}.flow .box span{font-size:14px;color:var(--ink2)}
 .flow .arr{align-self:center;font-weight:700;color:var(--tc);font-size:20px}
 table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
-th{background:var(--ink);color:var(--bg);text-align:left;padding:9px 10px;font-weight:600}
+th{background:var(--tc,var(--ink));color:#fff;text-align:left;padding:9px 10px;font-weight:600}
 td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
-.callout{border:1px solid var(--line);border-left:5px solid var(--tc);border-radius:10px;padding:12px 16px;margin:14px 0;max-width:780px;background:var(--paper)}
-.callout.warn{border-left-color:#b91c1c}.callout.work{border-left-color:var(--accent)}
+tbody tr:nth-child(even){background:var(--tt,var(--paper))}
+.callout{border-left:5px solid var(--tc);border-radius:12px;padding:12px 16px;margin:14px 0;max-width:780px;background:var(--paper)}
+.callout.warn{border-left-color:#b91c1c;background:light-dark(#fdecec,#2d1414)}.callout.work{border-left-color:var(--accent);background:light-dark(#eef1ff,#1c2040)}
 .callout b{display:block;margin-bottom:4px}
 .codewrap{position:relative;margin:14px 0}
-pre{background:var(--codebg);color:var(--codefg);padding:16px;border-radius:10px;overflow-x:auto;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0}
+pre{background:#0f172a;color:#f1f5f9;padding:16px;border-radius:12px;overflow-x:auto;font:14px/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0}
 .copy{position:absolute;top:8px;right:8px;min-height:32px;padding:4px 10px;border-radius:6px;border:1px solid #475569;background:#1e293b;color:#f1f5f9;cursor:pointer;font-size:13px}
-.prob{border:2px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:18px}
+.prob{border:2px solid var(--tc);border-radius:16px;padding:18px 20px;margin-top:18px;background:var(--bg)}
 .badge{display:inline-block;padding:2px 10px;border-radius:999px;color:#fff;font-size:13px;font-weight:700}
 .Easy{background:#047857}.Medium{background:#b45309}.Hard{background:#b91c1c}
-details{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--bg)}
+.timer{display:inline-flex;align-items:center;gap:10px}
+.timer output{font:700 20px ui-monospace,Menlo,monospace;min-width:70px}
+details{border:1px solid var(--line);border-radius:12px;margin:10px 0;background:var(--bg)}
 summary{cursor:pointer;padding:12px 16px;font-weight:600;min-height:44px}
 details>div{padding:0 16px 14px}
-.rows{display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:14px}
-.row{display:grid;grid-template-columns:70px 110px minmax(0,1fr) 150px;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line);align-items:center;color:var(--ink);text-decoration:none;font-weight:500}
-a.row:hover{background:var(--paper)}
+.qa{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0;background:var(--bg)}
+.qa .q{font-weight:700}.qa .a{margin-top:8px;padding:10px 12px;background:var(--tt);border-radius:10px}
+.qa .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sm{min-height:38px;padding:6px 12px;font-size:14px}
+.row{display:grid;grid-template-columns:70px 110px minmax(0,1fr) 130px;gap:12px;padding:12px 10px;border-bottom:1px solid var(--line);align-items:center;color:var(--ink);text-decoration:none;font-weight:500;border-radius:8px}
+a.row:hover{background:var(--tt)}
 .row .st{font-size:13px;font-weight:700;text-align:right}
 .row.locked{color:var(--ink2)}
-.phase{margin-top:26px;font-size:15px;font-weight:700;color:var(--ink2)}
-.news{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-.news .meta{font-size:13px;font-weight:600;color:var(--ink2)}
+.phase{margin-top:24px;font-size:15px;font-weight:700}
+.tile{border-radius:18px;padding:20px;color:#fff;background:var(--tc);text-decoration:none;display:flex;flex-direction:column;gap:8px;min-height:180px;font-weight:500}
+.tile h2{color:#fff}.tile .meter{height:10px;border-radius:6px;background:rgba(255,255,255,.3);overflow:hidden}.tile .meter i{display:block;height:100%;background:#fff}
 .search{width:100%;max-width:420px;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-top:16px}
 .gl{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
 .pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px}
 .muted{color:var(--ink2);font-size:14px}
-@media(max-width:860px){.lesson{grid-template-columns:1fr}.rail{position:static;max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border-left:0;border:1px solid var(--line);border-radius:999px}}
-@media(max-width:600px){.row{grid-template-columns:52px minmax(0,1fr);}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.meter{width:100px}table{font-size:13px}th,td{padding:7px}}
-@media(prefers-reduced-motion:no-preference){.card,.prob{transition:border-color .2s}.card:hover{border-color:var(--ink2)}}
+.card-drill{border:2px solid var(--tc);border-radius:18px;padding:24px;max-width:760px;margin-top:18px;background:var(--tt)}
+@media(max-width:860px){.lesson{grid-template-columns:1fr}.rail{position:static;max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border:1px solid var(--line);border-radius:999px}.hero{grid-template-columns:1fr}.ring{width:100px;height:100px}}
+@media(max-width:600px){.row{grid-template-columns:56px minmax(0,1fr)}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.iv dl{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px}#nav{margin-left:0}#nav a{padding:8px 11px;font-size:14px}}
+@media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
 </style>
 </head>
 <body>
-<header class="top">
- <div class="bar"><a class="brand" href="#today">Aastha's FAANG Prep</a>
-  <div class="prog"><span id="dayinfo">Loading…</span><div class="meter" aria-hidden="true"><i id="meter" style="width:0"></i></div><span id="pct"></span></div></div>
- <nav id="nav" aria-label="Sections"></nav>
-</header>
+<header class="top"><div class="bar">
+ <a class="brand" href="#today"><span class="logo" aria-hidden="true"><i style="background:var(--dsa)"></i><i style="background:var(--java)"></i><i style="background:var(--design)"></i><i style="background:var(--ai)"></i></span>FAANG Prep</a>
+ <nav id="nav" aria-label="Sections"></nav></div></header>
 <main id="app"><p>Loading your plan…</p></main>
 <script>
 {
-const TR={dsa:{name:"Coding patterns",c:"var(--dsa)"},java:{name:"Java & Spring",c:"var(--java)"},design:{name:"System design",c:"var(--design)"},ai:{name:"AI skills",c:"var(--ai)"}};
+const TR={dsa:{name:"Coding patterns",c:"var(--dsa)",t:"var(--dsaT)"},java:{name:"Java & Spring",c:"var(--java)",t:"var(--javaT)"},design:{name:"System design",c:"var(--design)",t:"var(--designT)"},ai:{name:"AI skills",c:"var(--ai)",t:"var(--aiT)"}};
 const ORDER=["dsa","java","design","ai"];
 const app=document.getElementById("app");
 let CUR=null,STATE=null,NEWS=null;const LES={};
@@ -125,19 +151,19 @@ const md=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/`([^
 const store={get(k,d){try{return JSON.parse(localStorage.getItem("fp_"+k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem("fp_"+k,JSON.stringify(v))}catch(e){}}};
 const pad=n=>String(n).padStart(2,"0");
 const fmt=d=>new Date(d+"T00:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+const todayISO=()=>new Date(Date.now()+330*60000).toISOString().slice(0,10);
+const sty=t=>`--tc:${TR[t].c};--tt:${TR[t].t}`;
 async function j(u){const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error(u);return r.json()}
 async function lesson(n){if(!LES[n])LES[n]=await j(`data/lessons/day-${pad(n)}.json`);return LES[n]}
 const done=()=>store.get("done",{});
-function isDone(t,n){return !!done()[t+"-"+n]}
-function toggleDone(t,n){const d=done();d[t+"-"+n]=!d[t+"-"+n];store.set("done",d);header()}
+const isDone=(t,n)=>!!done()[t+"-"+n];
+function toggleDone(t,n){const d=done();d[t+"-"+n]=!d[t+"-"+n];store.set("done",d)}
+const known=()=>store.get("known",{});
+function trackDone(t){let c=0;for(let n=1;n<=60;n++)if(isDone(t,n))c++;return c}
 function header(){
- const L=STATE.latest_day,d=done(),cnt=Object.values(d).filter(Boolean).length;
- document.getElementById("dayinfo").textContent=`Day ${L} of 60 · ${CUR.days[L-1].phase}`;
- document.getElementById("meter").style.width=(cnt/240*100).toFixed(1)+"%";
- document.getElementById("pct").textContent=`${cnt}/240 lessons done`;
  const h=location.hash.slice(1)||"today";
- const items=[["today","Today"],["roadmap","60-day roadmap"],...ORDER.map(t=>["track-"+t,TR[t].name,TR[t].c]),["glossary","Glossary"],["news","AI news"]];
- document.getElementById("nav").innerHTML=items.map(([id,l,c])=>`<a href="#${id}" class="${h===id||h.startsWith(id.replace("track-","lesson-")+"-")?"on":""}">${c?`<span class="dot" style="background:${c}"></span>`:""}${esc(l)}</a>`).join("");
+ const sec=h.startsWith("lesson-")||h.startsWith("track-")||h==="glossary"?"tracks":h;
+ document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
 }
 function block(b){
  switch(b.type){
@@ -148,77 +174,99 @@ function block(b){
   case"code":return codeBox(b.code);
   case"flow":return`<div class="flow">${b.items.map((it,i)=>`${i?'<span class="arr" aria-hidden="true">→</span>':""}<div class="box"><b>${md(it.label)}</b>${it.note?`<span>${md(it.note)}</span>`:""}</div>`).join("")}</div>`;
   case"callout":return`<div class="callout ${esc(b.tone||"")}"><b>${md(b.title)}</b>${md(b.text)}</div>`;
-  case"compare":return`<div class="grid">${b.items.map(it=>`<div class="card"><h3>${md(it.title)}</h3><ul>${it.points.map(p=>`<li>${md(p)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+  case"compare":return`<div class="grid">${b.items.map(it=>`<div class="panel"><h3>${md(it.title)}</h3><ul>${it.points.map(p=>`<li>${md(p)}</li>`).join("")}</ul></div>`).join("")}</div>`;
  }return""}
 function codeBox(c){return`<div class="codewrap"><button class="copy" data-copy>Copy</button><pre><code style="background:none;border:0;padding:0;color:inherit">${esc(c)}</code></pre></div>`}
+function ring(pct,label,sub){const r=52,C=2*Math.PI*r;return`<div class="ring" role="img" aria-label="${esc(label)} ${esc(sub)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--dsa)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg><b>${esc(label)}<small>${esc(sub)}</small></b></div>`}
+const newsRows=()=>NEWS?`<div class="news">${NEWS.items.slice(0,2).map(i=>`<div class="nrow"><span class="tg">${esc(i.tag)}</span><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.headline)}</a><p><b>Why it matters:</b> ${md(i.why)} <span class="muted">${esc(i.source)}, ${fmt(i.date)}</span></p></div>`).join("")}</div>`:"";
 function viewToday(){
  const L=STATE.latest_day;
  lesson(L).then(les=>{
-  const nx=CUR.days[L];
-  const ck=store.get("check-"+L,{});
-  app.innerHTML=`<p class="eyebrow">Day ${L} · ${fmt(les.date)} · ${esc(les.phase)}${STATE.note?` · ${esc(STATE.note)}`:""}</p>
-  <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p>
-  <div class="grid g4">${ORDER.map(t=>{const T=les.tracks[t];return`<article class="card" style="--tc:${TR[t].c};border-top:5px solid ${TR[t].c}">
-   <div class="tag"><span style="color:${TR[t].c}">${TR[t].name}</span><span>${T.minutes} min · ${esc(T.level)}</span></div>
-   <h3>${esc(T.title)}</h3>
+  const nx=CUR.days[L],ck=store.get("check-"+L,{}),total=Object.values(done()).filter(Boolean).length;
+  const preview=todayISO()<les.date;
+  app.innerHTML=`<section class="hero"><div><p class="eyebrow"><span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
+   <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
+  <div class="grid g2">${ORDER.map(t=>{const T=les.tracks[t];return`<article class="tcard" style="${sty(t)}"><header><div class="k"><span>${TR[t].name}</span><span>${T.minutes} min · ${esc(T.level)}</span></div><h3>${esc(T.title)}</h3></header>
+   <div class="body">${T.interview_angle?`<div class="ask"><b>In the interview:</b> ${md(T.interview_angle.how_it_comes_up)}</div>`:""}
    <ol>${T.subtopics.map(s=>`<li><a href="#lesson-${t}-${L}-${esc(s.id)}">${esc(s.title)}</a></li>`).join("")}</ol>
-   ${t==="dsa"&&T.problems?`<p class="muted" style="margin:0">Practice: ${T.problems.map(p=>`${p.num} ${esc(p.title)} (${p.difficulty})`).join(", ")}</p>`:""}
-   <div style="margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#lesson-${t}-${L}">Open lesson</a>${isDone(t,L)?'<span class="muted" style="align-self:center">✓ Done</span>':""}</div></article>`}).join("")}</div>
-  ${les.connections?`<section class="panel"><h3>How today's topics connect</h3><ul class="dots">${les.connections.map(c=>`<li>${md(c)}</li>`).join("")}</ul></section>`:""}
-  <section class="panel"><h3>Today's checklist</h3>${les.checklist.map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}" ${ck[i]?"checked":""}><span class="${ck[i]?"done-text":""}">${md(c)}</span></label>`).join("")}
-   <p class="muted">Ticks are saved in this browser.</p></section>
-  ${nx?`<section class="panel"><h3>Coming up: Day ${nx.day}, ${fmt(nx.date)}</h3><ul class="dots">${ORDER.map(t=>`<li><b style="color:${TR[t].c}">${TR[t].name}:</b> ${esc(nx[t].title)}</li>`).join("")}</ul></section>`:""}
-  ${NEWS?`<section style="margin-top:28px"><h2>This week in AI</h2><div class="grid">${NEWS.items.slice(0,2).map(newsCard).join("")}</div><p><a href="#news">All AI news →</a></p></section>`:""}`;
+   ${t==="dsa"&&T.problems?`<p class="muted" style="margin:0"><b>Practice:</b> ${T.problems.map(p=>`${p.num}. ${esc(p.title)} (${p.difficulty})`).join(", ")}</p>`:""}
+   <div style="margin-top:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><a class="btn" href="#lesson-${t}-${L}">Open lesson</a>${isDone(t,L)?'<b>✓ Done</b>':""}</div></div></article>`}).join("")}</div>
+  <div class="grid g2">
+   <section class="panel c"><h3>Today's checklist</h3>${les.checklist.map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}" ${ck[i]?"checked":""}><span class="${ck[i]?"done-text":""}">${md(c)}</span></label>`).join("")}<p class="muted">Ticks are saved in this browser.</p></section>
+   <div>${les.connections?`<section class="panel" style="margin-top:0"><h3>How today's topics connect</h3><ul class="dots">${les.connections.map(c=>`<li>${md(c)}</li>`).join("")}</ul></section>`:""}
+   <section class="panel"><h3>New terms today</h3><p class="muted" style="margin:4px 0 0">Tap a term to see what it means.</p><div class="chips">${les.glossary.map(g=>`<details><summary>${esc(g.term)}</summary><div>${md(g.meaning)}</div></details>`).join("")}</div><p style="margin:12px 0 0"><a href="#glossary">Full glossary →</a></p></section></div></div>
+  ${NEWS?`<section class="panel c"><h3>AI news for your interviews</h3>${newsRows()}</section>`:""}
+  ${nx?`<section class="panel"><h3>Next: Day ${nx.day}, ${fmt(nx.date)}</h3><ul class="dots">${ORDER.map(t=>`<li><b style="color:${TR[t].c}">${TR[t].name}:</b> ${esc(nx[t].title)}</li>`).join("")}</ul></section>`:""}`;
   app.querySelectorAll("[data-ck]").forEach(x=>x.addEventListener("change",()=>{const c=store.get("check-"+L,{});c[x.dataset.ck]=x.checked;store.set("check-"+L,c);x.nextElementSibling.className=x.checked?"done-text":""}));
- }).catch(()=>app.innerHTML=`<h1>Today's lesson isn't ready yet</h1><p class="lead">It is published every morning at 9:00 IST.</p>`);
+ }).catch(()=>app.innerHTML=`<h1>Today's lesson isn't ready yet</h1><p class="lead">It is published every morning by 9:00 IST.</p>`);
+}
+function trackTabs(cur){return`<div class="tabs">${ORDER.map(t=>`<a href="#track-${t}" style="--c:${TR[t].c}" class="${cur===t?"on":""}">${TR[t].name}</a>`).join("")}</div>`}
+function viewTracks(){
+ app.innerHTML=`<h1>Tracks</h1><p class="lead">Four tracks run side by side every day, from basics to interview level.</p><div class="grid g2">${ORDER.map(t=>{const d=trackDone(t);return`<a class="tile" style="${sty(t)}" href="#track-${t}"><h2>${TR[t].name}</h2><span>Today: ${esc(CUR.days[STATE.latest_day-1][t].title)}</span><span style="margin-top:auto">${d} of 60 lessons done</span><div class="meter"><i style="width:${d/60*100}%"></i></div></a>`}).join("")}</div>
+ <p style="margin-top:20px"><a href="#glossary">Glossary of every term so far →</a></p>`;
 }
 function viewTrack(t){
  const L=STATE.latest_day;
- let html=`<p class="eyebrow" style="color:${TR[t].c}">Track</p><h1>${TR[t].name}</h1><p class="lead">60 lessons, from basics to interview level. Lessons open on their day; everything after today shows its topic so you can see where it leads.</p><div class="rows" style="--tc:${TR[t].c}">`;
+ let html=`${trackTabs(t)}<div class="band" style="${sty(t)}"><h1>${TR[t].name}</h1><p>60 lessons, from basics to interview level. ${trackDone(t)} done so far. Lessons open on their day; later ones show their topic so you can see where it leads.</p></div><div style="${sty(t)}">`;
  let ph="";
  CUR.days.forEach(d=>{
-  if(d.phase!==ph){ph=d.phase;const p=CUR.phases.find(x=>x.name===ph);html+=`</div><p class="phase">${esc(ph)} · days ${p.from}–${p.to}</p><div class="rows">`}
+  if(d.phase!==ph){ph=d.phase;const p=CUR.phases.find(x=>x.name===ph);html+=`<p class="phase" style="color:${TR[t].c}">${esc(ph)} · days ${p.from}–${p.to}</p>`}
   const open=d.day<=L,dn=isDone(t,d.day);
-  const sub=t==="dsa"?`<div class="muted">${esc(d.dsa.subtopics.join(" · "))}</div>`:"";
-  html+=open?`<a class="row" href="#lesson-${t}-${d.day}"><b>Day ${d.day}</b><span class="dt muted">${fmt(d.date)}</span><span>${esc(d[t].title)}${sub}</span><span class="st" style="color:${TR[t].c}">${dn?"✓ Done":d.day===L?"Today":"Open"}</span></a>`
+  const sub=t==="dsa"&&d.dsa.problems.length?`<div class="muted">${esc(d.dsa.problems.join(" · "))}</div>`:"";
+  html+=open?`<a class="row" href="#lesson-${t}-${d.day}"><b>Day ${d.day}</b><span class="dt muted">${fmt(d.date)}</span><span>${esc(d[t].title)}${sub}</span><span class="st" style="color:${TR[t].c}">${dn?"✓ Done":d.day===L?"Today →":"Open →"}</span></a>`
    :`<div class="row locked"><b>Day ${d.day}</b><span class="dt">${fmt(d.date)}</span><span>${esc(d[t].title)}${sub}</span><span class="st">Opens ${fmt(d.date)}</span></div>`;
  });
  app.innerHTML=html+"</div>";
 }
+function qaCard(q,key){const k=known()[key];return`<div class="qa" data-key="${esc(key)}"><div class="q">${md(q.q)}</div><div class="a" hidden>${md(q.a)}</div><div class="acts"><button class="btn sm" data-reveal>Show answer</button><button class="btn ghost sm" data-know="1">${k===1?"✓ ":""}I've got it</button><button class="btn ghost sm" data-know="0">${k===0?"✓ ":""}Review again</button></div></div>`}
 function viewLesson(t,n,anchor){
  if(n>STATE.latest_day){app.innerHTML=`<h1>Not open yet</h1><p class="lead">Day ${n} opens on ${fmt(CUR.days[n-1].date)}.</p><p><a href="#track-${t}">Back to ${TR[t].name}</a></p>`;return}
  lesson(n).then(les=>{
-  const T=les.tracks[t],c=TR[t].c;
-  const rail=`<b>On this page</b>${T.subtopics.map((s,i)=>`<a href="#lesson-${t}-${n}-${esc(s.id)}">${i+1}. ${esc(s.title)}</a>`).join("")}${T.problems&&T.problems.length?`<a href="#lesson-${t}-${n}-practice">Practice problems</a>`:""}${T.prompt?`<a href="#lesson-${t}-${n}-prompt">Prompt to copy</a>`:""}<a href="#lesson-${t}-${n}-interview">Interview questions</a><a href="#lesson-${t}-${n}-recap">Recap and links</a>`;
-  let h=`<p class="crumb"><a href="#track-${t}">${TR[t].name}</a> › Day ${n} · ${fmt(les.date)}</p>
-  <h1>${esc(T.title)}</h1><p class="muted">${T.minutes} minutes · ${esc(T.level)} · ${T.subtopics.length} parts</p>
-  <div class="why"><b>Why this matters</b><br>${md(T.why)}</div>
+  const T=les.tracks[t],I=T.interview_angle;
+  const rail=`<b>On this page</b>${I?`<a href="#lesson-${t}-${n}-angle">In the interview</a>`:""}${T.subtopics.map((s,i)=>`<a href="#lesson-${t}-${n}-${esc(s.id)}">${i+1}. ${esc(s.title)}</a>`).join("")}${T.problems&&T.problems.length?`<a href="#lesson-${t}-${n}-practice">Practice problems</a>`:""}${T.prompt?`<a href="#lesson-${t}-${n}-prompt">Prompt to copy</a>`:""}<a href="#lesson-${t}-${n}-interview">Interview questions</a><a href="#lesson-${t}-${n}-recap">Recap and links</a>`;
+  let h=`<div class="why"><b>Why this matters</b><br>${md(T.why)}</div>
+  ${I?`<section class="iv" id="lesson-${t}-${n}-angle"><h3>How this comes up in interviews</h3><dl><dt>Where</dt><dd>${md(I.asked_at)}</dd><dt>How it's asked</dt><dd>${md(I.how_it_comes_up)}</dd><dt>A strong answer</dt><dd>${md(I.strong_answer)}</dd><dt>Common mistakes</dt><dd>${md(I.pitfalls)}</dd></dl></section>`:""}
   <div class="links"><div><b>Builds on</b><br>${md(T.builds_on)}</div><div><b>Leads to</b><br>${md(T.next)}</div></div>`;
   T.subtopics.forEach((s,i)=>{h+=`<section class="sub" id="lesson-${t}-${n}-${esc(s.id)}"><h2><span class="num">${i+1}</span>${esc(s.title)}</h2><p class="oneline">${md(s.in_one_line)}</p>${s.blocks.map(block).join("")}</section>`});
-  if(T.problems&&T.problems.length){h+=`<section class="sub" id="lesson-${t}-${n}-practice"><h2>Practice problems</h2><p>Spend up to 25 minutes on each before opening hints. Then ask your AI coach for a review.</p>${T.problems.map(prob).join("")}</section>`}
-  if(T.prompt){h+=`<section class="sub" id="lesson-${t}-${n}-prompt"><h2>Prompt to copy</h2><p>Paste this into your Interview Coach chat.</p>${codeBox(T.prompt)}</section>`}
-  h+=`<section class="sub" id="lesson-${t}-${n}-interview"><h2>Interview questions</h2><p>Answer out loud first, then open the model answer.</p>${T.interview_qa.map(q=>`<details><summary>${md(q.q)}</summary><div>${md(q.a)}</div></details>`).join("")}</section>
+  if(T.problems&&T.problems.length)h+=`<section class="sub" id="lesson-${t}-${n}-practice"><h2>Practice problems</h2><p>Start the timer, work for up to 25 minutes, then open the hints. Afterwards, ask your AI coach for a review.</p>${T.problems.map(prob).join("")}</section>`;
+  if(T.prompt)h+=`<section class="sub" id="lesson-${t}-${n}-prompt"><h2>Prompt to copy</h2><p>Paste this into your Interview Coach chat.</p>${codeBox(T.prompt)}</section>`;
+  h+=`<section class="sub" id="lesson-${t}-${n}-interview"><h2>Interview questions</h2><p>Say your answer out loud, then reveal the model answer and rate yourself. Cards you mark "Review again" come back in the Interview drill.</p>${T.interview_qa.map((q,i)=>qaCard(q,`${t}-${n}-${i}`)).join("")}</section>
   <section class="sub" id="lesson-${t}-${n}-recap"><h2>Recap</h2><ul>${T.takeaways.map(x=>`<li>${md(x)}</li>`).join("")}</ul><h3 style="margin-top:18px">Go deeper</h3><ul>${T.resources.map(r=>`<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a></li>`).join("")}</ul>
   <p style="margin-top:20px"><button class="btn" id="mark">${isDone(t,n)?"✓ Marked done · undo":"Mark this lesson done"}</button></p></section>
   <div class="pager">${n>1?`<a class="btn ghost" href="#lesson-${t}-${n-1}">← Day ${n-1}: ${esc(CUR.days[n-2][t].title)}</a>`:"<span></span>"}${n<STATE.latest_day?`<a class="btn ghost" href="#lesson-${t}-${n+1}">Day ${n+1} →</a>`:`<span class="muted">Next: ${esc((CUR.days[n]||{})[t]?.title||"")}${CUR.days[n]?" · opens "+fmt(CUR.days[n].date):""}</span>`}</div>`;
-  app.innerHTML=`<div class="lesson" style="--tc:${c}"><nav class="rail" aria-label="Lesson contents">${rail}</nav><div>${h}</div></div>`;
+  app.innerHTML=`<div style="${sty(t)}">${trackTabs(t)}<div class="band"><p style="margin:0;font-weight:600"><a href="#track-${t}">${TR[t].name}</a> · Day ${n} · ${fmt(les.date)} · ${T.minutes} min · ${esc(T.level)}</p><h1 style="margin-top:6px">${esc(T.title)}</h1></div><div class="lesson"><nav class="rail" aria-label="Lesson contents">${rail}</nav><div>${h}</div></div></div>`;
   document.getElementById("mark").onclick=()=>{toggleDone(t,n);viewLesson(t,n)};
   const el=anchor&&document.getElementById(anchor);if(el)el.scrollIntoView();else scrollTo(0,0);
  }).catch(()=>app.innerHTML=`<h1>Lesson not found</h1><p><a href="#today">Back to today</a></p>`);
 }
 function prob(p){
- return`<article class="prob"><p style="margin:0"><span class="badge ${esc(p.difficulty)}">${esc(p.difficulty)}</span> <b style="font-size:19px">&nbsp;${p.num}. ${esc(p.title)}</b></p>
+ return`<article class="prob"><p style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span class="badge ${esc(p.difficulty)}">${esc(p.difficulty)}</span><b style="font-size:19px">${p.num}. ${esc(p.title)}</b></p>
  <p>${md(p.statement)}</p><p><b>Example:</b> ${md(p.example)}</p>
- <p><a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on LeetCode</a></p>
+ <p style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on LeetCode</a><span class="timer"><button class="btn ghost sm" data-timer>Start 25-min timer</button><output>25:00</output></span></p>
  <details><summary>How to think about it</summary><div><ol class="steps">${p.how_to_think.map(x=>`<li>${md(x)}</li>`).join("")}</ol></div></details>
  <details><summary>Hints (open one at a time)</summary><div>${p.hints.map((x,i)=>`<details><summary>Hint ${i+1}</summary><div>${md(x)}</div></details>`).join("")}</div></details>
- <details><summary>Solution (after 25 minutes)</summary><div><ol class="steps">${p.solution.approach.map(x=>`<li>${md(x)}</li>`).join("")}</ol>${codeBox(p.solution.code)}<p><b>Time:</b> ${md(p.solution.time)}<br><b>Space:</b> ${md(p.solution.space)}</p>
+ <details><summary>Solution (after your 25 minutes)</summary><div><ol class="steps">${p.solution.approach.map(x=>`<li>${md(x)}</li>`).join("")}</ol>${codeBox(p.solution.code)}<p><b>Time:</b> ${md(p.solution.time)}<br><b>Space:</b> ${md(p.solution.space)}</p>
  ${p.alternatives?`<div class="scroll"><table class="stack"><thead><tr><th>Approach</th><th>Time</th><th>Space</th><th>When to use</th></tr></thead><tbody>${p.alternatives.map(a=>`<tr><td data-l="Approach">${md(a.name)}</td><td data-l="Time">${md(a.time)}</td><td data-l="Space">${md(a.space)}</td><td data-l="When to use">${md(a.note)}</td></tr>`).join("")}</tbody></table></div>`:""}</div></details>
- ${p.followups?`<details><summary>Follow-up questions</summary><div>${p.followups.map(f=>`<p><b>${md(f.q)}</b><br>${md(f.a)}</p>`).join("")}</div></details>`:""}</article>`}
+ ${p.followups?`<details><summary>Follow-up questions the interviewer may ask</summary><div>${p.followups.map(f=>`<p><b>${md(f.q)}</b><br>${md(f.a)}</p>`).join("")}</div></details>`:""}</article>`}
+async function viewDrill(){
+ const L=STATE.latest_day,cards=[];
+ for(let n=1;n<=L;n++){try{const les=await lesson(n);ORDER.forEach(t=>les.tracks[t].interview_qa.forEach((q,i)=>cards.push({t,n,q,key:`${t}-${n}-${i}`})))}catch(e){}}
+ let filter=store.get("drillf","all"),mode=store.get("drillm","review"),i=0;
+ const pick=()=>{const k=known();return cards.filter(c=>(filter==="all"||c.t===filter)&&(mode==="all"||k[c.key]!==1))};
+ const draw=()=>{const list=pick();if(i>=list.length)i=0;const c=list[i];
+  app.innerHTML=`<h1>Interview drill</h1><p class="lead">Every interview question from the lessons so far. Answer out loud, reveal the answer, then rate yourself. Cards you've got drop out of the review pile.</p>
+  <div class="tabs"><a href="#drill" data-f="all" style="--c:var(--ink)" class="${filter==="all"?"on":""}">All tracks</a>${ORDER.map(t=>`<a href="#drill" data-f="${t}" style="--c:${TR[t].c}" class="${filter===t?"on":""}">${TR[t].name}</a>`).join("")}</div>
+  <p><label><input type="checkbox" id="mode" ${mode==="review"?"checked":""}> Only cards I haven't got yet</label> · <span class="muted">${list.length} card${list.length===1?"":"s"}</span></p>
+  ${c?`<div class="card-drill" style="${sty(c.t)}"><p class="muted" style="margin-top:0"><b style="color:${TR[c.t].c}">${TR[c.t].name}</b> · Day ${c.n} · card ${i+1} of ${list.length}</p>${qaCard(c.q,c.key)}<p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="prev">← Previous</button><button class="btn" id="next">Next card →</button><button class="btn ghost" id="shuf">Shuffle</button></p></div>`:`<div class="panel c"><h3>All caught up</h3><p>No cards left in this pile. Untick the box above to see every card.</p></div>`}`;
+  app.querySelectorAll("[data-f]").forEach(a=>a.onclick=e=>{e.preventDefault();filter=a.dataset.f;store.set("drillf",filter);i=0;draw()});
+  document.getElementById("mode").onchange=e=>{mode=e.target.checked?"review":"all";store.set("drillm",mode);i=0;draw()};
+  if(c){document.getElementById("next").onclick=()=>{i++;draw()};document.getElementById("prev").onclick=()=>{i=Math.max(0,i-1);draw()};document.getElementById("shuf").onclick=()=>{cards.sort(()=>Math.random()-.5);i=0;draw()}}
+ };draw();
+}
 function viewRoadmap(){
  const L=STATE.latest_day;
- app.innerHTML=`<h1>The 60-day roadmap</h1><p class="lead">Four tracks run side by side every day, each starting from the basics. Sundays are off. Day ${L} is today.</p>
- ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th>Day</th>${ORDER.map(t=>`<th>${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="background:var(--tint)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
+ app.innerHTML=`<h1>The 60-day roadmap</h1><p class="lead">Four tracks side by side, each from basics to interview level. Sundays are off. Today is Day ${L}.</p>
+ ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--ink);color:var(--bg)">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
 }
 async function viewGlossary(){
  const L=STATE.latest_day,all=[];
@@ -228,21 +276,32 @@ async function viewGlossary(){
  const draw=q=>{document.getElementById("gl").innerHTML=all.filter(g=>(g.term+g.meaning).toLowerCase().includes(q)).map(g=>`<div class="gl"><b>${esc(g.term)}</b><span>${md(g.meaning)} <span class="muted">(Day ${g.day})</span></span></div>`).join("")||'<p class="muted">No matching terms.</p>'};
  draw("");document.getElementById("q").addEventListener("input",e=>draw(e.target.value.toLowerCase()));
 }
-const newsCard=i=>`<article class="news"><p class="meta">${esc(i.tag)} · ${fmt(i.date)} · ${esc(i.source)}</p><h3>${esc(i.headline)}</h3><p>${md(i.summary)}</p><p><b>Why it matters for you:</b> ${md(i.why)}</p><a href="${esc(i.url)}" target="_blank" rel="noopener">Read the source</a></article>`;
-function viewNews(){app.innerHTML=`<h1>AI news, explained for your job search</h1><p class="lead">Refreshed every morning. Updated ${esc(new Date(NEWS.updated).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}))}.</p><div class="grid">${NEWS.items.map(newsCard).join("")}</div>`}
+let tick=null;
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-copy]");
+ if(b){const t=b.nextElementSibling.textContent;try{navigator.clipboard.writeText(t).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)},()=>{b.textContent="Select and copy"})}catch(err){b.textContent="Select and copy"}return}
+ const r=e.target.closest("[data-reveal]");
+ if(r){const a=r.closest(".qa").querySelector(".a");a.hidden=!a.hidden;r.textContent=a.hidden?"Show answer":"Hide answer";return}
+ const k=e.target.closest("[data-know]");
+ if(k){const card=k.closest(".qa"),m=known();m[card.dataset.key]=+k.dataset.know;store.set("known",m);card.querySelectorAll("[data-know]").forEach(x=>x.textContent=(+x.dataset.know===m[card.dataset.key]?"✓ ":"")+(x.dataset.know==="1"?"I've got it":"Review again"));return}
+ const tm=e.target.closest("[data-timer]");
+ if(tm){const out=tm.nextElementSibling;if(tick){clearInterval(tick);tick=null;tm.textContent="Start 25-min timer";out.textContent="25:00";return}
+  let s=1500;tm.textContent="Stop timer";tick=setInterval(()=>{s--;out.textContent=`${pad(Math.floor(s/60))}:${pad(s%60)}`;if(s<=0){clearInterval(tick);tick=null;out.textContent="Time! Open a hint";tm.textContent="Start 25-min timer"}},1000)}
+});
 function route(){
+ if(tick){clearInterval(tick);tick=null}
  header();
  const h=location.hash.slice(1)||"today";let m;
  if(h==="today")viewToday();
+ else if(h==="tracks")viewTracks();
  else if(h==="roadmap")viewRoadmap();
+ else if(h==="drill")viewDrill();
  else if(h==="glossary")viewGlossary();
- else if(h==="news")viewNews();
  else if(m=h.match(/^track-(dsa|java|design|ai)$/))viewTrack(m[1]);
  else if(m=h.match(/^lesson-(dsa|java|design|ai)-(\d+)(?:-([a-z0-9-]+))?$/))viewLesson(m[1],+m[2],m[3]?h:null);
  else viewToday();
  if(!h.startsWith("lesson-"))scrollTo(0,0);
 }
-document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(!b)return;const t=b.nextElementSibling.textContent;try{navigator.clipboard.writeText(t).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)},()=>{b.textContent="Select and copy"})}catch(err){b.textContent="Select and copy"}});
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
 }

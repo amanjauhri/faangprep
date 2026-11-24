@@ -18,24 +18,6 @@
    "why": "One manager, not company policy, and big tech still runs coding rounds. But it shows where things are heading: more weight on judgment, design and working with AI.",
    "source": "Crypto Briefing",
    "url": "https://cryptobriefing.com/?p=403525"
-  },
-  {
-   "date": "2026-11-18",
-   "tag": "Models",
-   "headline": "OpenAI releases GPT-6.2 Astra and Sol",
-   "summary": "Two new models aimed at professional work, designed to lower the computing cost of complex tasks.",
-   "why": "Knowing the current model landscape helps in 'how do you use AI?' conversations and in GenAI questions at Amazon and Microsoft.",
-   "source": "The Neuron",
-   "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-november-18-2026/"
-  },
-  {
-   "date": "2026-11-09",
-   "tag": "Models",
-   "headline": "Anthropic releases Claude Fable 5.2",
-   "summary": "Scale AI found Fable produced acceptable work on roughly twice as many freelance projects as the models it was compared with.",
-   "why": "AI agents are getting better at real work, which is why interviews increasingly test whether you can direct and check AI, not just type code.",
-   "source": "Towards AI",
-   "url": "https://pub.towardsai.net/tai-229-fable-5-2-and-the-case-for-a-2027-ai-takeoff-cdd4613ca007"
   }
  ]
 }

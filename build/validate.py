@@ -46,6 +46,7 @@ def check_lesson(errs, L, path):
         if not T:
             err(errs, w, "missing track"); continue
         need(errs, T, ["title", "minutes", "level", "why", "builds_on", "next", "subtopics", "interview_qa", "takeaways", "resources"], w)
+        need(errs, T.get("interview_angle", {}), ["asked_at", "how_it_comes_up", "strong_answer", "pitfalls"], w + ".interview_angle")
         subs = T.get("subtopics", [])
         if len(subs) < 3: err(errs, w, "needs at least 3 subtopics")
         ids = set()
@@ -75,6 +76,7 @@ def check_lesson(errs, L, path):
 
 def check_news(errs, N, path):
     need(errs, N, ["updated", "items"], path)
+    if len(N.get("items", [])) != 2: err(errs, path, "news must have exactly 2 items")
     for i, it in enumerate(N.get("items", [])):
         need(errs, it, ["date", "tag", "headline", "summary", "why", "source", "url"], f"{path}.items[{i}]")
 

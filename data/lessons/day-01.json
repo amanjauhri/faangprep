@@ -308,7 +308,13 @@
      "title": "Tech Interview Handbook: coding interview techniques",
      "url": "https://www.techinterviewhandbook.org/coding-interview-techniques/"
     }
-   ]
+   ],
+   "interview_angle": {
+    "asked_at": "Every company, in every coding round",
+    "how_it_comes_up": "Right after you code: \"What is the time and space complexity?\" and \"Can you do better?\"",
+    "strong_answer": "Say the brute force and its Big-O before coding, name the repeated work, then give the improved Big-O and the memory you trade for it, without being prompted.",
+    "pitfalls": "Calling code O(n) when it hides a list.contains() inside a loop; forgetting space complexity; starting to code before the interviewer agrees the plan."
+   }
   },
   "java": {
    "title": "How Java runs: JDK, JRE, JVM, bytecode and the JIT",
@@ -492,7 +498,13 @@
      "title": "Baeldung: Tiered compilation in the JVM",
      "url": "https://www.baeldung.com/jvm-tiered-compilation"
     }
-   ]
+   ],
+   "interview_angle": {
+    "asked_at": "Banks (UBS, Morgan Stanley, Nomura) and Java-heavy teams at Amazon and Microsoft, usually as the opening Java question",
+    "how_it_comes_up": "\"Why is Java platform-independent?\", \"JDK vs JRE vs JVM?\", \"What does the JIT do?\"",
+    "strong_answer": "One crisp sentence on bytecode plus a JVM per platform, then a real consequence from production: services are slower right after deploy (warm-up), and how a team handles it with readiness checks.",
+    "pitfalls": "Saying Java is simply 'interpreted'; mixing up JRE and JDK; not knowing a separate JRE is no longer shipped since Java 11."
+   }
   },
   "design": {
    "title": "What system design interviews test + client and server basics",
@@ -668,7 +680,13 @@
      "title": "MDN: How the web works",
      "url": "https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works"
     }
-   ]
+   ],
+   "interview_angle": {
+    "asked_at": "Every senior loop at Google, Meta, Amazon and Microsoft; it often decides the level you are offered",
+    "how_it_comes_up": "A vague prompt like \"Design a URL shortener\" or \"Design a payments system\". The first 5–10 minutes are about requirements.",
+    "strong_answer": "Clarify who the users are, how big the system is and the one most important requirement before drawing anything. Name your targets for latency, availability and consistency.",
+    "pitfalls": "Drawing boxes and picking databases before agreeing requirements; never stating trade-offs."
+   }
   },
   "ai": {
    "title": "Using AI as your study coach (not a cheat sheet)",
@@ -785,7 +803,13 @@
      "title": "Exponent: Google's AI-assisted coding interview (2026)",
      "url": "https://www.tryexponent.com/blog/google-ai-coding-interview"
     }
-   ]
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled coding round, Google's code comprehension pilot, and behavioral questions at Amazon and Microsoft",
+    "how_it_comes_up": "\"How do you use AI in your day-to-day work?\", or an AI assistant built into the coding editor",
+    "strong_answer": "Show that you lead the AI: break the problem down, prompt precisely, and verify its output with your own tests. Give one concrete example from your JPMorgan work.",
+    "pitfalls": "Pasting the whole problem into the AI; accepting its code without testing; having no real example ready."
+   }
   }
  },
  "glossary": [
