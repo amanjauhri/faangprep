@@ -135,7 +135,8 @@ a.row:hover{background:var(--tt)}
 @media(min-width:861px){.railbox>summary{display:none}}
 @media(max-width:860px){.railbox{border:1px solid var(--line);border-radius:12px;margin-top:14px;background:var(--paper)}.railbox .rail{padding:0 12px 12px}}
 @media(max-width:600px){
- .bar{padding:8px 12px}#nav{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#nav a{flex:none}
+ .bar{padding:8px 12px}.hbtn{position:absolute;top:8px;right:12px;min-height:36px;padding:4px 12px}.top .bar{position:relative}
+ .guide li{font-size:14px}.guide ol{padding:14px 16px}.guide footer{padding:0 16px 16px}.guide footer .btn{width:100%}#nav{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#nav a{flex:none}
  main{padding:16px 12px 60px}
  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs a{flex:none}
  .hero{padding:18px;gap:14px}.hero .ring{order:-1;width:84px;height:84px}.ring b{font-size:20px}.ring b small{font-size:11px}
@@ -151,6 +152,15 @@ a.row:hover{background:var(--tt)}
  .pager .btn{width:100%}
 }
 @media(min-width:601px) and (max-width:900px){.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.lesson{gap:16px}}
+dialog.guide{border:0;border-radius:20px;padding:0;max-width:560px;max-height:calc(100dvh - 24px);overflow:auto;width:calc(100% - 24px);background:var(--bg);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog.guide::backdrop{background:rgba(10,12,24,.55)}
+.guide header{background:linear-gradient(120deg,var(--dsa),var(--java) 35%,var(--design) 68%,var(--ai));color:#fff;padding:18px 22px}
+.guide header h2{color:#fff}.guide header p{margin:4px 0 0;font-size:15px}
+.guide ol{list-style:none;margin:0;padding:16px 22px;display:flex;flex-direction:column;gap:12px}
+.guide li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;font-size:15px}
+.guide li .n{width:34px;height:34px;border-radius:10px;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.guide footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:0 22px 20px}
+.hbtn{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;min-height:42px;font-weight:600;cursor:pointer}
 @media(max-width:860px){.lesson{grid-template-columns:1fr}.railbox{position:static}.rail{max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border:1px solid var(--line);border-radius:999px}.ring{width:100px;height:100px}}
 @media(max-width:600px){.row{grid-template-columns:56px minmax(0,1fr)}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.iv dl{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px}#nav{margin-left:0}#nav a{padding:8px 11px;font-size:14px}}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
@@ -159,7 +169,17 @@ a.row:hover{background:var(--tt)}
 <body>
 <header class="top"><div class="bar">
  <a class="brand" href="#today"><span class="logo" aria-hidden="true"><i style="background:var(--dsa)"></i><i style="background:var(--java)"></i><i style="background:var(--design)"></i><i style="background:var(--ai)"></i></span>FAANG Prep</a>
- <nav id="nav" aria-label="Sections"></nav></div></header>
+ <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
+<dialog class="guide" id="guide" aria-labelledby="gtitle"><header><h2 id="gtitle">How to use FAANG Prep</h2><p>A two-minute tour. You can reopen this any time from the Guide button.</p></header>
+<ol>
+<li><span class="n" style="background:var(--ink)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
+<li><span class="n" style="background:var(--dsa)">2</span><span><b>Do the four coloured cards.</b> Coding, Java &amp; Spring, System design and AI. Tap <b>Open lesson</b>, or tap a numbered subtopic to jump straight to it. About 75–100 minutes in total.</span></li>
+<li><span class="n" style="background:var(--java)">3</span><span><b>Inside a lesson,</b> read "How this comes up in interviews" first, then work through the numbered parts. Use <b>On this page</b> to jump around, and <b>Mark this lesson done</b> at the end.</span></li>
+<li><span class="n" style="background:var(--design)">4</span><span><b>Practice problems:</b> start the 25-minute timer and solve on LeetCode before opening hints or the solution.</span></li>
+<li><span class="n" style="background:var(--ai)">5</span><span><b>Interview questions:</b> answer out loud, tap <b>Show answer</b>, then rate yourself. Anything marked "Review again" comes back in <b>Interview drill</b>.</span></li>
+<li><span class="n" style="background:var(--accent)">6</span><span><b>Stuck on a word?</b> Search the <b>Glossary</b>. Want the big picture? <b>Tracks</b> and <b>Roadmap</b> show all 60 days.</span></li>
+</ol>
+<footer><span class="muted">Your progress is saved in this browser.</span><button class="btn" id="gclose" style="--tc:var(--ink)">Got it, let's start</button></footer></dialog>
 <main id="app"><p>Loading your plan…</p></main>
 <script>
 {
@@ -341,6 +361,12 @@ function route(){
  else viewToday();
  if(!h.startsWith("lesson-"))scrollTo(0,0);
 }
+const G=document.getElementById("guide");
+const openGuide=()=>{try{G.showModal()}catch(e){G.setAttribute("open","")}};
+document.getElementById("gopen").onclick=openGuide;
+document.getElementById("gclose").onclick=()=>{store.set("seenGuide",true);G.close?G.close():G.removeAttribute("open")};
+G.addEventListener("close",()=>store.set("seenGuide",true));
+if(!store.get("seenGuide",false))setTimeout(openGuide,600);
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
 }
