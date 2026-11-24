@@ -183,8 +183,8 @@ const known=()=>store.get("known",{});
 function trackDone(t){let c=0;for(let n=1;n<=60;n++)if(isDone(t,n))c++;return c}
 function header(){
  const h=location.hash.slice(1)||"today";
- const sec=h.startsWith("lesson-")||h.startsWith("track-")||h==="glossary"?"tracks":h;
- document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
+ const sec=h.startsWith("lesson-")||h.startsWith("track-")||h;
+ document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"],["glossary","Glossary"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
 }
 function block(b){
  switch(b.type){
@@ -290,12 +290,30 @@ function viewRoadmap(){
  ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--ink);color:var(--bg)">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
 }
 async function viewGlossary(){
- const L=STATE.latest_day,all=[];
- for(let n=1;n<=L;n++){try{(await lesson(n)).glossary.forEach(g=>all.push({...g,day:n}))}catch(e){}}
- all.sort((a,b)=>a.term.localeCompare(b.term));
- app.innerHTML=`<h1>Glossary</h1><p class="lead">Every term introduced so far, in plain words. It grows each day.</p><input class="search" id="q" type="search" placeholder="Search terms" aria-label="Search terms"><div id="gl"></div>`;
- const draw=q=>{document.getElementById("gl").innerHTML=all.filter(g=>(g.term+g.meaning).toLowerCase().includes(q)).map(g=>`<div class="gl"><b>${esc(g.term)}</b><span>${md(g.meaning)} <span class="muted">(Day ${g.day})</span></span></div>`).join("")||'<p class="muted">No matching terms.</p>'};
- draw("");document.getElementById("q").addEventListener("input",e=>draw(e.target.value.toLowerCase()));
+ const L=STATE.latest_day,map=new Map();
+ try{(await j("data/glossary.json")).terms.forEach(g=>map.set(g.term.toLowerCase(),{...g,days:[]}))}catch(e){}
+ for(let n=1;n<=L;n++){try{(await lesson(n)).glossary.forEach(g=>{const k=g.term.toLowerCase();if(map.has(k))map.get(k).days.push(n);else map.set(k,{term:g.term,category:"From lessons",meaning:g.meaning,days:[n]})})}catch(e){}}
+ const key=t=>t.replace(/^[^a-z0-9]+/i,"");const all=[...map.values()].sort((a,b)=>key(a.term).localeCompare(key(b.term),undefined,{sensitivity:"base"}));
+ const CC={"Coding":"var(--dsa)","Java":"var(--java)","Spring":"var(--java)","LLD & patterns":"var(--java)","System design":"var(--design)","AI":"var(--ai)","Interview":"var(--accent)","From lessons":"var(--ink)"};
+ const cats=["All",...Object.keys(CC).filter(c=>all.some(g=>g.category===c))];
+ let cat=store.get("glcat","All"),q="";
+ app.innerHTML=`<h1>Glossary</h1><p class="lead">${all.length} terms across coding, Java, Spring, system design, AI and interviews, each in plain words. Search any keyword.</p>
+ <input class="search" id="q" type="search" placeholder="Search a term or keyword, e.g. heap, Kafka, idempotency" aria-label="Search the glossary">
+ <div class="tabs" id="gcats" style="margin-top:14px"></div><p class="muted" id="gcount"></p><div class="tabs" id="az" style="gap:4px"></div><div id="gl"></div>`;
+ const draw=()=>{
+  const list=all.filter(g=>(cat==="All"||g.category===cat)&&(!q||(g.term+" "+g.meaning+" "+g.category).toLowerCase().includes(q)));
+  document.getElementById("gcats").innerHTML=cats.map(c=>`<a href="#glossary" data-c="${esc(c)}" style="--c:${c==="All"?"var(--ink)":CC[c]}" class="${cat===c?"on":""}">${esc(c)} <span style="opacity:.8">&nbsp;${c==="All"?all.length:all.filter(g=>g.category===c).length}</span></a>`).join("");
+  document.getElementById("gcount").textContent=`${list.length} term${list.length===1?"":"s"}${q?` matching "${q}"`:""}`;
+  const ini=g=>{const c=key(g.term)[0]||"#";return /[a-z]/i.test(c)?c.toUpperCase():"#"};const letters=[...new Set(list.map(ini))];
+  document.getElementById("az").innerHTML=letters.map(l=>`<a href="#glossary" data-l="${l}" style="--c:var(--line);min-height:36px;padding:4px 10px">${l}</a>`).join("");
+  let last="",html="";
+  list.forEach(g=>{const l=ini(g);if(l!==last){last=l;html+=`<h2 id="gl-${l}" style="margin-top:20px">${l}</h2>`}
+   html+=`<div class="gl"><span><b>${esc(g.term)}</b><br><span class="pill" style="margin-top:4px;border-color:${CC[g.category]||"var(--line)"};color:${CC[g.category]||"var(--ink)"}">${esc(g.category)}</span></span><span>${md(g.meaning)}${g.days.length?` <a href="#lesson-dsa-${g.days[0]}" class="muted">Day ${g.days.join(", ")}</a>`:""}</span></div>`});
+  document.getElementById("gl").innerHTML=html||'<p class="muted">No matching terms. Try a shorter keyword.</p>';
+  document.querySelectorAll("#gcats a").forEach(a=>a.onclick=e=>{e.preventDefault();cat=a.dataset.c;store.set("glcat",cat);draw()});
+  document.querySelectorAll("#az a").forEach(a=>a.onclick=e=>{e.preventDefault();const el=document.getElementById("gl-"+a.dataset.l);if(el)el.scrollIntoView({behavior:"smooth"})});
+ };
+ draw();document.getElementById("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();draw()});
 }
 let tick=null;
 document.addEventListener("click",e=>{

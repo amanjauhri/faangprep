@@ -1,0 +1,1959 @@
+{
+ "terms": [
+  {
+   "term": "Algorithm",
+   "category": "Coding",
+   "meaning": "A step-by-step recipe for solving a problem."
+  },
+  {
+   "term": "Data structure",
+   "category": "Coding",
+   "meaning": "A way of organising data in memory so certain operations are fast, e.g. an array, a hash map or a tree."
+  },
+  {
+   "term": "Big-O",
+   "category": "Coding",
+   "meaning": "Describes how an algorithm's time or memory grows as the input grows, ignoring constants. O(n) means it grows in a straight line with the input."
+  },
+  {
+   "term": "Time complexity",
+   "category": "Coding",
+   "meaning": "How the number of steps an algorithm takes grows with the input size."
+  },
+  {
+   "term": "Space complexity",
+   "category": "Coding",
+   "meaning": "How much extra memory an algorithm needs as the input grows, not counting the input itself."
+  },
+  {
+   "term": "O(1)",
+   "category": "Coding",
+   "meaning": "Constant time: the cost does not change with input size, e.g. reading array[5]."
+  },
+  {
+   "term": "O(log n)",
+   "category": "Coding",
+   "meaning": "Logarithmic time: each step halves the work, e.g. binary search. A million items take about 20 steps."
+  },
+  {
+   "term": "O(n)",
+   "category": "Coding",
+   "meaning": "Linear time: you look at each element a fixed number of times."
+  },
+  {
+   "term": "O(n log n)",
+   "category": "Coding",
+   "meaning": "The cost of efficient sorting such as merge sort or Java's Arrays.sort for objects."
+  },
+  {
+   "term": "O(n²)",
+   "category": "Coding",
+   "meaning": "Quadratic time: comparing every element with every other. Too slow for large inputs (about 100,000+)."
+  },
+  {
+   "term": "Amortized complexity",
+   "category": "Coding",
+   "meaning": "The average cost per operation over a long sequence. ArrayList.add is O(1) amortized even though an occasional resize is O(n)."
+  },
+  {
+   "term": "Brute force",
+   "category": "Coding",
+   "meaning": "The simplest correct solution, usually trying every possibility. Say it first in interviews, then improve it."
+  },
+  {
+   "term": "Edge case",
+   "category": "Coding",
+   "meaning": "An unusual input that often breaks code: empty input, one element, duplicates, negatives, very large values."
+  },
+  {
+   "term": "Dry run",
+   "category": "Coding",
+   "meaning": "Walking through your code by hand with a small example to check it works."
+  },
+  {
+   "term": "In-place",
+   "category": "Coding",
+   "meaning": "Changing the input directly without allocating extra space proportional to n."
+  },
+  {
+   "term": "Pattern",
+   "category": "Coding",
+   "meaning": "A reusable approach that solves a family of problems, e.g. two pointers or sliding window."
+  },
+  {
+   "term": "Array",
+   "category": "Coding",
+   "meaning": "A fixed-size block of elements stored next to each other in memory; reading by index is O(1)."
+  },
+  {
+   "term": "Dynamic array",
+   "category": "Coding",
+   "meaning": "An array that grows automatically when full, like Java's ArrayList."
+  },
+  {
+   "term": "String",
+   "category": "Coding",
+   "meaning": "A sequence of characters. In Java, String objects are immutable."
+  },
+  {
+   "term": "Hash function",
+   "category": "Coding",
+   "meaning": "Turns a key into a number that decides which bucket the key goes into."
+  },
+  {
+   "term": "Hash map",
+   "category": "Coding",
+   "meaning": "Stores key-value pairs with O(1) average lookup, insert and delete. Java: HashMap."
+  },
+  {
+   "term": "Hash set",
+   "category": "Coding",
+   "meaning": "Stores unique values with O(1) average 'is it here?' checks. Java: HashSet."
+  },
+  {
+   "term": "Collision",
+   "category": "Coding",
+   "meaning": "When two different keys hash to the same bucket. Handled by chaining (a list or tree per bucket)."
+  },
+  {
+   "term": "Frequency map",
+   "category": "Coding",
+   "meaning": "A map from each value to how many times it appears, e.g. counting characters in a string."
+  },
+  {
+   "term": "Prefix sum",
+   "category": "Coding",
+   "meaning": "An array where each position holds the total of all elements before it, so any range sum is O(1)."
+  },
+  {
+   "term": "Running total",
+   "category": "Coding",
+   "meaning": "A sum that you update as you move through the data, the idea behind prefix sums."
+  },
+  {
+   "term": "Two pointers",
+   "category": "Coding",
+   "meaning": "Using two indexes that move through the data (often from both ends) to avoid nested loops."
+  },
+  {
+   "term": "Sliding window",
+   "category": "Coding",
+   "meaning": "A range [left, right] that grows and shrinks as you scan, used for subarray and substring problems."
+  },
+  {
+   "term": "Fixed window",
+   "category": "Coding",
+   "meaning": "A sliding window that always has the same size k."
+  },
+  {
+   "term": "Variable window",
+   "category": "Coding",
+   "meaning": "A sliding window whose size changes: expand on the right, shrink on the left when a rule breaks."
+  },
+  {
+   "term": "Stack",
+   "category": "Coding",
+   "meaning": "Last in, first out. Push adds to the top, pop removes from the top. Java: ArrayDeque."
+  },
+  {
+   "term": "Queue",
+   "category": "Coding",
+   "meaning": "First in, first out. Offer adds to the back, poll removes from the front. Java: ArrayDeque or LinkedList."
+  },
+  {
+   "term": "Deque",
+   "category": "Coding",
+   "meaning": "Double-ended queue: add or remove at both ends in O(1)."
+  },
+  {
+   "term": "Monotonic stack",
+   "category": "Coding",
+   "meaning": "A stack kept in increasing or decreasing order, used to find the next greater or smaller element in O(n)."
+  },
+  {
+   "term": "Monotonic queue",
+   "category": "Coding",
+   "meaning": "A deque kept in order, used for sliding-window maximum or minimum."
+  },
+  {
+   "term": "Binary search",
+   "category": "Coding",
+   "meaning": "Finds a target in sorted data by halving the search range each step: O(log n)."
+  },
+  {
+   "term": "Binary search on the answer",
+   "category": "Coding",
+   "meaning": "Binary searching over possible answers (e.g. a speed or capacity) using a yes/no feasibility check."
+  },
+  {
+   "term": "lo / hi / mid",
+   "category": "Coding",
+   "meaning": "The left bound, right bound and middle index in binary search. Compute mid as lo + (hi - lo) / 2 to avoid overflow."
+  },
+  {
+   "term": "Off-by-one error",
+   "category": "Coding",
+   "meaning": "A bug where a loop or index is one too many or one too few, common in binary search."
+  },
+  {
+   "term": "Rotated sorted array",
+   "category": "Coding",
+   "meaning": "A sorted array shifted around a pivot, e.g. [4,5,6,1,2,3]."
+  },
+  {
+   "term": "Linked list",
+   "category": "Coding",
+   "meaning": "Nodes where each points to the next. Insert/delete is O(1) at a known node; access by index is O(n)."
+  },
+  {
+   "term": "Doubly linked list",
+   "category": "Coding",
+   "meaning": "A linked list whose nodes point both forward and backward."
+  },
+  {
+   "term": "Dummy head",
+   "category": "Coding",
+   "meaning": "A fake first node that removes special cases when building or editing a linked list."
+  },
+  {
+   "term": "Fast and slow pointers",
+   "category": "Coding",
+   "meaning": "Two pointers moving at different speeds, used to find the middle of a list or detect a cycle."
+  },
+  {
+   "term": "Floyd's cycle detection",
+   "category": "Coding",
+   "meaning": "The tortoise-and-hare method: if a fast pointer meets a slow one, the list has a cycle."
+  },
+  {
+   "term": "LRU cache",
+   "category": "Coding",
+   "meaning": "Least Recently Used cache: evicts the item unused for the longest time. Built with a hash map + doubly linked list."
+  },
+  {
+   "term": "Tree",
+   "category": "Coding",
+   "meaning": "A hierarchy of nodes with one root and no cycles."
+  },
+  {
+   "term": "Binary tree",
+   "category": "Coding",
+   "meaning": "A tree where each node has at most two children: left and right."
+  },
+  {
+   "term": "Root / leaf",
+   "category": "Coding",
+   "meaning": "The root is the top node; a leaf has no children."
+  },
+  {
+   "term": "Height / depth",
+   "category": "Coding",
+   "meaning": "Height: longest path from a node down to a leaf. Depth: distance from the root down to a node."
+  },
+  {
+   "term": "Balanced tree",
+   "category": "Coding",
+   "meaning": "A tree where the heights of the left and right subtrees differ by at most one at every node."
+  },
+  {
+   "term": "Binary search tree (BST)",
+   "category": "Coding",
+   "meaning": "A binary tree where left < node < right everywhere, so an in-order walk is sorted."
+  },
+  {
+   "term": "Recursion",
+   "category": "Coding",
+   "meaning": "A function that calls itself on a smaller version of the problem until it reaches a base case."
+  },
+  {
+   "term": "Base case",
+   "category": "Coding",
+   "meaning": "The simplest input where a recursive function stops calling itself."
+  },
+  {
+   "term": "Call stack",
+   "category": "Coding",
+   "meaning": "Memory that tracks active function calls. Very deep recursion can overflow it (StackOverflowError)."
+  },
+  {
+   "term": "DFS (depth-first search)",
+   "category": "Coding",
+   "meaning": "Explores as far as possible along one branch before backtracking. Uses recursion or a stack."
+  },
+  {
+   "term": "BFS (breadth-first search)",
+   "category": "Coding",
+   "meaning": "Explores level by level using a queue. Finds shortest paths in unweighted graphs."
+  },
+  {
+   "term": "Pre-order / in-order / post-order",
+   "category": "Coding",
+   "meaning": "Orders of visiting tree nodes: node first, node in the middle, or node last."
+  },
+  {
+   "term": "Level-order traversal",
+   "category": "Coding",
+   "meaning": "Visiting a tree level by level, i.e. BFS on a tree."
+  },
+  {
+   "term": "Lowest common ancestor (LCA)",
+   "category": "Coding",
+   "meaning": "The deepest node that has both given nodes as descendants."
+  },
+  {
+   "term": "Serialization",
+   "category": "Coding",
+   "meaning": "Turning a data structure into a string or bytes so it can be stored or sent, and rebuilt later."
+  },
+  {
+   "term": "Heap",
+   "category": "Coding",
+   "meaning": "A tree-shaped structure where the smallest (min-heap) or largest (max-heap) item is always on top. Insert/remove O(log n)."
+  },
+  {
+   "term": "Priority queue",
+   "category": "Coding",
+   "meaning": "A queue that always gives the highest-priority item next. Java: PriorityQueue (a min-heap by default)."
+  },
+  {
+   "term": "Top-K",
+   "category": "Coding",
+   "meaning": "Finding the k largest or most frequent items, usually with a heap of size k: O(n log k)."
+  },
+  {
+   "term": "Two heaps",
+   "category": "Coding",
+   "meaning": "A max-heap for the lower half and a min-heap for the upper half, used to track a running median."
+  },
+  {
+   "term": "Trie",
+   "category": "Coding",
+   "meaning": "A prefix tree storing strings character by character; fast prefix search and autocomplete."
+  },
+  {
+   "term": "Interval",
+   "category": "Coding",
+   "meaning": "A range with a start and an end, e.g. a meeting [9, 10]."
+  },
+  {
+   "term": "Merge intervals",
+   "category": "Coding",
+   "meaning": "Sort by start, then combine ranges that overlap."
+  },
+  {
+   "term": "Backtracking",
+   "category": "Coding",
+   "meaning": "Building a solution step by step and undoing (un-choosing) steps that lead to dead ends."
+  },
+  {
+   "term": "Pruning",
+   "category": "Coding",
+   "meaning": "Skipping branches of a search early because they cannot lead to a valid answer."
+  },
+  {
+   "term": "Subset / permutation / combination",
+   "category": "Coding",
+   "meaning": "Subset: any selection. Permutation: an ordering. Combination: a selection where order doesn't matter."
+  },
+  {
+   "term": "Graph",
+   "category": "Coding",
+   "meaning": "Nodes (vertices) connected by edges. Can be directed or undirected, weighted or unweighted."
+  },
+  {
+   "term": "Adjacency list",
+   "category": "Coding",
+   "meaning": "A graph stored as a map from each node to its list of neighbours."
+  },
+  {
+   "term": "Grid as a graph",
+   "category": "Coding",
+   "meaning": "Treating each cell of a 2D grid as a node connected to its 4 neighbours."
+  },
+  {
+   "term": "Visited set",
+   "category": "Coding",
+   "meaning": "Tracks nodes already explored so a graph search does not loop forever."
+  },
+  {
+   "term": "Multi-source BFS",
+   "category": "Coding",
+   "meaning": "BFS that starts from many nodes at once, e.g. all rotten oranges spreading together."
+  },
+  {
+   "term": "Topological sort",
+   "category": "Coding",
+   "meaning": "Ordering tasks so each comes after the ones it depends on. Only possible with no cycles."
+  },
+  {
+   "term": "Kahn's algorithm",
+   "category": "Coding",
+   "meaning": "Topological sort using in-degrees: repeatedly take nodes with no remaining dependencies."
+  },
+  {
+   "term": "In-degree",
+   "category": "Coding",
+   "meaning": "The number of edges pointing into a node."
+  },
+  {
+   "term": "DAG",
+   "category": "Coding",
+   "meaning": "Directed acyclic graph: directed edges and no cycles. Airflow pipelines are DAGs."
+  },
+  {
+   "term": "Union-find",
+   "category": "Coding",
+   "meaning": "Also called disjoint set union: tracks which items are connected, with near O(1) union and find."
+  },
+  {
+   "term": "Path compression",
+   "category": "Coding",
+   "meaning": "A union-find speed-up that points nodes directly at their root."
+  },
+  {
+   "term": "Dijkstra's algorithm",
+   "category": "Coding",
+   "meaning": "Finds shortest paths in a graph with non-negative weights using a priority queue."
+  },
+  {
+   "term": "Minimum spanning tree (MST)",
+   "category": "Coding",
+   "meaning": "The cheapest set of edges that connects all nodes, found with Prim's or Kruskal's algorithm."
+  },
+  {
+   "term": "Dynamic programming (DP)",
+   "category": "Coding",
+   "meaning": "Solving a problem by combining answers to overlapping smaller subproblems and storing them."
+  },
+  {
+   "term": "Memoization",
+   "category": "Coding",
+   "meaning": "Top-down DP: cache results of recursive calls so each subproblem is solved once."
+  },
+  {
+   "term": "Tabulation",
+   "category": "Coding",
+   "meaning": "Bottom-up DP: fill a table from the smallest subproblems upward."
+  },
+  {
+   "term": "State and transition",
+   "category": "Coding",
+   "meaning": "In DP, the state is what a subproblem means (e.g. dp[i]); the transition is how it is built from smaller states."
+  },
+  {
+   "term": "Knapsack",
+   "category": "Coding",
+   "meaning": "A DP family: choose items with weights and values to maximise value under a capacity limit."
+  },
+  {
+   "term": "Kadane's algorithm",
+   "category": "Coding",
+   "meaning": "Finds the maximum-sum subarray in O(n) by tracking the best sum ending at each position."
+  },
+  {
+   "term": "Greedy algorithm",
+   "category": "Coding",
+   "meaning": "Makes the locally best choice at each step. Works only when you can argue that choice is always safe."
+  },
+  {
+   "term": "Bit manipulation",
+   "category": "Coding",
+   "meaning": "Using operators like &, |, ^ and shifts on binary numbers. x ^ x = 0 is a common trick."
+  },
+  {
+   "term": "Matrix",
+   "category": "Coding",
+   "meaning": "A 2D grid of values, e.g. int[][] in Java."
+  },
+  {
+   "term": "Window function (SQL)",
+   "category": "Coding",
+   "meaning": "A SQL function such as RANK() or ROW_NUMBER() that computes over a group of rows without collapsing them."
+  },
+  {
+   "term": "JOIN (SQL)",
+   "category": "Coding",
+   "meaning": "Combines rows from two tables on a matching column (INNER, LEFT, RIGHT, FULL)."
+  },
+  {
+   "term": "GROUP BY (SQL)",
+   "category": "Coding",
+   "meaning": "Groups rows that share values so you can aggregate them with COUNT, SUM, MAX and so on."
+  },
+  {
+   "term": "JVM",
+   "category": "Java",
+   "meaning": "Java Virtual Machine: loads bytecode, manages memory and garbage collection, and runs your program."
+  },
+  {
+   "term": "JRE",
+   "category": "Java",
+   "meaning": "Java Runtime Environment: the JVM plus standard libraries; enough to run Java programs."
+  },
+  {
+   "term": "JDK",
+   "category": "Java",
+   "meaning": "Java Development Kit: the JRE plus tools to build Java (javac, jshell, jcmd, jstack)."
+  },
+  {
+   "term": "Bytecode",
+   "category": "Java",
+   "meaning": "The portable instructions javac produces (.class files), run by any JVM."
+  },
+  {
+   "term": "javac",
+   "category": "Java",
+   "meaning": "The Java compiler that turns .java source files into .class bytecode."
+  },
+  {
+   "term": "JIT compiler",
+   "category": "Java",
+   "meaning": "Just-In-Time compiler: turns frequently run bytecode into fast machine code while the program runs."
+  },
+  {
+   "term": "C1 / C2 compilers",
+   "category": "Java",
+   "meaning": "HotSpot's two JIT compilers: C1 compiles quickly; C2 takes longer and produces highly optimised code."
+  },
+  {
+   "term": "Warm-up",
+   "category": "Java",
+   "meaning": "The first minutes after a Java service starts, when it is slower because classes are loading and code is not yet JIT-compiled."
+  },
+  {
+   "term": "Class loader",
+   "category": "Java",
+   "meaning": "The part of the JVM that finds and loads classes, lazily, the first time they are used."
+  },
+  {
+   "term": "Parent delegation",
+   "category": "Java",
+   "meaning": "A class loader first asks its parent to load a class, so core classes cannot be replaced."
+  },
+  {
+   "term": "Heap (JVM)",
+   "category": "Java",
+   "meaning": "The JVM memory area where all objects live; shared by all threads and cleaned by the garbage collector."
+  },
+  {
+   "term": "Stack (JVM)",
+   "category": "Java",
+   "meaning": "Per-thread memory holding method calls, local variables and references; freed when a method returns."
+  },
+  {
+   "term": "Metaspace",
+   "category": "Java",
+   "meaning": "Native memory where the JVM stores class metadata (replaced PermGen in Java 8)."
+  },
+  {
+   "term": "Primitive type",
+   "category": "Java",
+   "meaning": "A basic value type like int, long, double or boolean, stored directly rather than as an object."
+  },
+  {
+   "term": "Wrapper class",
+   "category": "Java",
+   "meaning": "The object version of a primitive: Integer for int, Long for long, and so on."
+  },
+  {
+   "term": "Autoboxing",
+   "category": "Java",
+   "meaning": "Java automatically converting between a primitive and its wrapper, e.g. int to Integer."
+  },
+  {
+   "term": "Integer cache",
+   "category": "Java",
+   "meaning": "Java reuses Integer objects for -128 to 127, which is why == sometimes seems to work for Integers. Always use equals()."
+  },
+  {
+   "term": "Reference",
+   "category": "Java",
+   "meaning": "A variable that points to an object on the heap rather than holding the object itself."
+  },
+  {
+   "term": "Immutability",
+   "category": "Java",
+   "meaning": "An object whose state cannot change after creation, e.g. String. Immutable objects are thread-safe."
+  },
+  {
+   "term": "String pool",
+   "category": "Java",
+   "meaning": "A JVM area where string literals are stored once and reused."
+  },
+  {
+   "term": "StringBuilder",
+   "category": "Java",
+   "meaning": "A mutable string buffer for building strings efficiently in loops."
+  },
+  {
+   "term": "Class / object",
+   "category": "Java",
+   "meaning": "A class is a blueprint; an object is one instance created from it."
+  },
+  {
+   "term": "Encapsulation",
+   "category": "Java",
+   "meaning": "Hiding an object's internal state behind methods, usually with private fields."
+  },
+  {
+   "term": "Inheritance",
+   "category": "Java",
+   "meaning": "A class reusing and extending another class with extends."
+  },
+  {
+   "term": "Polymorphism",
+   "category": "Java",
+   "meaning": "One interface, many implementations: the right method is chosen at runtime based on the actual object."
+  },
+  {
+   "term": "Abstraction",
+   "category": "Java",
+   "meaning": "Exposing what something does while hiding how it does it."
+  },
+  {
+   "term": "Interface",
+   "category": "Java",
+   "meaning": "A contract of methods a class promises to implement; can have default methods since Java 8."
+  },
+  {
+   "term": "Abstract class",
+   "category": "Java",
+   "meaning": "A class that cannot be instantiated and may contain both implemented and abstract methods."
+  },
+  {
+   "term": "Composition over inheritance",
+   "category": "Java",
+   "meaning": "Building behaviour by holding other objects instead of extending classes; more flexible."
+  },
+  {
+   "term": "Method overloading / overriding",
+   "category": "Java",
+   "meaning": "Overloading: same name, different parameters (compile time). Overriding: subclass replaces a parent method (runtime)."
+  },
+  {
+   "term": "Access modifiers",
+   "category": "Java",
+   "meaning": "public, protected, package-private and private: who can see a class member."
+  },
+  {
+   "term": "static",
+   "category": "Java",
+   "meaning": "Belongs to the class rather than to any one object."
+  },
+  {
+   "term": "final",
+   "category": "Java",
+   "meaning": "Cannot be changed: a final variable cannot be reassigned, a final method cannot be overridden, a final class cannot be extended."
+  },
+  {
+   "term": "equals() and hashCode() contract",
+   "category": "Java",
+   "meaning": "If two objects are equal, they must have the same hashCode. Breaking this makes HashMap and HashSet misbehave."
+  },
+  {
+   "term": "Comparable vs Comparator",
+   "category": "Java",
+   "meaning": "Comparable defines an object's natural order (compareTo); Comparator is a separate ordering you pass in."
+  },
+  {
+   "term": "Collections framework",
+   "category": "Java",
+   "meaning": "Java's standard data structures: List, Set, Map, Queue and their implementations."
+  },
+  {
+   "term": "ArrayList",
+   "category": "Java",
+   "meaning": "A resizable array; O(1) get by index, O(n) insert in the middle."
+  },
+  {
+   "term": "LinkedList (Java)",
+   "category": "Java",
+   "meaning": "A doubly linked list; also usable as a queue. Slow random access."
+  },
+  {
+   "term": "HashMap",
+   "category": "Java",
+   "meaning": "Java's hash table. Not thread-safe. Average O(1) get and put."
+  },
+  {
+   "term": "Load factor",
+   "category": "Java",
+   "meaning": "How full a HashMap can get before it resizes; 0.75 by default."
+  },
+  {
+   "term": "Rehashing",
+   "category": "Java",
+   "meaning": "Resizing a hash table and moving every entry to its new bucket."
+  },
+  {
+   "term": "Treeification",
+   "category": "Java",
+   "meaning": "Since Java 8, a HashMap bucket with many entries becomes a red-black tree, so the worst case is O(log n)."
+  },
+  {
+   "term": "TreeMap",
+   "category": "Java",
+   "meaning": "A sorted map backed by a red-black tree; O(log n) operations and ordered keys."
+  },
+  {
+   "term": "LinkedHashMap",
+   "category": "Java",
+   "meaning": "A HashMap that remembers insertion or access order; easy base for an LRU cache."
+  },
+  {
+   "term": "ArrayDeque",
+   "category": "Java",
+   "meaning": "A fast resizable double-ended queue; the recommended stack and queue in Java."
+  },
+  {
+   "term": "PriorityQueue",
+   "category": "Java",
+   "meaning": "Java's heap; a min-heap by default. Pass Collections.reverseOrder() for a max-heap."
+  },
+  {
+   "term": "Fail-fast iterator",
+   "category": "Java",
+   "meaning": "Throws ConcurrentModificationException if a collection is changed while being iterated."
+  },
+  {
+   "term": "Generics",
+   "category": "Java",
+   "meaning": "Type parameters like List<String> that give compile-time type safety."
+  },
+  {
+   "term": "Type erasure",
+   "category": "Java",
+   "meaning": "Generic types are removed at compile time, so at runtime List<String> and List<Integer> are the same class."
+  },
+  {
+   "term": "Wildcards / PECS",
+   "category": "Java",
+   "meaning": "? extends T and ? super T. PECS: Producer Extends, Consumer Super."
+  },
+  {
+   "term": "Checked exception",
+   "category": "Java",
+   "meaning": "An exception the compiler forces you to handle or declare, e.g. IOException."
+  },
+  {
+   "term": "Unchecked exception",
+   "category": "Java",
+   "meaning": "A RuntimeException the compiler does not force you to handle, e.g. NullPointerException."
+  },
+  {
+   "term": "try-with-resources",
+   "category": "Java",
+   "meaning": "A try block that closes resources such as streams and connections automatically."
+  },
+  {
+   "term": "Lambda",
+   "category": "Java",
+   "meaning": "A short anonymous function, e.g. x -> x * 2."
+  },
+  {
+   "term": "Functional interface",
+   "category": "Java",
+   "meaning": "An interface with a single abstract method, which a lambda can implement (Runnable, Function, Predicate)."
+  },
+  {
+   "term": "Stream API",
+   "category": "Java",
+   "meaning": "A pipeline for processing collections: filter, map, reduce, collect."
+  },
+  {
+   "term": "Lazy evaluation (streams)",
+   "category": "Java",
+   "meaning": "Stream steps don't run until a terminal operation like collect() is called."
+  },
+  {
+   "term": "Optional",
+   "category": "Java",
+   "meaning": "A container that may or may not hold a value; makes 'no result' explicit instead of returning null."
+  },
+  {
+   "term": "Record",
+   "category": "Java",
+   "meaning": "A concise immutable data class (Java 16+) with auto-generated constructor, equals, hashCode and toString."
+  },
+  {
+   "term": "Sealed class",
+   "category": "Java",
+   "meaning": "A class that restricts which classes may extend it (Java 17+)."
+  },
+  {
+   "term": "Garbage collection (GC)",
+   "category": "Java",
+   "meaning": "The JVM automatically freeing memory used by objects that are no longer reachable."
+  },
+  {
+   "term": "Young / old generation",
+   "category": "Java",
+   "meaning": "Heap areas: new objects start young; objects that survive several collections move to old."
+  },
+  {
+   "term": "Minor / major GC",
+   "category": "Java",
+   "meaning": "Minor GC cleans the young generation (fast); major or full GC cleans the old generation (slower)."
+  },
+  {
+   "term": "Stop-the-world pause",
+   "category": "Java",
+   "meaning": "A moment when the JVM pauses all application threads to do GC work."
+  },
+  {
+   "term": "G1 GC",
+   "category": "Java",
+   "meaning": "The default garbage collector since Java 9; splits the heap into regions and targets predictable pauses."
+  },
+  {
+   "term": "ZGC",
+   "category": "Java",
+   "meaning": "A low-latency garbage collector with very short pauses, even on large heaps."
+  },
+  {
+   "term": "Memory leak (Java)",
+   "category": "Java",
+   "meaning": "Objects that are still referenced but never used again, so GC cannot free them."
+  },
+  {
+   "term": "OutOfMemoryError",
+   "category": "Java",
+   "meaning": "Thrown when the JVM cannot allocate memory; the message says which area ran out (heap, metaspace and so on)."
+  },
+  {
+   "term": "Heap dump",
+   "category": "Java",
+   "meaning": "A snapshot of all objects in memory, used to find leaks."
+  },
+  {
+   "term": "Thread dump",
+   "category": "Java",
+   "meaning": "A snapshot of what every thread is doing, used to find deadlocks and stuck threads (jstack)."
+  },
+  {
+   "term": "Thread",
+   "category": "Java",
+   "meaning": "An independent path of execution inside a program."
+  },
+  {
+   "term": "Runnable vs Callable",
+   "category": "Java",
+   "meaning": "Runnable returns nothing; Callable returns a value and can throw checked exceptions."
+  },
+  {
+   "term": "Race condition",
+   "category": "Java",
+   "meaning": "A bug where the result depends on the timing of threads, e.g. two threads incrementing a counter."
+  },
+  {
+   "term": "Critical section",
+   "category": "Java",
+   "meaning": "Code that must not be run by more than one thread at a time."
+  },
+  {
+   "term": "synchronized",
+   "category": "Java",
+   "meaning": "A keyword that lets only one thread at a time run a block or method on a given lock."
+  },
+  {
+   "term": "Monitor / intrinsic lock",
+   "category": "Java",
+   "meaning": "The lock every Java object has, used by synchronized."
+  },
+  {
+   "term": "volatile",
+   "category": "Java",
+   "meaning": "Makes writes to a variable immediately visible to other threads; does not make compound actions atomic."
+  },
+  {
+   "term": "Java Memory Model (JMM)",
+   "category": "Java",
+   "meaning": "The rules for when one thread's writes become visible to another."
+  },
+  {
+   "term": "Happens-before",
+   "category": "Java",
+   "meaning": "A JMM guarantee that one action's effects are visible to another, e.g. unlocking before the next lock."
+  },
+  {
+   "term": "Deadlock",
+   "category": "Java",
+   "meaning": "Two or more threads each waiting forever for a lock the other holds."
+  },
+  {
+   "term": "Livelock / starvation",
+   "category": "Java",
+   "meaning": "Livelock: threads keep reacting to each other and make no progress. Starvation: a thread never gets a turn."
+  },
+  {
+   "term": "ExecutorService",
+   "category": "Java",
+   "meaning": "Java's thread pool API: submit tasks instead of creating threads yourself."
+  },
+  {
+   "term": "Thread pool",
+   "category": "Java",
+   "meaning": "A fixed group of reusable threads that run submitted tasks."
+  },
+  {
+   "term": "ReentrantLock",
+   "category": "Java",
+   "meaning": "An explicit lock with extra features over synchronized: tryLock, timeouts, fairness."
+  },
+  {
+   "term": "ReadWriteLock",
+   "category": "Java",
+   "meaning": "Lets many readers share access but gives writers exclusive access."
+  },
+  {
+   "term": "ConcurrentHashMap",
+   "category": "Java",
+   "meaning": "A thread-safe HashMap that locks only small parts of the map, so many threads can work at once."
+  },
+  {
+   "term": "BlockingQueue",
+   "category": "Java",
+   "meaning": "A thread-safe queue where take() waits for an item and put() waits for space; the basis of producer-consumer."
+  },
+  {
+   "term": "CompletableFuture",
+   "category": "Java",
+   "meaning": "Represents an async result you can chain (thenApply, thenCombine) and handle errors on."
+  },
+  {
+   "term": "Atomic variables / CAS",
+   "category": "Java",
+   "meaning": "AtomicInteger and friends update values safely without locks using compare-and-swap."
+  },
+  {
+   "term": "Producer-consumer",
+   "category": "Java",
+   "meaning": "One set of threads produces work into a queue; another consumes it."
+  },
+  {
+   "term": "Virtual threads",
+   "category": "Java",
+   "meaning": "Lightweight threads (Java 21) managed by the JVM, so you can run millions of blocking tasks cheaply."
+  },
+  {
+   "term": "Singleton",
+   "category": "LLD & patterns",
+   "meaning": "A design pattern ensuring a class has only one instance."
+  },
+  {
+   "term": "Spring Framework",
+   "category": "Spring",
+   "meaning": "A Java framework that manages your objects (beans) and wires them together."
+  },
+  {
+   "term": "Spring Boot",
+   "category": "Spring",
+   "meaning": "Spring with sensible defaults and auto-configuration so a production service starts with little setup."
+  },
+  {
+   "term": "IoC (Inversion of Control)",
+   "category": "Spring",
+   "meaning": "The framework creates and connects your objects instead of your code doing it."
+  },
+  {
+   "term": "Dependency injection (DI)",
+   "category": "Spring",
+   "meaning": "Objects receive the things they need (dependencies) from outside, usually through the constructor."
+  },
+  {
+   "term": "Bean",
+   "category": "Spring",
+   "meaning": "An object created and managed by the Spring container."
+  },
+  {
+   "term": "Application context",
+   "category": "Spring",
+   "meaning": "Spring's container that holds and wires all the beans."
+  },
+  {
+   "term": "Bean scope",
+   "category": "Spring",
+   "meaning": "How many instances Spring creates: singleton (one, the default), prototype (new each time), request, session."
+  },
+  {
+   "term": "Bean lifecycle",
+   "category": "Spring",
+   "meaning": "Creation, dependency injection, initialisation (@PostConstruct) and destruction (@PreDestroy) of a bean."
+  },
+  {
+   "term": "Auto-configuration",
+   "category": "Spring",
+   "meaning": "Spring Boot configures beans automatically based on what is on the classpath."
+  },
+  {
+   "term": "Starter",
+   "category": "Spring",
+   "meaning": "A Spring Boot dependency bundle such as spring-boot-starter-web."
+  },
+  {
+   "term": "Profile",
+   "category": "Spring",
+   "meaning": "A named set of configuration (dev, test, prod) switched on with spring.profiles.active."
+  },
+  {
+   "term": "@RestController",
+   "category": "Spring",
+   "meaning": "Marks a class whose methods handle HTTP requests and return JSON."
+  },
+  {
+   "term": "DispatcherServlet",
+   "category": "Spring",
+   "meaning": "The front controller in Spring MVC that routes each HTTP request to the right controller method."
+  },
+  {
+   "term": "Filter vs interceptor",
+   "category": "Spring",
+   "meaning": "Filters run in the servlet layer before Spring; interceptors run inside Spring MVC around controllers."
+  },
+  {
+   "term": "@ControllerAdvice",
+   "category": "Spring",
+   "meaning": "A class that handles exceptions globally for all controllers."
+  },
+  {
+   "term": "JPA",
+   "category": "Spring",
+   "meaning": "Java Persistence API: a standard way to map Java objects to database tables."
+  },
+  {
+   "term": "Hibernate",
+   "category": "Spring",
+   "meaning": "The most common JPA implementation."
+  },
+  {
+   "term": "Entity",
+   "category": "Spring",
+   "meaning": "A Java class mapped to a database table with @Entity."
+  },
+  {
+   "term": "Persistence context",
+   "category": "Spring",
+   "meaning": "Hibernate's in-memory cache of entities loaded in the current transaction."
+  },
+  {
+   "term": "Lazy vs eager loading",
+   "category": "Spring",
+   "meaning": "Lazy loads related data only when accessed; eager loads it immediately."
+  },
+  {
+   "term": "N+1 query problem",
+   "category": "Spring",
+   "meaning": "Loading a list then firing one extra query per item. Fix with JOIN FETCH, entity graphs or batching."
+  },
+  {
+   "term": "@Transactional",
+   "category": "Spring",
+   "meaning": "Runs a method inside a database transaction; commits on success and rolls back on runtime exceptions."
+  },
+  {
+   "term": "Propagation",
+   "category": "Spring",
+   "meaning": "What @Transactional does when a transaction already exists: join it (REQUIRED), start a new one (REQUIRES_NEW) and so on."
+  },
+  {
+   "term": "Isolation level",
+   "category": "Spring",
+   "meaning": "How much one transaction can see of others' uncommitted work: READ_COMMITTED, REPEATABLE_READ, SERIALIZABLE."
+  },
+  {
+   "term": "AOP",
+   "category": "Spring",
+   "meaning": "Aspect-Oriented Programming: adds behaviour such as transactions, logging or security around methods without changing them."
+  },
+  {
+   "term": "Proxy",
+   "category": "Spring",
+   "meaning": "A wrapper object Spring creates around a bean to add behaviour. Self-calls inside a class bypass it."
+  },
+  {
+   "term": "Spring Security",
+   "category": "Spring",
+   "meaning": "Spring's framework for authentication and authorisation, built as a chain of filters."
+  },
+  {
+   "term": "JWT",
+   "category": "Spring",
+   "meaning": "JSON Web Token: a signed token carrying a user's identity and claims, sent with each request."
+  },
+  {
+   "term": "OAuth2",
+   "category": "Spring",
+   "meaning": "A standard for letting an app access resources on a user's behalf using tokens instead of passwords."
+  },
+  {
+   "term": "Spring Kafka",
+   "category": "Spring",
+   "meaning": "Spring's integration for producing and consuming Kafka messages with @KafkaListener."
+  },
+  {
+   "term": "Dead-letter topic (DLT)",
+   "category": "Spring",
+   "meaning": "A Kafka topic where messages that keep failing are parked for later inspection."
+  },
+  {
+   "term": "@Cacheable",
+   "category": "Spring",
+   "meaning": "Caches a method's result so repeat calls with the same arguments skip the work."
+  },
+  {
+   "term": "Resilience4j",
+   "category": "Spring",
+   "meaning": "A library for circuit breakers, retries, rate limiters and timeouts in Java services."
+  },
+  {
+   "term": "Actuator",
+   "category": "Spring",
+   "meaning": "Spring Boot endpoints for health, metrics and info about a running service."
+  },
+  {
+   "term": "Micrometer",
+   "category": "Spring",
+   "meaning": "A metrics library used by Spring Boot to export metrics to tools like Prometheus or Datadog."
+  },
+  {
+   "term": "JUnit / Mockito",
+   "category": "Spring",
+   "meaning": "JUnit runs Java tests; Mockito creates fake dependencies (mocks) for unit tests."
+  },
+  {
+   "term": "Testcontainers",
+   "category": "Spring",
+   "meaning": "Runs real databases or Kafka in Docker containers during tests."
+  },
+  {
+   "term": "SOLID",
+   "category": "LLD & patterns",
+   "meaning": "Five design principles: Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion."
+  },
+  {
+   "term": "Single responsibility principle",
+   "category": "LLD & patterns",
+   "meaning": "A class should have one reason to change."
+  },
+  {
+   "term": "Open/closed principle",
+   "category": "LLD & patterns",
+   "meaning": "Code should be open for extension but closed for modification."
+  },
+  {
+   "term": "Liskov substitution principle",
+   "category": "LLD & patterns",
+   "meaning": "A subclass must be usable anywhere its parent is, without surprises."
+  },
+  {
+   "term": "Interface segregation principle",
+   "category": "LLD & patterns",
+   "meaning": "Prefer several small interfaces to one large one."
+  },
+  {
+   "term": "Dependency inversion principle",
+   "category": "LLD & patterns",
+   "meaning": "Depend on abstractions (interfaces), not concrete classes."
+  },
+  {
+   "term": "Design pattern",
+   "category": "LLD & patterns",
+   "meaning": "A named, reusable solution to a common design problem."
+  },
+  {
+   "term": "Factory pattern",
+   "category": "LLD & patterns",
+   "meaning": "A method or class that creates objects so callers don't need to know the exact class."
+  },
+  {
+   "term": "Builder pattern",
+   "category": "LLD & patterns",
+   "meaning": "Builds complex objects step by step, avoiding long constructors."
+  },
+  {
+   "term": "Strategy pattern",
+   "category": "LLD & patterns",
+   "meaning": "Swap algorithms at runtime behind a common interface."
+  },
+  {
+   "term": "Observer pattern",
+   "category": "LLD & patterns",
+   "meaning": "Objects subscribe to events and get notified when something changes."
+  },
+  {
+   "term": "Decorator pattern",
+   "category": "LLD & patterns",
+   "meaning": "Wraps an object to add behaviour without changing its class."
+  },
+  {
+   "term": "Adapter pattern",
+   "category": "LLD & patterns",
+   "meaning": "Converts one interface into another that a client expects."
+  },
+  {
+   "term": "Low-level design (LLD)",
+   "category": "LLD & patterns",
+   "meaning": "An interview round where you design classes, interfaces and their relationships for something like a parking lot."
+  },
+  {
+   "term": "Class diagram",
+   "category": "LLD & patterns",
+   "meaning": "A drawing of classes, their fields and methods, and how they relate."
+  },
+  {
+   "term": "System design interview",
+   "category": "System design",
+   "meaning": "A 45–60 minute round where you design a large system, focusing on requirements, components and trade-offs."
+  },
+  {
+   "term": "Functional requirements",
+   "category": "System design",
+   "meaning": "What the system must do, e.g. 'users can shorten a URL'."
+  },
+  {
+   "term": "Non-functional requirements",
+   "category": "System design",
+   "meaning": "How well it must do it: latency, availability, scale, consistency, cost."
+  },
+  {
+   "term": "Client-server",
+   "category": "System design",
+   "meaning": "A client sends requests; a server processes them and responds."
+  },
+  {
+   "term": "DNS",
+   "category": "System design",
+   "meaning": "Domain Name System: translates a name like amazon.com into an IP address."
+  },
+  {
+   "term": "IP address",
+   "category": "System design",
+   "meaning": "A numeric address that identifies a machine on a network."
+  },
+  {
+   "term": "HTTP / HTTPS",
+   "category": "System design",
+   "meaning": "The protocol browsers and services use to talk. HTTPS adds TLS encryption."
+  },
+  {
+   "term": "TLS",
+   "category": "System design",
+   "meaning": "Transport Layer Security: encrypts traffic between client and server."
+  },
+  {
+   "term": "Latency",
+   "category": "System design",
+   "meaning": "How long one request takes, usually in milliseconds."
+  },
+  {
+   "term": "Throughput",
+   "category": "System design",
+   "meaning": "How many requests a system handles per second."
+  },
+  {
+   "term": "p99 latency",
+   "category": "System design",
+   "meaning": "The latency that 99% of requests are faster than; shows the slow tail that averages hide."
+  },
+  {
+   "term": "Bandwidth",
+   "category": "System design",
+   "meaning": "How much data can move over a network per second."
+  },
+  {
+   "term": "Availability",
+   "category": "System design",
+   "meaning": "The share of time a system is up, e.g. 99.9% ('three nines') is about 8.8 hours of downtime a year."
+  },
+  {
+   "term": "SLA / SLO / SLI",
+   "category": "System design",
+   "meaning": "SLI: a measured metric. SLO: the internal target for it. SLA: a contractual promise to customers."
+  },
+  {
+   "term": "Reliability",
+   "category": "System design",
+   "meaning": "The system keeps working correctly even when parts fail."
+  },
+  {
+   "term": "Scalability",
+   "category": "System design",
+   "meaning": "Handling more load by adding resources."
+  },
+  {
+   "term": "Vertical scaling",
+   "category": "System design",
+   "meaning": "Scaling up: a bigger machine with more CPU and memory."
+  },
+  {
+   "term": "Horizontal scaling",
+   "category": "System design",
+   "meaning": "Scaling out: more machines sharing the load."
+  },
+  {
+   "term": "Stateless service",
+   "category": "System design",
+   "meaning": "A server that keeps no user data between requests, so any instance can handle any request."
+  },
+  {
+   "term": "Load balancer",
+   "category": "System design",
+   "meaning": "Spreads incoming requests across many servers."
+  },
+  {
+   "term": "L4 vs L7 load balancing",
+   "category": "System design",
+   "meaning": "L4 routes by IP and port (fast, e.g. AWS NLB); L7 routes by HTTP details like the path (e.g. AWS ALB)."
+  },
+  {
+   "term": "Health check",
+   "category": "System design",
+   "meaning": "A regular probe a load balancer or Kubernetes uses to decide if an instance can receive traffic."
+  },
+  {
+   "term": "Readiness / liveness probe",
+   "category": "System design",
+   "meaning": "Kubernetes checks: readiness says 'send me traffic'; liveness says 'restart me if I'm stuck'."
+  },
+  {
+   "term": "Reverse proxy",
+   "category": "System design",
+   "meaning": "A server in front of your services that forwards requests, e.g. Nginx or Envoy."
+  },
+  {
+   "term": "API gateway",
+   "category": "System design",
+   "meaning": "A single entry point for clients that handles routing, auth, rate limiting and more."
+  },
+  {
+   "term": "Cache",
+   "category": "System design",
+   "meaning": "Fast temporary storage (often in memory) for data that is read often."
+  },
+  {
+   "term": "Cache hit / miss",
+   "category": "System design",
+   "meaning": "Hit: the data was in the cache. Miss: it wasn't, so you go to the database."
+  },
+  {
+   "term": "Cache-aside",
+   "category": "System design",
+   "meaning": "The app checks the cache first, and on a miss loads from the database and fills the cache."
+  },
+  {
+   "term": "Write-through / write-back",
+   "category": "System design",
+   "meaning": "Write-through writes cache and DB together; write-back writes the cache first and the DB later."
+  },
+  {
+   "term": "TTL",
+   "category": "System design",
+   "meaning": "Time to live: how long a cached item stays before it expires."
+  },
+  {
+   "term": "Eviction policy",
+   "category": "System design",
+   "meaning": "How a full cache chooses what to remove, e.g. LRU (least recently used)."
+  },
+  {
+   "term": "Cache stampede",
+   "category": "System design",
+   "meaning": "Many requests miss the cache at once and overload the database."
+  },
+  {
+   "term": "Hot key",
+   "category": "System design",
+   "meaning": "A single key that gets a huge share of traffic and overloads one server."
+  },
+  {
+   "term": "Redis",
+   "category": "System design",
+   "meaning": "A popular in-memory key-value store used for caching, counters and queues."
+  },
+  {
+   "term": "CDN",
+   "category": "System design",
+   "meaning": "Content Delivery Network: servers around the world that cache content close to users."
+  },
+  {
+   "term": "SQL database",
+   "category": "System design",
+   "meaning": "A relational database with tables, joins and transactions, e.g. Postgres, Oracle, MySQL."
+  },
+  {
+   "term": "NoSQL database",
+   "category": "System design",
+   "meaning": "Non-relational stores (key-value, document, wide-column, graph) built for scale or flexible schemas."
+  },
+  {
+   "term": "Cassandra",
+   "category": "System design",
+   "meaning": "A wide-column NoSQL database built for high write throughput across many nodes."
+  },
+  {
+   "term": "ACID",
+   "category": "System design",
+   "meaning": "Atomicity, Consistency, Isolation, Durability: the guarantees of database transactions."
+  },
+  {
+   "term": "Index",
+   "category": "System design",
+   "meaning": "An extra data structure that makes lookups on a column fast, at the cost of slower writes and more storage."
+  },
+  {
+   "term": "B-tree / LSM tree",
+   "category": "System design",
+   "meaning": "B-trees (most SQL databases) are good for reads; LSM trees (Cassandra) are optimised for writes."
+  },
+  {
+   "term": "Replication",
+   "category": "System design",
+   "meaning": "Keeping copies of data on several machines for availability and read scaling."
+  },
+  {
+   "term": "Leader-follower",
+   "category": "System design",
+   "meaning": "One leader takes writes and followers copy them; followers can serve reads."
+  },
+  {
+   "term": "Replication lag",
+   "category": "System design",
+   "meaning": "The delay before a follower has the leader's latest writes."
+  },
+  {
+   "term": "Sharding / partitioning",
+   "category": "System design",
+   "meaning": "Splitting data across machines by a key so each holds only part of it."
+  },
+  {
+   "term": "Partition key",
+   "category": "System design",
+   "meaning": "The field that decides which shard or partition a record goes to."
+  },
+  {
+   "term": "Consistent hashing",
+   "category": "System design",
+   "meaning": "Places servers and keys on a ring so adding or removing a server moves only a few keys."
+  },
+  {
+   "term": "CAP theorem",
+   "category": "System design",
+   "meaning": "During a network partition, a distributed system must choose between consistency and availability."
+  },
+  {
+   "term": "Strong vs eventual consistency",
+   "category": "System design",
+   "meaning": "Strong: every read sees the latest write. Eventual: replicas catch up over time."
+  },
+  {
+   "term": "Quorum",
+   "category": "System design",
+   "meaning": "A majority of replicas that must agree for a read or write to succeed."
+  },
+  {
+   "term": "Message queue",
+   "category": "System design",
+   "meaning": "A buffer where producers put messages and consumers process them later, decoupling services."
+  },
+  {
+   "term": "Pub/sub",
+   "category": "System design",
+   "meaning": "Publish-subscribe: publishers send to a topic and every subscriber gets a copy."
+  },
+  {
+   "term": "Kafka",
+   "category": "System design",
+   "meaning": "A distributed log for streaming events, with topics, partitions and consumer groups."
+  },
+  {
+   "term": "Consumer group",
+   "category": "System design",
+   "meaning": "A set of Kafka consumers sharing a topic's partitions; each partition goes to one consumer in the group."
+  },
+  {
+   "term": "Offset",
+   "category": "System design",
+   "meaning": "A message's position in a Kafka partition; consumers commit offsets to track progress."
+  },
+  {
+   "term": "Kinesis",
+   "category": "System design",
+   "meaning": "AWS's managed streaming service, similar to Kafka."
+  },
+  {
+   "term": "Idempotency",
+   "category": "System design",
+   "meaning": "Doing an operation twice has the same effect as doing it once; essential for safe retries, e.g. payments."
+  },
+  {
+   "term": "At-least-once / exactly-once",
+   "category": "System design",
+   "meaning": "Delivery guarantees: at-least-once may duplicate messages; exactly-once processes each once."
+  },
+  {
+   "term": "Backpressure",
+   "category": "System design",
+   "meaning": "Slowing producers down when consumers can't keep up."
+  },
+  {
+   "term": "REST",
+   "category": "System design",
+   "meaning": "An API style using HTTP verbs (GET, POST, PUT, DELETE) on resources identified by URLs."
+  },
+  {
+   "term": "gRPC",
+   "category": "System design",
+   "meaning": "A fast binary RPC framework using Protocol Buffers, common between internal services."
+  },
+  {
+   "term": "Pagination",
+   "category": "System design",
+   "meaning": "Returning large result sets in pages, by offset or by cursor."
+  },
+  {
+   "term": "Rate limiting",
+   "category": "System design",
+   "meaning": "Capping how many requests a client can make per time window."
+  },
+  {
+   "term": "Token bucket",
+   "category": "System design",
+   "meaning": "A rate-limiting algorithm: tokens refill at a steady rate and each request spends one."
+  },
+  {
+   "term": "Back-of-the-envelope estimation",
+   "category": "System design",
+   "meaning": "Quick rough maths for traffic, storage and bandwidth to size a design."
+  },
+  {
+   "term": "QPS",
+   "category": "System design",
+   "meaning": "Queries per second: the request rate a system must handle."
+  },
+  {
+   "term": "Microservices",
+   "category": "System design",
+   "meaning": "An architecture of small, independently deployed services."
+  },
+  {
+   "term": "Monolith",
+   "category": "System design",
+   "meaning": "One application containing all features, deployed as a single unit."
+  },
+  {
+   "term": "Service discovery",
+   "category": "System design",
+   "meaning": "How services find each other's addresses dynamically."
+  },
+  {
+   "term": "Observability",
+   "category": "System design",
+   "meaning": "Understanding a system from its logs, metrics and traces."
+  },
+  {
+   "term": "Distributed tracing",
+   "category": "System design",
+   "meaning": "Following one request across many services with a shared trace ID."
+  },
+  {
+   "term": "Object storage",
+   "category": "System design",
+   "meaning": "Storage for files and blobs accessed by key, e.g. AWS S3."
+  },
+  {
+   "term": "Snowflake ID",
+   "category": "System design",
+   "meaning": "A 64-bit unique ID made from a timestamp, a machine ID and a sequence number; sortable by time."
+  },
+  {
+   "term": "Two-phase commit (2PC)",
+   "category": "System design",
+   "meaning": "A protocol to commit a transaction across multiple databases: prepare, then commit."
+  },
+  {
+   "term": "Saga",
+   "category": "System design",
+   "meaning": "A long transaction split into local steps, each with a compensating undo step."
+  },
+  {
+   "term": "Transactional outbox",
+   "category": "System design",
+   "meaning": "Writing an event to an 'outbox' table in the same DB transaction, then publishing it reliably."
+  },
+  {
+   "term": "Event sourcing",
+   "category": "System design",
+   "meaning": "Storing every change as an event and rebuilding current state by replaying them."
+  },
+  {
+   "term": "CQRS",
+   "category": "System design",
+   "meaning": "Command Query Responsibility Segregation: separate models for writes and reads."
+  },
+  {
+   "term": "WebSocket",
+   "category": "System design",
+   "meaning": "A persistent two-way connection between client and server for real-time updates."
+  },
+  {
+   "term": "Long polling / SSE",
+   "category": "System design",
+   "meaning": "Ways to push updates: long polling holds a request open; server-sent events stream one-way."
+  },
+  {
+   "term": "Leader election",
+   "category": "System design",
+   "meaning": "Choosing one node to coordinate work, e.g. with Raft or ZooKeeper."
+  },
+  {
+   "term": "Raft",
+   "category": "System design",
+   "meaning": "A consensus algorithm for keeping replicas in agreement through a leader."
+  },
+  {
+   "term": "Bloom filter",
+   "category": "System design",
+   "meaning": "A compact structure that says 'definitely not present' or 'maybe present', with no false negatives."
+  },
+  {
+   "term": "Inverted index",
+   "category": "System design",
+   "meaning": "A map from each word to the documents containing it; the basis of search engines."
+  },
+  {
+   "term": "Batch vs stream processing",
+   "category": "System design",
+   "meaning": "Batch processes large chunks on a schedule (Spark); streaming processes events as they arrive (Kafka, Kinesis)."
+  },
+  {
+   "term": "Authentication vs authorisation",
+   "category": "System design",
+   "meaning": "Authentication: who you are. Authorisation: what you're allowed to do."
+  },
+  {
+   "term": "Encryption at rest / in transit",
+   "category": "System design",
+   "meaning": "Protecting stored data, and data moving over the network."
+  },
+  {
+   "term": "RPO / RTO",
+   "category": "System design",
+   "meaning": "Recovery Point Objective: how much data you can lose. Recovery Time Objective: how fast you must recover."
+  },
+  {
+   "term": "Multi-region",
+   "category": "System design",
+   "meaning": "Running a system in several geographic regions for resilience and low latency."
+  },
+  {
+   "term": "Double-entry ledger",
+   "category": "System design",
+   "meaning": "Every money movement is recorded as a debit and an equal credit, so the books always balance."
+  },
+  {
+   "term": "Reconciliation",
+   "category": "System design",
+   "meaning": "Comparing two records of the same transactions to find mismatches."
+  },
+  {
+   "term": "Distributed lock",
+   "category": "System design",
+   "meaning": "A lock shared across machines, e.g. using Redis or ZooKeeper."
+  },
+  {
+   "term": "Geohash / quadtree",
+   "category": "System design",
+   "meaning": "Ways to index locations so 'find nearby' queries are fast."
+  },
+  {
+   "term": "Data warehouse / lake / lakehouse",
+   "category": "System design",
+   "meaning": "Warehouse: structured data for analytics. Lake: raw files of any kind. Lakehouse: both together (e.g. Databricks)."
+  },
+  {
+   "term": "Fan-out on write / read",
+   "category": "System design",
+   "meaning": "Push a new post to followers' feeds when it is written, or assemble feeds when they are read."
+  },
+  {
+   "term": "Heavy hitters",
+   "category": "System design",
+   "meaning": "The most frequent items in a huge stream, often found approximately."
+  },
+  {
+   "term": "Order book / matching engine",
+   "category": "System design",
+   "meaning": "The list of buy and sell orders on an exchange, and the system that matches them."
+  },
+  {
+   "term": "AI (artificial intelligence)",
+   "category": "AI",
+   "meaning": "Software that performs tasks that normally need human intelligence."
+  },
+  {
+   "term": "Machine learning",
+   "category": "AI",
+   "meaning": "Systems that learn patterns from data instead of following hand-written rules."
+  },
+  {
+   "term": "LLM",
+   "category": "AI",
+   "meaning": "Large language model: an AI that generates text by predicting the next token, e.g. Claude, ChatGPT, Gemini."
+  },
+  {
+   "term": "Token",
+   "category": "AI",
+   "meaning": "A chunk of text (a word or part of one) that an LLM reads and writes; costs and limits are counted in tokens."
+  },
+  {
+   "term": "Next-token prediction",
+   "category": "AI",
+   "meaning": "How LLMs generate text: repeatedly predicting the most likely next token."
+  },
+  {
+   "term": "Context window",
+   "category": "AI",
+   "meaning": "The maximum amount of text (in tokens) an LLM can consider at once."
+  },
+  {
+   "term": "Temperature",
+   "category": "AI",
+   "meaning": "A setting that controls randomness: low gives focused, repeatable answers; high gives varied ones."
+  },
+  {
+   "term": "Prompt",
+   "category": "AI",
+   "meaning": "The instructions and context you give an AI model."
+  },
+  {
+   "term": "Prompt engineering",
+   "category": "AI",
+   "meaning": "Writing prompts that reliably get good results: role, context, constraints, examples."
+  },
+  {
+   "term": "System prompt",
+   "category": "AI",
+   "meaning": "Standing instructions that set the AI's role and rules for a whole conversation."
+  },
+  {
+   "term": "Few-shot prompting",
+   "category": "AI",
+   "meaning": "Including a few worked examples in the prompt to show the AI what you want."
+  },
+  {
+   "term": "Hallucination",
+   "category": "AI",
+   "meaning": "When an AI gives a confident answer that is wrong or made up."
+  },
+  {
+   "term": "Grounding",
+   "category": "AI",
+   "meaning": "Tying an AI's answer to trusted sources so it is less likely to make things up."
+  },
+  {
+   "term": "Embedding",
+   "category": "AI",
+   "meaning": "A list of numbers representing the meaning of text, so similar meanings are close together."
+  },
+  {
+   "term": "Vector database",
+   "category": "AI",
+   "meaning": "A database that stores embeddings and finds the most similar ones quickly."
+  },
+  {
+   "term": "Similarity search",
+   "category": "AI",
+   "meaning": "Finding items whose embeddings are closest to a query's embedding."
+  },
+  {
+   "term": "RAG",
+   "category": "AI",
+   "meaning": "Retrieval-augmented generation: fetch relevant documents first, then have the LLM answer using them."
+  },
+  {
+   "term": "Chunking",
+   "category": "AI",
+   "meaning": "Splitting documents into smaller pieces before embedding them for RAG."
+  },
+  {
+   "term": "Re-ranking",
+   "category": "AI",
+   "meaning": "A second pass that re-orders retrieved results to put the most relevant first."
+  },
+  {
+   "term": "Fine-tuning",
+   "category": "AI",
+   "meaning": "Further training a model on your own examples to change its behaviour or style."
+  },
+  {
+   "term": "Tool calling / function calling",
+   "category": "AI",
+   "meaning": "An LLM asking your code to run a function (e.g. a search or an API) and using the result."
+  },
+  {
+   "term": "AI agent",
+   "category": "AI",
+   "meaning": "An LLM that plans and takes multi-step actions using tools to reach a goal."
+  },
+  {
+   "term": "MCP",
+   "category": "AI",
+   "meaning": "Model Context Protocol: an open standard for connecting AI models to tools and data sources."
+  },
+  {
+   "term": "Evals",
+   "category": "AI",
+   "meaning": "Tests that measure how well an AI feature performs on a set of examples."
+  },
+  {
+   "term": "Structured output",
+   "category": "AI",
+   "meaning": "Getting an LLM to return data in a fixed format such as JSON."
+  },
+  {
+   "term": "Guardrails",
+   "category": "AI",
+   "meaning": "Rules and checks around an AI system that block unsafe or off-topic inputs and outputs."
+  },
+  {
+   "term": "Prompt injection",
+   "category": "AI",
+   "meaning": "An attack where hidden instructions in content trick an AI into doing something unintended."
+  },
+  {
+   "term": "Inference",
+   "category": "AI",
+   "meaning": "Running a trained model to get an output, as opposed to training it."
+  },
+  {
+   "term": "Latency (LLM)",
+   "category": "AI",
+   "meaning": "How long a model takes to respond, often split into time to first token and tokens per second."
+  },
+  {
+   "term": "Model routing",
+   "category": "AI",
+   "meaning": "Sending each request to the cheapest model that can handle it well, with fallbacks."
+  },
+  {
+   "term": "Prompt caching",
+   "category": "AI",
+   "meaning": "Reusing the processed beginning of a prompt across calls to cut cost and latency."
+  },
+  {
+   "term": "Copilot",
+   "category": "AI",
+   "meaning": "GitHub's AI coding assistant inside editors like VS Code."
+  },
+  {
+   "term": "AI coding agent",
+   "category": "AI",
+   "meaning": "A tool such as Claude Code or Cursor that can read a codebase, edit files and run commands."
+  },
+  {
+   "term": "AI-enabled coding round",
+   "category": "AI",
+   "meaning": "An interview round where you may use an AI assistant; it tests how you direct and verify the AI."
+  },
+  {
+   "term": "Code comprehension round",
+   "category": "AI",
+   "meaning": "Google's 2026 pilot round: read, debug and improve existing code, with Gemini available."
+  },
+  {
+   "term": "Amazon Bedrock",
+   "category": "AI",
+   "meaning": "AWS's managed service for using foundation models through an API."
+  },
+  {
+   "term": "Responsible AI",
+   "category": "AI",
+   "meaning": "Building AI that is fair, explainable, private and safe; heavily regulated in banking."
+  },
+  {
+   "term": "STAR method",
+   "category": "Interview",
+   "meaning": "Situation, Task, Action, Result: a structure for behavioral answers."
+  },
+  {
+   "term": "Behavioral interview",
+   "category": "Interview",
+   "meaning": "Questions about past experiences, e.g. 'Tell me about a time you disagreed with your manager'."
+  },
+  {
+   "term": "Leadership Principles",
+   "category": "Interview",
+   "meaning": "Amazon's 16 principles (e.g. Customer Obsession, Ownership) used to score behavioral answers."
+  },
+  {
+   "term": "Googleyness",
+   "category": "Interview",
+   "meaning": "Google's behavioral signal: collaboration, humility and comfort with ambiguity."
+  },
+  {
+   "term": "Bar raiser",
+   "category": "Interview",
+   "meaning": "An experienced Amazon interviewer from another team who makes sure each hire raises the bar."
+  },
+  {
+   "term": "Phone screen",
+   "category": "Interview",
+   "meaning": "An early 45–60 minute technical interview, usually one or two coding problems."
+  },
+  {
+   "term": "Onsite / virtual onsite",
+   "category": "Interview",
+   "meaning": "The main loop of 4–6 interviews: coding, system design and behavioral."
+  },
+  {
+   "term": "Online assessment (OA)",
+   "category": "Interview",
+   "meaning": "A timed coding test (e.g. on HackerRank) taken before interviews, common at banks and Amazon."
+  },
+  {
+   "term": "Hiring committee",
+   "category": "Interview",
+   "meaning": "The group that reviews interview feedback and makes the hire decision (e.g. at Google)."
+  },
+  {
+   "term": "Levelling",
+   "category": "Interview",
+   "meaning": "Deciding which level you're hired at (e.g. SDE2 vs senior); system design weighs heavily."
+  },
+  {
+   "term": "Down-levelling",
+   "category": "Interview",
+   "meaning": "Being offered a lower level than your current title, common when moving from banks to big tech."
+  },
+  {
+   "term": "Mock interview",
+   "category": "Interview",
+   "meaning": "A practice interview with a peer or a paid interviewer."
+  },
+  {
+   "term": "Mistake log",
+   "category": "Interview",
+   "meaning": "A running list of mistakes and their fixes, reviewed before interviews."
+  },
+  {
+   "term": "Thinking aloud",
+   "category": "Interview",
+   "meaning": "Narrating your reasoning while solving, so the interviewer can follow and help."
+  },
+  {
+   "term": "Clarifying questions",
+   "category": "Interview",
+   "meaning": "Questions you ask at the start to pin down inputs, edge cases and requirements."
+  },
+  {
+   "term": "Trade-off",
+   "category": "Interview",
+   "meaning": "What you gain and what you give up with a choice; interviewers expect you to name them."
+  },
+  {
+   "term": "Offer negotiation",
+   "category": "Interview",
+   "meaning": "Discussing salary, bonus, stock and level after an offer; competing offers give leverage."
+  }
+ ]
+}

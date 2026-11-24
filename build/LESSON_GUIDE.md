@@ -27,6 +27,9 @@ Everything is preparation for interviews. Every track of every lesson must inclu
 ## Day-level fields
 `day`, `date` (YYYY-MM-DD), `phase` (copy from curriculum), `headline` (one line on what today is about), `intro` (2–3 sentences), `connections`, `tracks`, `glossary` (8–15 new terms with plain meanings; do not repeat terms from earlier days). The first interview question of each track appears in the Today page warm-up, so make it the most commonly asked one.
 
+## Master glossary
+`data/glossary.json` holds the full searchable glossary ({term, category, meaning}; categories: Coding, Java, Spring, LLD & patterns, System design, AI, Interview). When today's lesson introduces a term that is not already there (case-insensitive), append it with the right category and the same plain meaning. Never remove or reword existing entries.
+
 ## Block types
 `p` {text} · `steps` {items} · `list` {items} · `table` {head, rows} · `code` {code, lang} · `flow` {items:[{label, note}]} · `callout` {tone: tip|warn|work, title, text} · `compare` {items:[{title, points}]}. Text supports **bold** and `code` only. No HTML.
 
