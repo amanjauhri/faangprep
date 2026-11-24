@@ -25,7 +25,7 @@ Everything is preparation for interviews. Every track of every lesson must inclu
 - Every track: `minutes` (dsa ~40, java ~15, design ~10–15, ai ~10; system-design days can make design ~30), `level` (Basics, Intermediate or Interview level, rising over the 60 days), `takeaways` (3–5), `resources` (2–3 real https links: official docs such as docs.oracle.com, dev.java, docs.spring.io, openjdk.org; Baeldung; System Design Primer; NeetCode; reputable articles). Only link pages you are confident exist.
 
 ## Day-level fields
-`day`, `date` (YYYY-MM-DD), `phase` (copy from curriculum), `headline` (one line on what today is about), `intro` (2–3 sentences), `connections`, `tracks`, `glossary` (8–15 new terms with plain meanings; do not repeat terms from earlier days), `checklist` (5–8 concrete tasks).
+`day`, `date` (YYYY-MM-DD), `phase` (copy from curriculum), `headline` (one line on what today is about), `intro` (2–3 sentences), `connections`, `tracks`, `glossary` (8–15 new terms with plain meanings; do not repeat terms from earlier days). The first interview question of each track appears in the Today page warm-up, so make it the most commonly asked one.
 
 ## Block types
 `p` {text} · `steps` {items} · `list` {items} · `table` {head, rows} · `code` {code, lang} · `flow` {items:[{label, note}]} · `callout` {tone: tip|warn|work, title, text} · `compare` {items:[{title, points}]}. Text supports **bold** and `code` only. No HTML.

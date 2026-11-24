@@ -39,7 +39,7 @@ def check_blocks(errs, blocks, where):
                 need(errs, it, ["title", "points"], w + ".compare")
 
 def check_lesson(errs, L, path):
-    need(errs, L, ["day", "date", "phase", "headline", "intro", "tracks", "glossary", "checklist"], path)
+    need(errs, L, ["day", "date", "phase", "headline", "intro", "tracks", "glossary"], path)
     for t in TRACKS:
         T = L.get("tracks", {}).get(t)
         w = f"{path}.tracks.{t}"

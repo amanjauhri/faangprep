@@ -203,7 +203,7 @@ const newsRows=()=>NEWS?`<div class="news">${NEWS.items.slice(0,2).map(i=>`<div 
 function viewToday(){
  const L=STATE.latest_day;
  lesson(L).then(les=>{
-  const nx=CUR.days[L],ck=store.get("check-"+L,{}),total=Object.values(done()).filter(Boolean).length;
+  const nx=CUR.days[L],total=Object.values(done()).filter(Boolean).length;
   const preview=todayISO()<les.date;
   app.innerHTML=`<section class="hero"><div><p class="eyebrow"><span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
    <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
@@ -212,13 +212,13 @@ function viewToday(){
    <ol>${T.subtopics.map(s=>`<li><a href="#lesson-${t}-${L}-${esc(s.id)}">${esc(s.title)}</a></li>`).join("")}</ol>
    ${t==="dsa"&&T.problems?`<p class="muted" style="margin:0"><b>Practice:</b> ${T.problems.map(p=>`${p.num}. ${esc(p.title)} (${p.difficulty})`).join(", ")}</p>`:""}
    <div style="margin-top:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><a class="btn" href="#lesson-${t}-${L}">Open lesson</a>${isDone(t,L)?'<b>✓ Done</b>':""}</div></div></article>`}).join("")}</div>
+  <section class="panel c"><h3>Interview warm-up</h3><p class="muted" style="margin:4px 0 0">Three questions from today's lessons. Answer out loud, then reveal and rate yourself.</p><div class="grid" style="margin-top:12px">${ORDER.flatMap(t=>les.tracks[t].interview_qa.slice(0,1).map(q=>({t,q}))).slice(0,3).map(({t,q})=>`<div style="${sty(t)}"><p class="muted" style="margin:0 0 4px"><b style="color:${TR[t].c}">${TR[t].name}</b></p>${qaCard(q,`${t}-${L}-0`)}</div>`).join("")}</div><p style="margin:8px 0 0"><a href="#drill">Open the full interview drill →</a></p></section>
   <div class="grid g2">
-   <section class="panel c"><h3>Today's checklist</h3>${les.checklist.map((c,i)=>`<label class="check"><input type="checkbox" data-ck="${i}" ${ck[i]?"checked":""}><span class="${ck[i]?"done-text":""}">${md(c)}</span></label>`).join("")}<p class="muted">Ticks are saved in this browser.</p></section>
-   <div>${les.connections?`<section class="panel" style="margin-top:0"><h3>How today's topics connect</h3><ul class="dots">${les.connections.map(c=>`<li>${md(c)}</li>`).join("")}</ul></section>`:""}
-   <section class="panel"><h3>New terms today</h3><p class="muted" style="margin:4px 0 0">Tap a term to see what it means.</p><div class="chips">${les.glossary.map(g=>`<details><summary>${esc(g.term)}</summary><div>${md(g.meaning)}</div></details>`).join("")}</div><p style="margin:12px 0 0"><a href="#glossary">Full glossary →</a></p></section></div></div>
-  ${NEWS?`<section class="panel c"><h3>AI news for your interviews</h3>${newsRows()}</section>`:""}
-  ${nx?`<section class="panel"><h3>Next: Day ${nx.day}, ${fmt(nx.date)}</h3><ul class="dots">${ORDER.map(t=>`<li><b style="color:${TR[t].c}">${TR[t].name}:</b> ${esc(nx[t].title)}</li>`).join("")}</ul></section>`:""}`;
-  app.querySelectorAll("[data-ck]").forEach(x=>x.addEventListener("change",()=>{const c=store.get("check-"+L,{});c[x.dataset.ck]=x.checked;store.set("check-"+L,c);x.nextElementSibling.className=x.checked?"done-text":""}));
+   ${les.connections?`<section class="panel" style="margin-top:0"><h3>How today's topics connect</h3><ul class="dots">${les.connections.map(c=>`<li>${md(c)}</li>`).join("")}</ul></section>`:""}
+   <section class="panel" style="margin-top:0"><h3>New terms today</h3><p class="muted" style="margin:4px 0 0">Tap a term to see what it means.</p><div class="chips">${les.glossary.map(g=>`<details><summary>${esc(g.term)}</summary><div>${md(g.meaning)}</div></details>`).join("")}</div><p style="margin:12px 0 0"><a href="#glossary">Full glossary →</a></p></section>
+   ${NEWS?`<section class="panel c" style="margin-top:0"><h3>AI news for your interviews</h3>${newsRows()}</section>`:""}
+   ${nx?`<section class="panel" style="margin-top:0"><h3>Next: Day ${nx.day}, ${fmt(nx.date)}</h3><ul class="dots">${ORDER.map(t=>`<li><b style="color:${TR[t].c}">${TR[t].name}:</b> ${esc(nx[t].title)}</li>`).join("")}</ul></section>`:""}
+  </div>`;
  }).catch(()=>app.innerHTML=`<h1>Today's lesson isn't ready yet</h1><p class="lead">It is published every morning by 9:00 IST.</p>`);
 }
 function trackTabs(cur){return`<div class="tabs">${ORDER.map(t=>`<a href="#track-${t}" style="--c:${TR[t].c}" class="${cur===t?"on":""}">${TR[t].name}</a>`).join("")}</div>`}
