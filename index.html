@@ -15,7 +15,7 @@
    TYPE: Spectral titles, Inter text. LAYOUT: one column; sticky contents rail on wide screens. */
 :root{color-scheme:light dark;
 --bg:light-dark(#ffffff,#0d0e18);--paper:light-dark(#f5f6fb,#151729);--line:light-dark(#d6d9e3,#2b2f48);
---ink:light-dark(#111827,#eef0f7);--ink2:light-dark(#1f2937,#d7dbe8);--accent:light-dark(#1d2bd8,#9aa6ff);
+--ink:light-dark(#111827,#eef0f7);--btn:light-dark(#111827,#3949ab);--ink2:light-dark(#1f2937,#d7dbe8);--accent:light-dark(#1d2bd8,#9aa6ff);
 --dsa:#047857;--java:#0e7490;--design:#6d28d9;--ai:#c2410c;
 --dsaT:light-dark(#e7f6ef,#0f2a22);--javaT:light-dark(#e4f4f8,#0d2730);--designT:light-dark(#f0eafe,#211a3a);--aiT:light-dark(#fdeee6,#33200f)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -32,7 +32,7 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em;backgroun
 .logo{display:inline-grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px}.logo i{border-radius:3px}
 #nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 #nav a{text-decoration:none;color:var(--ink);font-size:15px;font-weight:600;padding:8px 14px;border-radius:999px;min-height:42px;display:inline-flex;align-items:center}
-#nav a.on{background:var(--ink);color:var(--bg)}
+#nav a.on{background:var(--btn);color:#fff}
 main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 .hero{border-radius:20px;padding:clamp(20px,3vw,34px);background:linear-gradient(120deg,var(--dsaT),var(--javaT) 35%,var(--designT) 68%,var(--aiT));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
 .hero .eyebrow{font-size:14px;font-weight:700;margin:0 0 8px}
@@ -50,7 +50,7 @@ main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 .tcard ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
 .tcard ol a{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--tc);text-underline-offset:3px}
 .ask{font-size:14px;border-left:4px solid var(--tc);padding:6px 10px;background:var(--bg);border-radius:0 8px 8px 0}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:10px;border:2px solid var(--tc,var(--ink));background:var(--tc,var(--ink));color:#fff;font-weight:600;text-decoration:none;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:10px;border:2px solid var(--tc,var(--btn));background:var(--tc,var(--btn));color:#fff;font-weight:600;text-decoration:none;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .panel{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:20px}
@@ -66,7 +66,7 @@ main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 .chips details>div{padding:0 12px 10px;font-size:14px}
 .news{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .nrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:baseline;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
-.nrow .tg{font-size:12px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px}
+.nrow .tg{font-size:12px;font-weight:700;color:#fff;background:#1d2bd8;padding:2px 8px;border-radius:999px}
 .nrow a{color:var(--ink);font-weight:600}.nrow p{grid-column:2;margin:0;font-size:14px;color:var(--ink2)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
 .tabs a{text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border-radius:999px;border:2px solid var(--c);color:var(--ink);min-height:40px;display:inline-flex;align-items:center}
@@ -97,7 +97,7 @@ main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 .flow .box b{display:block}.flow .box span{font-size:14px;color:var(--ink2)}
 .flow .arr{align-self:center;font-weight:700;color:var(--tc);font-size:20px}
 table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
-th{background:var(--tc,var(--ink));color:#fff;text-align:left;padding:9px 10px;font-weight:600}
+th{background:var(--tc,var(--btn));color:#fff;text-align:left;padding:9px 10px;font-weight:600}
 td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
 tbody tr:nth-child(even){background:var(--tt,var(--paper))}
 .callout{border-left:5px solid var(--tc);border-radius:12px;padding:12px 16px;margin:14px 0;max-width:780px;background:var(--paper)}
@@ -172,14 +172,14 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
  <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
 <dialog class="guide" id="guide" aria-labelledby="gtitle"><header><h2 id="gtitle">How to use FAANG Prep</h2><p>A two-minute tour. You can reopen this any time from the Guide button.</p></header>
 <ol>
-<li><span class="n" style="background:var(--ink)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
+<li><span class="n" style="background:var(--btn)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
 <li><span class="n" style="background:var(--dsa)">2</span><span><b>Do the four coloured cards.</b> Coding, Java &amp; Spring, System design and AI. Tap <b>Open lesson</b>, or tap a numbered subtopic to jump straight to it. About 75–100 minutes in total.</span></li>
 <li><span class="n" style="background:var(--java)">3</span><span><b>Inside a lesson,</b> read "How this comes up in interviews" first, then work through the numbered parts. Use <b>On this page</b> to jump around, and <b>Mark this lesson done</b> at the end.</span></li>
 <li><span class="n" style="background:var(--design)">4</span><span><b>Practice problems:</b> start the 25-minute timer and solve on LeetCode before opening hints or the solution.</span></li>
 <li><span class="n" style="background:var(--ai)">5</span><span><b>Interview questions:</b> answer out loud, tap <b>Show answer</b>, then rate yourself. Anything marked "Review again" comes back in <b>Interview drill</b>.</span></li>
-<li><span class="n" style="background:var(--accent)">6</span><span><b>Stuck on a word?</b> Search the <b>Glossary</b>. Want the big picture? <b>Tracks</b> and <b>Roadmap</b> show all 60 days.</span></li>
+<li><span class="n" style="background:#1d2bd8">6</span><span><b>Stuck on a word?</b> Search the <b>Glossary</b>. Want the big picture? <b>Tracks</b> and <b>Roadmap</b> show all 60 days.</span></li>
 </ol>
-<footer><span class="muted">Your progress is saved in this browser.</span><button class="btn" id="gclose" style="--tc:var(--ink)">Got it, let's start</button></footer></dialog>
+<footer><span class="muted">Your progress is saved in this browser.</span><button class="btn" id="gclose" style="--tc:var(--btn)">Got it, let's start</button></footer></dialog>
 <main id="app"><p>Loading your plan…</p></main>
 <script>
 {
@@ -296,7 +296,7 @@ async function viewDrill(){
  const pick=()=>{const k=known();return cards.filter(c=>(filter==="all"||c.t===filter)&&(mode==="all"||k[c.key]!==1))};
  const draw=()=>{const list=pick();if(i>=list.length)i=0;const c=list[i];
   app.innerHTML=`<h1>Interview drill</h1><p class="lead">Every interview question from the lessons so far. Answer out loud, reveal the answer, then rate yourself. Cards you've got drop out of the review pile.</p>
-  <div class="tabs"><a href="#drill" data-f="all" style="--c:var(--ink)" class="${filter==="all"?"on":""}">All tracks</a>${ORDER.map(t=>`<a href="#drill" data-f="${t}" style="--c:${TR[t].c}" class="${filter===t?"on":""}">${TR[t].name}</a>`).join("")}</div>
+  <div class="tabs"><a href="#drill" data-f="all" style="--c:var(--btn)" class="${filter==="all"?"on":""}">All tracks</a>${ORDER.map(t=>`<a href="#drill" data-f="${t}" style="--c:${TR[t].c}" class="${filter===t?"on":""}">${TR[t].name}</a>`).join("")}</div>
   <p><label><input type="checkbox" id="mode" ${mode==="review"?"checked":""}> Only cards I haven't got yet</label> · <span class="muted">${list.length} card${list.length===1?"":"s"}</span></p>
   ${c?`<div class="card-drill" style="${sty(c.t)}"><p class="muted" style="margin-top:0"><b style="color:${TR[c.t].c}">${TR[c.t].name}</b> · Day ${c.n} · card ${i+1} of ${list.length}</p>${qaCard(c.q,c.key)}<p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="prev">← Previous</button><button class="btn" id="next">Next card →</button><button class="btn ghost" id="shuf">Shuffle</button></p></div>`:`<div class="panel c"><h3>All caught up</h3><p>No cards left in this pile. Untick the box above to see every card.</p></div>`}`;
   app.querySelectorAll("[data-f]").forEach(a=>a.onclick=e=>{e.preventDefault();filter=a.dataset.f;store.set("drillf",filter);i=0;draw()});
@@ -307,7 +307,7 @@ async function viewDrill(){
 function viewRoadmap(){
  const L=STATE.latest_day;
  app.innerHTML=`<h1>The 60-day roadmap</h1><p class="lead">Four tracks side by side, each from basics to interview level. Sundays are off. Today is Day ${L}.</p>
- ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--ink);color:var(--bg)">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
+ ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--btn);color:#fff">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
 }
 async function viewGlossary(){
  const L=STATE.latest_day,map=new Map();
@@ -322,7 +322,7 @@ async function viewGlossary(){
  <div class="tabs" id="gcats" style="margin-top:14px"></div><p class="muted" id="gcount"></p><div class="tabs" id="az" style="gap:4px"></div><div id="gl"></div>`;
  const draw=()=>{
   const list=all.filter(g=>(cat==="All"||g.category===cat)&&(!q||(g.term+" "+g.meaning+" "+g.category).toLowerCase().includes(q)));
-  document.getElementById("gcats").innerHTML=cats.map(c=>`<a href="#glossary" data-c="${esc(c)}" style="--c:${c==="All"?"var(--ink)":CC[c]}" class="${cat===c?"on":""}">${esc(c)} <span style="opacity:.8">&nbsp;${c==="All"?all.length:all.filter(g=>g.category===c).length}</span></a>`).join("");
+  document.getElementById("gcats").innerHTML=cats.map(c=>`<a href="#glossary" data-c="${esc(c)}" style="--c:${c==="All"?"var(--btn)":CC[c]}" class="${cat===c?"on":""}">${esc(c)} <span style="opacity:.8">&nbsp;${c==="All"?all.length:all.filter(g=>g.category===c).length}</span></a>`).join("");
   document.getElementById("gcount").textContent=`${list.length} term${list.length===1?"":"s"}${q?` matching "${q}"`:""}`;
   const ini=g=>{const c=key(g.term)[0]||"#";return /[a-z]/i.test(c)?c.toUpperCase():"#"};const letters=[...new Set(list.map(ini))];
   document.getElementById("az").innerHTML=letters.map(l=>`<a href="#glossary" data-l="${l}" style="--c:var(--line);min-height:36px;padding:4px 10px">${l}</a>`).join("");
