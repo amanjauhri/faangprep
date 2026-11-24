@@ -3,7 +3,7 @@
 Run: python3 build/curriculum.py  (from the repo root)."""
 import datetime as dt, json, os
 
-START = dt.date(2026, 11, 25)  # Day 1 (Wednesday). Sundays are off.
+START = dt.date(2026, 11, 24)  # Day 1 (Tuesday). Sundays are off.
 
 PHASES = [(1, 12, "Foundations"), (13, 24, "Core patterns"), (25, 36, "Going deeper"),
           (37, 48, "Design & depth"), (49, 60, "Interview mode")]

@@ -1,5 +1,5 @@
 {
- "start": "2026-11-25",
+ "start": "2026-11-24",
  "phases": [
   {
    "name": "Foundations",
@@ -30,7 +30,7 @@
  "days": [
   {
    "day": 1,
-   "date": "2026-11-25",
+   "date": "2026-11-24",
    "phase": "Foundations",
    "dsa": {
     "title": "How to approach a coding interview + Big-O from scratch",
@@ -57,7 +57,7 @@
   },
   {
    "day": 2,
-   "date": "2026-11-26",
+   "date": "2026-11-25",
    "phase": "Foundations",
    "dsa": {
     "title": "Arrays and hash maps",
@@ -83,7 +83,7 @@
   },
   {
    "day": 3,
-   "date": "2026-11-27",
+   "date": "2026-11-26",
    "phase": "Foundations",
    "dsa": {
     "title": "Hashing: grouping and counting",
@@ -109,7 +109,7 @@
   },
   {
    "day": 4,
-   "date": "2026-11-28",
+   "date": "2026-11-27",
    "phase": "Foundations",
    "dsa": {
     "title": "Prefix sums",
@@ -135,7 +135,7 @@
   },
   {
    "day": 5,
-   "date": "2026-11-30",
+   "date": "2026-11-28",
    "phase": "Foundations",
    "dsa": {
     "title": "Sets and sequences",
@@ -161,7 +161,7 @@
   },
   {
    "day": 6,
-   "date": "2026-12-01",
+   "date": "2026-11-30",
    "phase": "Foundations",
    "dsa": {
     "title": "Week 1 review + first timed mock",
@@ -187,7 +187,7 @@
   },
   {
    "day": 7,
-   "date": "2026-12-02",
+   "date": "2026-12-01",
    "phase": "Foundations",
    "dsa": {
     "title": "Two pointers",
@@ -214,7 +214,7 @@
   },
   {
    "day": 8,
-   "date": "2026-12-03",
+   "date": "2026-12-02",
    "phase": "Foundations",
    "dsa": {
     "title": "Two pointers 2",
@@ -239,7 +239,7 @@
   },
   {
    "day": 9,
-   "date": "2026-12-04",
+   "date": "2026-12-03",
    "phase": "Foundations",
    "dsa": {
     "title": "Sliding window",
@@ -265,7 +265,7 @@
   },
   {
    "day": 10,
-   "date": "2026-12-05",
+   "date": "2026-12-04",
    "phase": "Foundations",
    "dsa": {
     "title": "Sliding window 2",
@@ -290,7 +290,7 @@
   },
   {
    "day": 11,
-   "date": "2026-12-07",
+   "date": "2026-12-05",
    "phase": "Foundations",
    "dsa": {
     "title": "Stacks",
@@ -317,7 +317,7 @@
   },
   {
    "day": 12,
-   "date": "2026-12-08",
+   "date": "2026-12-07",
    "phase": "Foundations",
    "dsa": {
     "title": "Monotonic stack + week 2 review",
@@ -343,7 +343,7 @@
   },
   {
    "day": 13,
-   "date": "2026-12-09",
+   "date": "2026-12-08",
    "phase": "Core patterns",
    "dsa": {
     "title": "Binary search",
@@ -369,7 +369,7 @@
   },
   {
    "day": 14,
-   "date": "2026-12-10",
+   "date": "2026-12-09",
    "phase": "Core patterns",
    "dsa": {
     "title": "Binary search on the answer",
@@ -394,7 +394,7 @@
   },
   {
    "day": 15,
-   "date": "2026-12-11",
+   "date": "2026-12-10",
    "phase": "Core patterns",
    "dsa": {
     "title": "Binary search on tricky inputs",
@@ -420,7 +420,7 @@
   },
   {
    "day": 16,
-   "date": "2026-12-12",
+   "date": "2026-12-11",
    "phase": "Core patterns",
    "dsa": {
     "title": "Linked lists",
@@ -446,7 +446,7 @@
   },
   {
    "day": 17,
-   "date": "2026-12-14",
+   "date": "2026-12-12",
    "phase": "Core patterns",
    "dsa": {
     "title": "Linked lists 2",
@@ -473,7 +473,7 @@
   },
   {
    "day": 18,
-   "date": "2026-12-15",
+   "date": "2026-12-14",
    "phase": "Core patterns",
    "dsa": {
     "title": "LRU cache + week 3 review",
@@ -498,7 +498,7 @@
   },
   {
    "day": 19,
-   "date": "2026-12-16",
+   "date": "2026-12-15",
    "phase": "Core patterns",
    "dsa": {
     "title": "Trees: the basics",
@@ -525,7 +525,7 @@
   },
   {
    "day": 20,
-   "date": "2026-12-17",
+   "date": "2026-12-16",
    "phase": "Core patterns",
    "dsa": {
     "title": "Trees: DFS patterns",
@@ -551,7 +551,7 @@
   },
   {
    "day": 21,
-   "date": "2026-12-18",
+   "date": "2026-12-17",
    "phase": "Core patterns",
    "dsa": {
     "title": "Trees: BFS",
@@ -576,7 +576,7 @@
   },
   {
    "day": 22,
-   "date": "2026-12-19",
+   "date": "2026-12-18",
    "phase": "Core patterns",
    "dsa": {
     "title": "Binary search trees",
@@ -603,7 +603,7 @@
   },
   {
    "day": 23,
-   "date": "2026-12-21",
+   "date": "2026-12-19",
    "phase": "Core patterns",
    "dsa": {
     "title": "Trees: hard problems",
@@ -628,7 +628,7 @@
   },
   {
    "day": 24,
-   "date": "2026-12-22",
+   "date": "2026-12-21",
    "phase": "Core patterns",
    "dsa": {
     "title": "Heaps + week 4 review",
@@ -655,7 +655,7 @@
   },
   {
    "day": 25,
-   "date": "2026-12-23",
+   "date": "2026-12-22",
    "phase": "Going deeper",
    "dsa": {
     "title": "Heaps 2",
@@ -680,7 +680,7 @@
   },
   {
    "day": 26,
-   "date": "2026-12-24",
+   "date": "2026-12-23",
    "phase": "Going deeper",
    "dsa": {
     "title": "Tries",
@@ -706,7 +706,7 @@
   },
   {
    "day": 27,
-   "date": "2026-12-25",
+   "date": "2026-12-24",
    "phase": "Going deeper",
    "dsa": {
     "title": "Intervals",
@@ -733,7 +733,7 @@
   },
   {
    "day": 28,
-   "date": "2026-12-26",
+   "date": "2026-12-25",
    "phase": "Going deeper",
    "dsa": {
     "title": "Backtracking",
@@ -758,7 +758,7 @@
   },
   {
    "day": 29,
-   "date": "2026-12-28",
+   "date": "2026-12-26",
    "phase": "Going deeper",
    "dsa": {
     "title": "Backtracking 2",
@@ -785,7 +785,7 @@
   },
   {
    "day": 30,
-   "date": "2026-12-29",
+   "date": "2026-12-28",
    "phase": "Going deeper",
    "dsa": {
     "title": "Graphs + week 5 review",
@@ -811,7 +811,7 @@
   },
   {
    "day": 31,
-   "date": "2026-12-30",
+   "date": "2026-12-29",
    "phase": "Going deeper",
    "dsa": {
     "title": "Graphs 2",
@@ -838,7 +838,7 @@
   },
   {
    "day": 32,
-   "date": "2026-12-31",
+   "date": "2026-12-30",
    "phase": "Going deeper",
    "dsa": {
     "title": "Topological sort",
@@ -864,7 +864,7 @@
   },
   {
    "day": 33,
-   "date": "2027-01-01",
+   "date": "2026-12-31",
    "phase": "Going deeper",
    "dsa": {
     "title": "Union-find and shortest paths",
@@ -891,7 +891,7 @@
   },
   {
    "day": 34,
-   "date": "2027-01-02",
+   "date": "2027-01-01",
    "phase": "Going deeper",
    "dsa": {
     "title": "Dynamic programming: the basics",
@@ -917,7 +917,7 @@
   },
   {
    "day": 35,
-   "date": "2027-01-04",
+   "date": "2027-01-02",
    "phase": "Going deeper",
    "dsa": {
     "title": "Dynamic programming 1D",
@@ -944,7 +944,7 @@
   },
   {
    "day": 36,
-   "date": "2027-01-05",
+   "date": "2027-01-04",
    "phase": "Going deeper",
    "dsa": {
     "title": "Dynamic programming 2D + week 6 review",
@@ -971,7 +971,7 @@
   },
   {
    "day": 37,
-   "date": "2027-01-06",
+   "date": "2027-01-05",
    "phase": "Design & depth",
    "dsa": {
     "title": "Knapsack and greedy",
@@ -998,7 +998,7 @@
   },
   {
    "day": 38,
-   "date": "2027-01-07",
+   "date": "2027-01-06",
    "phase": "Design & depth",
    "dsa": {
     "title": "Matrix and bit tricks",
@@ -1025,7 +1025,7 @@
   },
   {
    "day": 39,
-   "date": "2027-01-08",
+   "date": "2027-01-07",
    "phase": "Design & depth",
    "dsa": {
     "title": "Design-style data structures",
@@ -1049,7 +1049,7 @@
   },
   {
    "day": 40,
-   "date": "2027-01-09",
+   "date": "2027-01-08",
    "phase": "Design & depth",
    "dsa": {
     "title": "SQL for bank online tests",
@@ -1076,7 +1076,7 @@
   },
   {
    "day": 41,
-   "date": "2027-01-11",
+   "date": "2027-01-09",
    "phase": "Design & depth",
    "dsa": {
     "title": "Concurrency coding problems",
@@ -1100,7 +1100,7 @@
   },
   {
    "day": 42,
-   "date": "2027-01-12",
+   "date": "2027-01-11",
    "phase": "Design & depth",
    "dsa": {
     "title": "Mixed review + week 7 mock",
@@ -1124,7 +1124,7 @@
   },
   {
    "day": 43,
-   "date": "2027-01-13",
+   "date": "2027-01-12",
    "phase": "Design & depth",
    "dsa": {
     "title": "Hard practice 1",
@@ -1148,7 +1148,7 @@
   },
   {
    "day": 44,
-   "date": "2027-01-14",
+   "date": "2027-01-13",
    "phase": "Design & depth",
    "dsa": {
     "title": "Hard practice 2",
@@ -1172,7 +1172,7 @@
   },
   {
    "day": 45,
-   "date": "2027-01-15",
+   "date": "2027-01-14",
    "phase": "Design & depth",
    "dsa": {
     "title": "Graph practice",
@@ -1197,7 +1197,7 @@
   },
   {
    "day": 46,
-   "date": "2027-01-16",
+   "date": "2027-01-15",
    "phase": "Design & depth",
    "dsa": {
     "title": "Greedy practice",
@@ -1222,7 +1222,7 @@
   },
   {
    "day": 47,
-   "date": "2027-01-18",
+   "date": "2027-01-16",
    "phase": "Design & depth",
    "dsa": {
     "title": "String practice",
@@ -1248,7 +1248,7 @@
   },
   {
    "day": 48,
-   "date": "2027-01-19",
+   "date": "2027-01-18",
    "phase": "Design & depth",
    "dsa": {
     "title": "Full mock loop + week 8 review",
@@ -1271,7 +1271,7 @@
   },
   {
    "day": 49,
-   "date": "2027-01-20",
+   "date": "2027-01-19",
    "phase": "Interview mode",
    "dsa": {
     "title": "Google focus",
@@ -1295,7 +1295,7 @@
   },
   {
    "day": 50,
-   "date": "2027-01-21",
+   "date": "2027-01-20",
    "phase": "Interview mode",
    "dsa": {
     "title": "Meta focus",
@@ -1319,7 +1319,7 @@
   },
   {
    "day": 51,
-   "date": "2027-01-22",
+   "date": "2027-01-21",
    "phase": "Interview mode",
    "dsa": {
     "title": "Amazon focus",
@@ -1343,7 +1343,7 @@
   },
   {
    "day": 52,
-   "date": "2027-01-23",
+   "date": "2027-01-22",
    "phase": "Interview mode",
    "dsa": {
     "title": "Microsoft focus",
@@ -1367,7 +1367,7 @@
   },
   {
    "day": 53,
-   "date": "2027-01-25",
+   "date": "2027-01-23",
    "phase": "Interview mode",
    "dsa": {
     "title": "Bank online test practice",
@@ -1391,7 +1391,7 @@
   },
   {
    "day": 54,
-   "date": "2027-01-26",
+   "date": "2027-01-25",
    "phase": "Interview mode",
    "dsa": {
     "title": "Weak-spot review 1",
@@ -1414,7 +1414,7 @@
   },
   {
    "day": 55,
-   "date": "2027-01-27",
+   "date": "2027-01-26",
    "phase": "Interview mode",
    "dsa": {
     "title": "Mock with a human",
@@ -1437,7 +1437,7 @@
   },
   {
    "day": 56,
-   "date": "2027-01-28",
+   "date": "2027-01-27",
    "phase": "Interview mode",
    "dsa": {
     "title": "Hard mix",
@@ -1461,7 +1461,7 @@
   },
   {
    "day": 57,
-   "date": "2027-01-29",
+   "date": "2027-01-28",
    "phase": "Interview mode",
    "dsa": {
     "title": "AI-enabled round practice",
@@ -1484,7 +1484,7 @@
   },
   {
    "day": 58,
-   "date": "2027-01-30",
+   "date": "2027-01-29",
    "phase": "Interview mode",
    "dsa": {
     "title": "Weak-spot review 2",
@@ -1507,7 +1507,7 @@
   },
   {
    "day": 59,
-   "date": "2027-02-01",
+   "date": "2027-01-30",
    "phase": "Interview mode",
    "dsa": {
     "title": "Final mock",
@@ -1530,7 +1530,7 @@
   },
   {
    "day": 60,
-   "date": "2027-02-02",
+   "date": "2027-02-01",
    "phase": "Interview mode",
    "dsa": {
     "title": "Wrap-up: pattern cheat sheet",
