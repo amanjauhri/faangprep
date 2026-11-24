@@ -1,0 +1,854 @@
+{
+ "day": 1,
+ "date": "2026-11-25",
+ "phase": "Foundations",
+ "headline": "Start here: how interviews are scored, and how Java and systems work underneath",
+ "intro": "Today is about foundations. The coding track teaches the 4-step method and Big-O, which every later pattern builds on. The Java track explains what happens when your code runs. The design track sets the vocabulary for every system you will design. The AI track sets up a coach you will use daily.",
+ "connections": [
+  "Big-O (Coding) explains why the HashSet solution is faster; Day 10 of the Java track shows how HashSet works inside.",
+  "The JIT warm-up (Java) is why a freshly deployed service has slow first requests; that links to latency (Design).",
+  "Your AI coach (AI) reviews today's Contains Duplicate solution and quizzes you on the JVM."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "How to approach a coding interview + Big-O from scratch",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "Every coding round is scored on two things: can you reach a correct solution, and can you explain how fast it is. Big-O is the shared language for the second part. If you get this right on Day 1, every later pattern (hashing, two pointers, trees, DP) becomes 'a way to reduce the Big-O'.",
+   "builds_on": "Nothing: this is the starting point.",
+   "next": "Day 2 uses today's Big-O idea to show why a hash map turns an O(n²) search into O(n).",
+   "subtopics": [
+    {
+     "id": "what-tested",
+     "title": "What a coding interview really tests",
+     "in_one_line": "Not just the answer: interviewers score how you think, talk and check your work.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "A typical big-tech coding round is 45 minutes and one or two problems. The interviewer fills in a scorecard with roughly four areas. Knowing them tells you what to show, not only what to code."
+      },
+      {
+       "type": "table",
+       "head": [
+        "Area",
+        "What they look for",
+        "How you show it"
+       ],
+       "rows": [
+        [
+         "Problem solving",
+         "You find a working approach, then a better one",
+         "Say the brute force first, then improve it"
+        ],
+        [
+         "Coding",
+         "Clean, correct, readable code",
+         "Good names, small helper methods, no dead code"
+        ],
+        [
+         "Communication",
+         "They can follow your thinking",
+         "Talk while you think; explain each decision"
+        ],
+        [
+         "Testing",
+         "You catch your own bugs",
+         "Walk through an example and edge cases before saying 'done'"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "The big shift after 6 years",
+       "text": "At work, you write code and then test it with tools. In an interview, you test it in your head and out loud. That habit is the one most experienced engineers have lost, and it is the easiest to rebuild."
+      }
+     ]
+    },
+    {
+     "id": "four-steps",
+     "title": "The 4-step method: understand, plan, code, test",
+     "in_one_line": "Use the same four steps on every problem so you never freeze.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "1. Understand",
+         "note": "Restate the problem, ask about input size and edge cases"
+        },
+        {
+         "label": "2. Plan",
+         "note": "Brute force first, state its Big-O, then improve"
+        },
+        {
+         "label": "3. Code",
+         "note": "Write it cleanly in Java, talking as you go"
+        },
+        {
+         "label": "4. Test",
+         "note": "Dry-run an example, then edge cases"
+        }
+       ]
+      },
+      {
+       "type": "steps",
+       "items": [
+        "**Understand (3–5 min).** Repeat the problem in your own words. Ask: How big can the input be? Can it be empty? Are there negatives or duplicates? Is the input sorted?",
+        "**Plan (5–10 min).** Say the simplest correct idea first, even if slow, and give its Big-O. Then ask yourself: what work am I repeating? Can a data structure remember it for me?",
+        "**Code (15–20 min).** Only start once the interviewer agrees with the plan. Write Java you would be happy to see in a code review.",
+        "**Test (5 min).** Walk through one normal example line by line, then the edge cases: empty input, one element, all the same, very large."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Phrase to use",
+       "text": "\"The brute force is X, which is O(n²). The repeated work is Y, so I'll use Z to bring it down to O(n). Does that sound good before I code it?\""
+      }
+     ]
+    },
+    {
+     "id": "big-o",
+     "title": "Big-O: how code slows down as input grows",
+     "in_one_line": "Big-O answers one question: if the input gets 10× bigger, how much slower does my code get?",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "Big-O ignores the exact seconds (those depend on the machine) and looks at the **shape** of growth. We write n for the size of the input, for example the number of elements in an array."
+      },
+      {
+       "type": "table",
+       "head": [
+        "Big-O",
+        "Name",
+        "Everyday picture",
+        "n = 1,000,000 means roughly"
+       ],
+       "rows": [
+        [
+         "O(1)",
+         "Constant",
+         "Looking up a word when you already know the page number",
+         "1 step"
+        ],
+        [
+         "O(log n)",
+         "Logarithmic",
+         "Finding a name in a phone book by opening it in the middle each time",
+         "20 steps"
+        ],
+        [
+         "O(n)",
+         "Linear",
+         "Reading every page of the book once",
+         "1 million steps"
+        ],
+        [
+         "O(n log n)",
+         "Linearithmic",
+         "Sorting a deck of cards efficiently",
+         "20 million steps"
+        ],
+        [
+         "O(n²)",
+         "Quadratic",
+         "Comparing every guest at a party with every other guest",
+         "1 trillion steps: too slow"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Rule of thumb for interviews: a computer does around **100 million simple steps per second**. If n is up to 100,000, an O(n²) solution needs about 10 billion steps, so it will time out. That is how you know you need something better."
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Two simplifications Big-O makes",
+       "text": "Drop constants: O(2n) is just O(n). Keep only the biggest term: O(n² + n) is just O(n²). Big-O is about the trend, not the exact count."
+      }
+     ]
+    },
+    {
+     "id": "reading-loops",
+     "title": "Reading a loop to find its Big-O",
+     "in_one_line": "Count how many times the innermost line runs as n grows.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "// One loop over n elements -> O(n)\nfor (int i = 0; i < n; i++) {\n    sum += nums[i];\n}\n\n// A loop inside a loop, both over n -> O(n * n) = O(n²)\nfor (int i = 0; i < n; i++) {\n    for (int j = i + 1; j < n; j++) {\n        if (nums[i] == nums[j]) return true;\n    }\n}\n\n// Halving each time -> O(log n)\nwhile (n > 1) {\n    n = n / 2;\n}"
+      },
+      {
+       "type": "steps",
+       "items": [
+        "Find the line that runs most often (usually the innermost one).",
+        "Ask how many times each loop runs in terms of n.",
+        "Multiply nested loops; add loops that come one after another.",
+        "Remember hidden costs: Arrays.sort is O(n log n); list.contains on an ArrayList is O(n); a HashSet lookup is O(1) on average."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "The hidden-cost trap",
+       "text": "A single loop that calls list.contains() inside is really O(n²), because contains() itself scans the list. Interviewers love catching this."
+      }
+     ]
+    },
+    {
+     "id": "space",
+     "title": "Space complexity",
+     "in_one_line": "The same idea, but for extra memory your code uses beyond the input.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "Space complexity counts extra memory: new arrays, maps, sets, or the call stack in recursion. A few int variables are O(1). A HashSet that may hold every element is O(n)."
+      },
+      {
+       "type": "p",
+       "text": "Very often you trade one for the other: use O(n) extra memory to save time. Today's problem is the classic example. Saying this trade-off out loud is exactly what interviewers want to hear."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 217,
+     "title": "Contains Duplicate",
+     "url": "https://leetcode.com/problems/contains-duplicate/",
+     "difficulty": "Easy",
+     "statement": "Given an integer array nums, return true if any value appears at least twice, and false if every element is distinct.",
+     "example": "nums = [1, 2, 3, 1] → true (1 appears twice). nums = [1, 2, 3, 4] → false.",
+     "how_to_think": [
+      "Understand: n can be up to 100,000; values can be negative.",
+      "Brute force: compare every pair. That is a loop inside a loop: O(n²) time, O(1) space. With n = 100,000 that is about 5 billion comparisons: too slow.",
+      "Improve, idea 1: sort first, then duplicates sit next to each other. O(n log n) time.",
+      "Improve, idea 2: remember what you have seen in a HashSet. Checking 'seen before?' is O(1), so one pass is O(n) time, O(n) space."
+     ],
+     "hints": [
+      "What makes the brute force slow? You keep re-checking old elements.",
+      "Which Java structure answers 'have I seen this value?' instantly?"
+     ],
+     "solution": {
+      "approach": [
+       "Create an empty HashSet.",
+       "Walk through the array once.",
+       "For each number, try to add it to the set. HashSet.add() returns false if the value was already there.",
+       "If add() returns false, you found a duplicate: return true.",
+       "If the loop finishes, every value was unique: return false."
+      ],
+      "code": "public boolean containsDuplicate(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    for (int n : nums) {\n        if (!seen.add(n)) {   // add() is false when n is already in the set\n            return true;\n        }\n    }\n    return false;\n}",
+      "time": "O(n): one pass, each set operation is O(1) on average",
+      "space": "O(n): the set may hold every element"
+     },
+     "alternatives": [
+      {
+       "name": "Brute force",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Correct but too slow for large n"
+      },
+      {
+       "name": "Sort then compare neighbours",
+       "time": "O(n log n)",
+       "space": "O(1) to O(log n)",
+       "note": "Good when memory is tight"
+      },
+      {
+       "name": "HashSet",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Fastest; the usual answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if you cannot use extra memory?",
+       "a": "Sort the array and compare neighbours: O(n log n) time, no extra set."
+      },
+      {
+       "q": "What if the data is too big for one machine?",
+       "a": "Split the numbers across machines by hash, so equal numbers land on the same machine, then check each part. You will meet this idea again in system design (sharding)."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the Big-O of your solution, and why?",
+     "a": "O(n) time because I look at each element once, and each HashSet check is O(1) on average. O(n) space because in the worst case every element goes into the set."
+    },
+    {
+     "q": "Why do we drop constants in Big-O?",
+     "a": "Because Big-O describes how the cost grows as n grows. 2n and n both grow in a straight line, so they are both O(n). The constant depends on the machine, not the algorithm."
+    },
+    {
+     "q": "Is a HashSet lookup always O(1)?",
+     "a": "On average, yes. In the worst case many values can land in the same bucket; since Java 8 a crowded bucket becomes a small tree, so the worst case is O(log n). You will see exactly why on Day 10 of the Java track."
+    }
+   ],
+   "takeaways": [
+    "Use the same 4 steps every time: understand, plan, code, test.",
+    "Always say the brute force and its Big-O before improving it.",
+    "Big-O is about growth: drop constants, keep the biggest term.",
+    "Spending O(n) memory to save time is a normal, expected trade-off; say it out loud."
+   ],
+   "resources": [
+    {
+     "title": "Big-O Cheat Sheet (complexities of common operations)",
+     "url": "https://www.bigocheatsheet.com/"
+    },
+    {
+     "title": "NeetCode roadmap: Arrays & Hashing (videos)",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Tech Interview Handbook: coding interview techniques",
+     "url": "https://www.techinterviewhandbook.org/coding-interview-techniques/"
+    }
+   ]
+  },
+  "java": {
+   "title": "How Java runs: JDK, JRE, JVM, bytecode and the JIT",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "Bank interviewers (UBS, Morgan Stanley, Nomura) very often open with \"Why is Java platform-independent?\" or \"JDK vs JRE vs JVM?\". It is also the base for later topics: memory (Day 2), garbage collection (Day 18) and performance all happen inside the JVM.",
+   "builds_on": "Nothing: this is the starting point of the Java track.",
+   "next": "Day 2 opens up the JVM's memory: what lives on the stack, what lives on the heap, and why that matters for every Java object you create.",
+   "subtopics": [
+    {
+     "id": "journey",
+     "title": "From a .java file to a running program",
+     "in_one_line": "Java is compiled twice: once to bytecode before it runs, and again to machine code while it runs.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Hello.java",
+         "note": "Your source code"
+        },
+        {
+         "label": "javac",
+         "note": "The compiler"
+        },
+        {
+         "label": "Hello.class",
+         "note": "Bytecode: a portable instruction set"
+        },
+        {
+         "label": "JVM",
+         "note": "Loads, checks and runs the bytecode"
+        },
+        {
+         "label": "Machine code",
+         "note": "What the CPU actually executes"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** you write a recipe in English (the .java file). A translator turns it into a universal recipe card (bytecode). Any kitchen in the world, whether Windows, Linux or Mac, can cook from that card, because each has its own chef who reads it (the JVM)."
+      },
+      {
+       "type": "p",
+       "text": "This is why Java is called \"write once, run anywhere\": you ship the same .class or .jar files everywhere, and only the JVM differs per platform."
+      }
+     ]
+    },
+    {
+     "id": "jdk-jre-jvm",
+     "title": "JDK vs JRE vs JVM",
+     "in_one_line": "JVM runs code, JRE = JVM + libraries, JDK = JRE + tools to build code.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Name",
+        "What it contains",
+        "Who needs it"
+       ],
+       "rows": [
+        [
+         "JVM (Java Virtual Machine)",
+         "The engine that loads bytecode, manages memory and runs it",
+         "Every running Java program"
+        ],
+        [
+         "JRE (Java Runtime Environment)",
+         "JVM + the standard libraries (java.util, java.io …)",
+         "Anyone who only runs Java apps"
+        ],
+        [
+         "JDK (Java Development Kit)",
+         "JRE + developer tools: javac, jshell, jcmd, jstack, debugger",
+         "Developers, and build servers"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Modern detail that impresses",
+       "text": "Since Java 11, Oracle no longer ships a separate JRE download; you install a JDK, or build a slimmed-down runtime with the jlink tool."
+      }
+     ]
+    },
+    {
+     "id": "inside-jvm",
+     "title": "Inside the JVM: three main parts",
+     "in_one_line": "Class loader brings code in, memory areas hold data, execution engine runs it.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Part",
+        "What it does",
+        "Simple picture"
+       ],
+       "rows": [
+        [
+         "Class loader",
+         "Finds .class files and loads them when first needed",
+         "A librarian fetching a book only when someone asks for it"
+        ],
+        [
+         "Runtime memory areas",
+         "Heap (objects), stack (method calls), metaspace (class info)",
+         "Different shelves for different kinds of things"
+        ],
+        [
+         "Execution engine",
+         "Interpreter + JIT compiler + garbage collector",
+         "The chef who cooks and cleans up"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Classes are loaded **lazily**: the first time your code uses a class, not when the program starts. In a Spring Boot service this means thousands of classes load during the first requests."
+      }
+     ]
+    },
+    {
+     "id": "jit",
+     "title": "Interpreter and JIT: why Java gets faster as it runs",
+     "in_one_line": "The JVM starts by reading bytecode line by line, then compiles the busiest code to fast machine code.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "**Interpreter:** starts instantly, runs each bytecode instruction one at a time. Slow, but no waiting.",
+        "**Counting:** the JVM counts how often each method runs. Busy methods are called \"hot\".",
+        "**JIT (Just-In-Time) compiler:** turns hot methods into optimised machine code. HotSpot has two: C1 (compiles quickly, good code) and C2 (takes longer, very fast code).",
+        "**Result:** a Java service is slower for its first minutes, then reaches full speed. This is called **warm-up**."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "When a Spring Boot service on EKS is freshly deployed, the first requests are slower: classes are loading and code is still interpreted. Teams fix this with readiness probes and a warm-up step before the pod receives real traffic. If you have seen slow first requests after a release, this is why."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why is Java platform-independent?",
+     "a": "Because javac compiles to bytecode, not to machine code for one CPU. Each platform has its own JVM that understands the same bytecode, so the same .jar runs everywhere."
+    },
+    {
+     "q": "What is the difference between JDK, JRE and JVM?",
+     "a": "The JVM runs bytecode. The JRE is the JVM plus the standard libraries, enough to run programs. The JDK is the JRE plus development tools like javac, needed to build programs."
+    },
+    {
+     "q": "Is Java compiled or interpreted?",
+     "a": "Both. It is compiled to bytecode ahead of time, then interpreted by the JVM, and hot code is compiled again to machine code by the JIT at runtime."
+    },
+    {
+     "q": "What is the JIT compiler and why does it matter?",
+     "a": "It compiles frequently used methods to optimised native code while the program runs. It is why long-running Java services are fast, and also why they are slower right after startup (warm-up)."
+    }
+   ],
+   "takeaways": [
+    "Source → bytecode (javac) → JVM → machine code.",
+    "JVM runs, JRE = JVM + libraries, JDK = JRE + tools.",
+    "Classes load lazily, on first use.",
+    "JIT compiles hot code, so Java services warm up over the first minutes."
+   ],
+   "resources": [
+    {
+     "title": "dev.java: Learn Java (official tutorials)",
+     "url": "https://dev.java/learn/"
+    },
+    {
+     "title": "Baeldung: Difference between JVM, JRE and JDK",
+     "url": "https://www.baeldung.com/jvm-vs-jre-vs-jdk"
+    },
+    {
+     "title": "Baeldung: Tiered compilation in the JVM",
+     "url": "https://www.baeldung.com/jvm-tiered-compilation"
+    }
+   ]
+  },
+  "design": {
+   "title": "What system design interviews test + client and server basics",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "For an 8-year engineer, the system design round often decides the level you are offered (for example SDE2 vs senior). It starts from very simple building blocks; today sets the vocabulary you will use for the next 60 days.",
+   "builds_on": "Nothing: this is the starting point of the design track.",
+   "next": "Day 2 follows one request in detail: how DNS finds a server and what HTTP and HTTPS actually do.",
+   "subtopics": [
+    {
+     "id": "what-it-is",
+     "title": "What a system design interview is",
+     "in_one_line": "You design a large system (like a URL shortener or a payments service) on a whiteboard in 45–60 minutes.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "There is no single right answer. The interviewer wants to see how you break a vague problem into parts, make sensible choices, and explain the trade-offs of each choice."
+      },
+      {
+       "type": "table",
+       "head": [
+        "They score",
+        "What it means"
+       ],
+       "rows": [
+        [
+         "Requirements",
+         "You ask what the system must do and how big it is before drawing"
+        ],
+        [
+         "High-level design",
+         "You draw the main boxes and how data flows between them"
+        ],
+        [
+         "Deep dives",
+         "You can go into detail on the hardest part (data model, scaling, failures)"
+        ],
+        [
+         "Trade-offs",
+         "You explain why you chose X over Y, and what you give up"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Good news",
+       "text": "You already build real systems at JPMorgan. The interview mostly asks you to explain that experience in a standard vocabulary. This track gives you the vocabulary."
+      }
+     ]
+    },
+    {
+     "id": "client-server",
+     "title": "Client and server",
+     "in_one_line": "A client asks for something; a server does the work and answers.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Client",
+         "note": "Browser, mobile app, or another service"
+        },
+        {
+         "label": "Request",
+         "note": "\"Give me the income attribution report\""
+        },
+        {
+         "label": "Server",
+         "note": "Runs your code, e.g. a Spring Boot service"
+        },
+        {
+         "label": "Database",
+         "note": "Where data is stored permanently"
+        },
+        {
+         "label": "Response",
+         "note": "The data goes back to the client"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** a restaurant. The customer (client) orders from a waiter (server), the waiter gets food from the kitchen (database), and brings it back. Every big system is this same picture, repeated and scaled up."
+      }
+     ]
+    },
+    {
+     "id": "vocabulary",
+     "title": "Five words you will use every day",
+     "in_one_line": "Scalability, availability, latency, throughput and consistency describe how good a system is.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Word",
+        "Plain meaning",
+        "Restaurant version"
+       ],
+       "rows": [
+        [
+         "Scalability",
+         "Can it handle more users by adding machines?",
+         "Can we open more tables and hire more waiters?"
+        ],
+        [
+         "Availability",
+         "Is it up and answering when people need it?",
+         "Is the restaurant open, even if one cook is sick?"
+        ],
+        [
+         "Latency",
+         "How long one request takes",
+         "How long one customer waits for food"
+        ],
+        [
+         "Throughput",
+         "How many requests per second it handles",
+         "How many meals the kitchen serves per hour"
+        ],
+        [
+         "Consistency",
+         "Does everyone see the same, latest data?",
+         "Does every waiter know the dish of the day ran out?"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "Your IA platform already has these qualities: finance controllers need it available at month-end (availability), pivot views must load quickly (latency), and every user must see the same attributed numbers (consistency). Practise describing it with these five words."
+      }
+     ]
+    },
+    {
+     "id": "roadmap",
+     "title": "How this track builds up",
+     "in_one_line": "Building blocks first (days 1–23), then full designs (day 24 onwards).",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Days 1–6: one request, end to end (DNS, HTTP, load balancers, scaling).",
+        "Days 7–23: the building blocks: caches, databases, replication, sharding, queues, APIs.",
+        "Day 24 onwards: full designs using those blocks, like a URL shortener, payments, chat, news feed, and an AI assistant."
+       ]
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between latency and throughput?",
+     "a": "Latency is how long one request takes. Throughput is how many requests the system handles per second. You can have low latency but low throughput (one fast cook) or high throughput but higher latency (a big kitchen with a queue)."
+    },
+    {
+     "q": "What is the first thing you do in a system design interview?",
+     "a": "Clarify requirements: what the system must do, who uses it, and how big it is (users, requests per second, data size). Designing before that is the most common mistake."
+    }
+   ],
+   "takeaways": [
+    "System design is scored on requirements, high-level design, deep dives and trade-offs.",
+    "Every system is client → server → database, scaled up.",
+    "Learn the five words: scalability, availability, latency, throughput, consistency."
+   ],
+   "resources": [
+    {
+     "title": "System Design Primer (GitHub)",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+     "title": "MDN: How the web works",
+     "url": "https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works"
+    }
+   ]
+  },
+  "ai": {
+   "title": "Using AI as your study coach (not a cheat sheet)",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "Interviews now include AI. Since October 2025, Meta has replaced one of its two onsite coding rounds with a 60-minute round where you get an AI assistant inside the editor. In 2026 Google started piloting a round where you read and debug existing code with Gemini's help. Both reward people who lead the AI and check its work, so practising that from Day 1 matters.",
+   "builds_on": "Nothing: this is the starting point of the AI track.",
+   "next": "Day 2 explains what an LLM actually is (tokens and next-word prediction), so you understand why AI makes the mistakes you will learn to catch.",
+   "subtopics": [
+    {
+     "id": "coach-vs-cheat",
+     "title": "Coach vs cheat sheet",
+     "in_one_line": "If AI gives you the answer, you learn nothing; if it gives you hints, you learn faster.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Using AI as a cheat sheet",
+        "Using AI as a coach"
+       ],
+       "rows": [
+        [
+         "Paste the problem, copy the solution",
+         "Try for 25 minutes first, then ask for one hint"
+        ],
+        [
+         "Feels productive, but you cannot solve it in the interview",
+         "Slower at first, but you can solve it alone"
+        ],
+        [
+         "Trusts whatever AI says",
+         "Checks every answer AI gives"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Golden rule for all 60 days",
+       "text": "25 minutes on each problem with no AI. Then use AI to review your code, not to write it."
+      }
+     ]
+    },
+    {
+     "id": "setup",
+     "title": "Set up your Interview Coach chat",
+     "in_one_line": "One saved chat with fixed rules, reused every day.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Open Claude, ChatGPT or Gemini and start a new chat called \"Interview Coach\".",
+        "Paste the prompt below once (it is also in the Prompt box at the end of this lesson).",
+        "Come back to the same chat every day, so it remembers your level and your mistakes."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "verify",
+     "title": "Always verify what AI tells you",
+     "in_one_line": "AI can sound confident and still be wrong; catching that is now an interview skill.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "Large language models predict likely-sounding text. Usually that is correct, but sometimes they invent a wrong expected output or a method that does not exist. This is called a **hallucination**, and you will learn why it happens on Day 2 and Day 7."
+      },
+      {
+       "type": "steps",
+       "items": [
+        "Ask AI for test cases with expected outputs.",
+        "Work out each expected output yourself.",
+        "If yours and AI's differ, find out who is wrong, and why."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Get a code review and 5 test cases for Contains Duplicate, then check them.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Contains Duplicate on your own first.",
+        "Paste your code into Interview Coach and ask for a review.",
+        "Ask: \"Give me 5 edge-case inputs with expected outputs.\"",
+        "Check each expected output yourself and note any the AI got wrong.",
+        "Type QUIZ JAVA to be quizzed on today's Java topic."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "You are my coding interview coach. I'm a Java/Spring Boot engineer with 8 years' experience (JPMorgan), preparing for Google, Amazon, Meta, Microsoft and bank interviews after a long break. Rules:\n1) Never give me a full solution unless I type SHOW SOLUTION. Give one hint at a time, smallest first.\n2) When I paste Java code, review it like an interviewer: correctness, edge cases, time and space complexity, readability.\n3) After each review, ask me one follow-up question an interviewer would ask.\n4) QUIZ JAVA = ask me 5 questions on today's Java topic, one at a time, then grade each answer (weak / ok / strong) and say what was missing.\n5) Explain any term I don't know in plain words first, then in technical words.",
+   "interview_qa": [
+    {
+     "q": "How do you use AI in your day-to-day work?",
+     "a": "Give a real example: \"I use Copilot and custom instructions to speed up boilerplate and tests, but I always review the output: I check edge cases and complexity, because AI can be confidently wrong.\" You will build this story properly on Day 34."
+    }
+   ],
+   "takeaways": [
+    "AI is now part of real interviews at Meta and Google.",
+    "Use AI for hints and reviews, never as the first step.",
+    "Always verify AI output yourself."
+   ],
+   "resources": [
+    {
+     "title": "interviewing.io: Using AI in Meta's AI-assisted coding interview",
+     "url": "https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples"
+    },
+    {
+     "title": "Exponent: Google's AI-assisted coding interview (2026)",
+     "url": "https://www.tryexponent.com/blog/google-ai-coding-interview"
+    }
+   ]
+  }
+ },
+ "glossary": [
+  {
+   "term": "Big-O",
+   "meaning": "A way to describe how an algorithm's time or memory grows as the input grows, ignoring constants."
+  },
+  {
+   "term": "n",
+   "meaning": "The size of the input, for example the number of elements in an array."
+  },
+  {
+   "term": "Brute force",
+   "meaning": "The simplest correct solution, usually trying every possibility. Often too slow, but a good starting point."
+  },
+  {
+   "term": "HashSet",
+   "meaning": "A Java collection that stores unique values and checks 'is this value here?' in O(1) on average."
+  },
+  {
+   "term": "Bytecode",
+   "meaning": "The portable instructions javac produces (.class files). The JVM runs them on any platform."
+  },
+  {
+   "term": "JVM",
+   "meaning": "Java Virtual Machine: loads bytecode, manages memory and runs your program."
+  },
+  {
+   "term": "JIT",
+   "meaning": "Just-In-Time compiler: turns frequently used bytecode into fast machine code while the program runs."
+  },
+  {
+   "term": "Warm-up",
+   "meaning": "The first minutes after a Java service starts, when it is slower because classes are loading and code is not yet JIT-compiled."
+  },
+  {
+   "term": "Latency",
+   "meaning": "How long one request takes."
+  },
+  {
+   "term": "Throughput",
+   "meaning": "How many requests a system handles per second."
+  },
+  {
+   "term": "Availability",
+   "meaning": "The share of time a system is up and answering, often written as 99.9%."
+  },
+  {
+   "term": "LLM",
+   "meaning": "Large language model: an AI that generates text by predicting the next word, such as Claude, ChatGPT or Gemini."
+  },
+  {
+   "term": "Hallucination",
+   "meaning": "When an AI gives a confident answer that is wrong or made up."
+  }
+ ],
+ "checklist": [
+  "Read the 4-step method and the Big-O table",
+  "Solve Contains Duplicate (25 minutes, no AI)",
+  "Explain the three approaches and their Big-O out loud",
+  "Answer the 4 Java interview questions out loud",
+  "Describe your IA platform using the five design words",
+  "Set up your Interview Coach chat and run QUIZ JAVA",
+  "Add one line to your mistake log"
+ ]
+}

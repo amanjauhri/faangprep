@@ -1,0 +1,41 @@
+{
+ "updated": "2026-11-24T06:00:00+05:30",
+ "items": [
+  {
+   "date": "2026-11-16",
+   "tag": "Hiring",
+   "headline": "AI now shows up in over half of Hacker News 'Who is Hiring?' posts",
+   "summary": "A tracker found AI mentioned in 51.6% of November's hiring posts, up from 30% two years ago, while the total number of posts is at its lowest yearly average since 2013.",
+   "why": "Fewer jobs overall, but more of them ask for AI experience. Being able to talk about how you use AI is now a real differentiator.",
+   "source": "AI Weekly",
+   "url": "https://aiweekly.co/ai-news-today/edition/2026-11-16"
+  },
+  {
+   "date": "2026-10-27",
+   "tag": "Interviews",
+   "headline": "An Anthropic hiring manager drops the traditional coding interview",
+   "summary": "Felix Rieseberg wrote that he no longer uses traditional coding interviews for his team, because AI models now outperform people at coding tasks. He has not settled on a replacement.",
+   "why": "One manager, not company policy, and big tech still runs coding rounds. But it shows where things are heading: more weight on judgment, design and working with AI.",
+   "source": "Crypto Briefing",
+   "url": "https://cryptobriefing.com/?p=403525"
+  },
+  {
+   "date": "2026-11-18",
+   "tag": "Models",
+   "headline": "OpenAI releases GPT-6.2 Astra and Sol",
+   "summary": "Two new models aimed at professional work, designed to lower the computing cost of complex tasks.",
+   "why": "Knowing the current model landscape helps in 'how do you use AI?' conversations and in GenAI questions at Amazon and Microsoft.",
+   "source": "The Neuron",
+   "url": "https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-november-18-2026/"
+  },
+  {
+   "date": "2026-11-09",
+   "tag": "Models",
+   "headline": "Anthropic releases Claude Fable 5.2",
+   "summary": "Scale AI found Fable produced acceptable work on roughly twice as many freelance projects as the models it was compared with.",
+   "why": "AI agents are getting better at real work, which is why interviews increasingly test whether you can direct and check AI, not just type code.",
+   "source": "Towards AI",
+   "url": "https://pub.towardsai.net/tai-229-fable-5-2-and-the-case-for-a-2027-ai-takeoff-cdd4613ca007"
+  }
+ ]
+}

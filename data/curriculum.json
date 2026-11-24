@@ -1,0 +1,1553 @@
+{
+ "start": "2026-11-25",
+ "phases": [
+  {
+   "name": "Foundations",
+   "from": 1,
+   "to": 12
+  },
+  {
+   "name": "Core patterns",
+   "from": 13,
+   "to": 24
+  },
+  {
+   "name": "Going deeper",
+   "from": 25,
+   "to": 36
+  },
+  {
+   "name": "Design & depth",
+   "from": 37,
+   "to": 48
+  },
+  {
+   "name": "Interview mode",
+   "from": 49,
+   "to": 60
+  }
+ ],
+ "days": [
+  {
+   "day": 1,
+   "date": "2026-11-25",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "How to approach a coding interview + Big-O from scratch",
+    "subtopics": [
+     "What a coding interview really tests",
+     "The 4-step method: understand, plan, code, test",
+     "Big-O: how code slows down as input grows",
+     "Reading a loop to find its Big-O",
+     "Space complexity"
+    ],
+    "problems": [
+     "217 Contains Duplicate"
+    ]
+   },
+   "java": {
+    "title": "How Java runs: JDK, JRE, JVM, bytecode and the JIT"
+   },
+   "design": {
+    "title": "What system design interviews test + client and server basics"
+   },
+   "ai": {
+    "title": "Using AI as your study coach (not a cheat sheet)"
+   }
+  },
+  {
+   "day": 2,
+   "date": "2026-11-26",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Arrays and hash maps",
+    "subtopics": [
+     "How arrays sit in memory",
+     "How a hash map finds things in O(1)",
+     "The \"have I seen this before?\" pattern"
+    ],
+    "problems": [
+     "1 Two Sum",
+     "242 Valid Anagram"
+    ]
+   },
+   "java": {
+    "title": "Memory basics: stack vs heap, references, primitives vs objects, autoboxing"
+   },
+   "design": {
+    "title": "The journey of a request: DNS, HTTP and HTTPS"
+   },
+   "ai": {
+    "title": "What an LLM is: tokens and next-word prediction"
+   }
+  },
+  {
+   "day": 3,
+   "date": "2026-11-27",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Hashing: grouping and counting",
+    "subtopics": [
+     "Counting with a map",
+     "Choosing a good key",
+     "Bucket sort for top-K"
+    ],
+    "problems": [
+     "49 Group Anagrams",
+     "347 Top K Frequent Elements"
+    ]
+   },
+   "java": {
+    "title": "Strings: immutability, the String pool, StringBuilder"
+   },
+   "design": {
+    "title": "Latency vs throughput, and the numbers to know"
+   },
+   "ai": {
+    "title": "Context windows, temperature, and why answers vary"
+   }
+  },
+  {
+   "day": 4,
+   "date": "2026-11-28",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Prefix sums",
+    "subtopics": [
+     "What a running total is",
+     "Range sums in O(1)",
+     "Prefix sum + hash map"
+    ],
+    "problems": [
+     "238 Product of Array Except Self",
+     "560 Subarray Sum Equals K"
+    ]
+   },
+   "java": {
+    "title": "OOP refresher: encapsulation, inheritance, polymorphism, abstraction"
+   },
+   "design": {
+    "title": "Scaling up vs scaling out; stateless services"
+   },
+   "ai": {
+    "title": "Prompting basics: role, context, constraints, examples"
+   }
+  },
+  {
+   "day": 5,
+   "date": "2026-11-30",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Sets and sequences",
+    "subtopics": [
+     "Membership checks with a set",
+     "Finding where a sequence starts",
+     "Validating grids with sets"
+    ],
+    "problems": [
+     "128 Longest Consecutive Sequence",
+     "36 Valid Sudoku"
+    ]
+   },
+   "java": {
+    "title": "Abstract classes vs interfaces; composition over inheritance"
+   },
+   "design": {
+    "title": "Load balancers: L4 vs L7"
+   },
+   "ai": {
+    "title": "How AI shows up in 2026 interviews (Meta, Google, Amazon)"
+   }
+  },
+  {
+   "day": 6,
+   "date": "2026-12-01",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Week 1 review + first timed mock",
+    "subtopics": [
+     "How to run a mock on yourself",
+     "Self-review checklist",
+     "Patterns so far"
+    ],
+    "problems": [
+     "121 Best Time to Buy and Sell Stock",
+     "169 Majority Element"
+    ]
+   },
+   "java": {
+    "title": "Week 1 review: core Java quiz"
+   },
+   "design": {
+    "title": "Week 1 review: draw a basic web architecture"
+   },
+   "ai": {
+    "title": "Week 1 review: an AI-assisted solve, start to finish"
+   }
+  },
+  {
+   "day": 7,
+   "date": "2026-12-02",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Two pointers",
+    "subtopics": [
+     "Pointers from both ends",
+     "Sorted input is a signal",
+     "Skipping duplicates"
+    ],
+    "problems": [
+     "125 Valid Palindrome",
+     "167 Two Sum II - Input Array Is Sorted",
+     "15 3Sum"
+    ]
+   },
+   "java": {
+    "title": "equals() and hashCode(): the contract and why it matters"
+   },
+   "design": {
+    "title": "Caching basics"
+   },
+   "ai": {
+    "title": "Hallucinations and how to verify AI output"
+   }
+  },
+  {
+   "day": 8,
+   "date": "2026-12-03",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Two pointers 2",
+    "subtopics": [
+     "Greedy pointer moves",
+     "Why moving the smaller side works"
+    ],
+    "problems": [
+     "11 Container With Most Water",
+     "42 Trapping Rain Water"
+    ]
+   },
+   "java": {
+    "title": "The Collections framework map: List, Set, Map, Queue"
+   },
+   "design": {
+    "title": "Cache strategies and invalidation"
+   },
+   "ai": {
+    "title": "Using AI to generate test cases"
+   }
+  },
+  {
+   "day": 9,
+   "date": "2026-12-04",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Sliding window",
+    "subtopics": [
+     "Fixed vs variable windows",
+     "Expand and shrink",
+     "Tracking what is inside the window"
+    ],
+    "problems": [
+     "3 Longest Substring Without Repeating Characters",
+     "424 Longest Repeating Character Replacement"
+    ]
+   },
+   "java": {
+    "title": "ArrayList vs LinkedList: how they work inside"
+   },
+   "design": {
+    "title": "CDNs: serving content close to users"
+   },
+   "ai": {
+    "title": "AI-assisted debugging"
+   }
+  },
+  {
+   "day": 10,
+   "date": "2026-12-05",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Sliding window 2",
+    "subtopics": [
+     "Frequency maps inside a window",
+     "The minimum-window technique"
+    ],
+    "problems": [
+     "567 Permutation in String",
+     "76 Minimum Window Substring"
+    ]
+   },
+   "java": {
+    "title": "HashMap internals: hashing, buckets, resizing, treeification"
+   },
+   "design": {
+    "title": "SQL vs NoSQL"
+   },
+   "ai": {
+    "title": "Embeddings: meaning as numbers"
+   }
+  },
+  {
+   "day": 11,
+   "date": "2026-12-07",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Stacks",
+    "subtopics": [
+     "Last in, first out",
+     "Matching brackets",
+     "Stacks in Java (ArrayDeque)"
+    ],
+    "problems": [
+     "20 Valid Parentheses",
+     "155 Min Stack",
+     "150 Evaluate Reverse Polish Notation"
+    ]
+   },
+   "java": {
+    "title": "TreeMap, LinkedHashMap, Comparable vs Comparator"
+   },
+   "design": {
+    "title": "Database indexes"
+   },
+   "ai": {
+    "title": "Vector databases and similarity search"
+   }
+  },
+  {
+   "day": 12,
+   "date": "2026-12-08",
+   "phase": "Foundations",
+   "dsa": {
+    "title": "Monotonic stack + week 2 review",
+    "subtopics": [
+     "What \"monotonic\" means",
+     "Next greater element",
+     "When to reach for it"
+    ],
+    "problems": [
+     "739 Daily Temperatures",
+     "853 Car Fleet"
+    ]
+   },
+   "java": {
+    "title": "Generics and type erasure + week 2 review"
+   },
+   "design": {
+    "title": "Replication + week 2 review"
+   },
+   "ai": {
+    "title": "RAG basics + week 2 review"
+   }
+  },
+  {
+   "day": 13,
+   "date": "2026-12-09",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Binary search",
+    "subtopics": [
+     "Halving the search space",
+     "lo, hi, mid and off-by-one errors",
+     "One template that always works"
+    ],
+    "problems": [
+     "704 Binary Search",
+     "74 Search a 2D Matrix"
+    ]
+   },
+   "java": {
+    "title": "Exceptions: checked vs unchecked, try-with-resources"
+   },
+   "design": {
+    "title": "Sharding and partitioning"
+   },
+   "ai": {
+    "title": "Making RAG good: chunking, retrieval, re-ranking"
+   }
+  },
+  {
+   "day": 14,
+   "date": "2026-12-10",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Binary search on the answer",
+    "subtopics": [
+     "Searching a range of possible answers",
+     "Writing a feasibility check"
+    ],
+    "problems": [
+     "875 Koko Eating Bananas",
+     "1011 Capacity To Ship Packages Within D Days"
+    ]
+   },
+   "java": {
+    "title": "Lambdas and functional interfaces"
+   },
+   "design": {
+    "title": "Consistent hashing"
+   },
+   "ai": {
+    "title": "Tool calling: how LLMs use APIs"
+   }
+  },
+  {
+   "day": 15,
+   "date": "2026-12-11",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Binary search on tricky inputs",
+    "subtopics": [
+     "Rotated arrays",
+     "Finding the sorted half"
+    ],
+    "problems": [
+     "33 Search in Rotated Sorted Array",
+     "153 Find Minimum in Rotated Sorted Array",
+     "981 Time Based Key-Value Store"
+    ]
+   },
+   "java": {
+    "title": "Streams API: map, filter, reduce, collectors"
+   },
+   "design": {
+    "title": "CAP theorem and consistency models"
+   },
+   "ai": {
+    "title": "Agents and MCP"
+   }
+  },
+  {
+   "day": 16,
+   "date": "2026-12-12",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Linked lists",
+    "subtopics": [
+     "Nodes and pointers",
+     "Reversing a list",
+     "The dummy-head trick"
+    ],
+    "problems": [
+     "206 Reverse Linked List",
+     "21 Merge Two Sorted Lists"
+    ]
+   },
+   "java": {
+    "title": "Modern Java: Optional, records, sealed classes, switch patterns"
+   },
+   "design": {
+    "title": "Message queues and Kafka basics"
+   },
+   "ai": {
+    "title": "Evals: measuring if an AI feature works"
+   }
+  },
+  {
+   "day": 17,
+   "date": "2026-12-14",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Linked lists 2",
+    "subtopics": [
+     "Fast and slow pointers",
+     "Cycle detection",
+     "Reordering in place"
+    ],
+    "problems": [
+     "141 Linked List Cycle",
+     "143 Reorder List",
+     "19 Remove Nth Node From End of List"
+    ]
+   },
+   "java": {
+    "title": "JVM memory areas: heap, stack, metaspace"
+   },
+   "design": {
+    "title": "Idempotency and exactly-once processing"
+   },
+   "ai": {
+    "title": "Structured outputs: reliable JSON from LLMs"
+   }
+  },
+  {
+   "day": 18,
+   "date": "2026-12-15",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "LRU cache + week 3 review",
+    "subtopics": [
+     "Hash map + doubly linked list",
+     "O(1) get and put"
+    ],
+    "problems": [
+     "146 LRU Cache",
+     "2 Add Two Numbers"
+    ]
+   },
+   "java": {
+    "title": "Garbage collection basics + week 3 review"
+   },
+   "design": {
+    "title": "API design: REST vs gRPC, pagination + week 3 review"
+   },
+   "ai": {
+    "title": "Guardrails and prompt injection + week 3 review"
+   }
+  },
+  {
+   "day": 19,
+   "date": "2026-12-16",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Trees: the basics",
+    "subtopics": [
+     "Tree vocabulary",
+     "Recursion on trees",
+     "DFS orders: pre, in, post"
+    ],
+    "problems": [
+     "226 Invert Binary Tree",
+     "104 Maximum Depth of Binary Tree",
+     "100 Same Tree"
+    ]
+   },
+   "java": {
+    "title": "GC collectors (G1, ZGC), tuning and memory leaks"
+   },
+   "design": {
+    "title": "Back-of-the-envelope estimation"
+   },
+   "ai": {
+    "title": "Code comprehension with AI (Google's new round)"
+   }
+  },
+  {
+   "day": 20,
+   "date": "2026-12-17",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Trees: DFS patterns",
+    "subtopics": [
+     "Returning values up the tree",
+     "Height and diameter"
+    ],
+    "problems": [
+     "543 Diameter of Binary Tree",
+     "110 Balanced Binary Tree",
+     "572 Subtree of Another Tree"
+    ]
+   },
+   "java": {
+    "title": "Threads 101: Thread, Runnable, lifecycle"
+   },
+   "design": {
+    "title": "Rate limiting algorithms"
+   },
+   "ai": {
+    "title": "Thinking aloud while using AI"
+   }
+  },
+  {
+   "day": 21,
+   "date": "2026-12-18",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Trees: BFS",
+    "subtopics": [
+     "Queues and level order",
+     "Seeing the tree level by level"
+    ],
+    "problems": [
+     "102 Binary Tree Level Order Traversal",
+     "199 Binary Tree Right Side View"
+    ]
+   },
+   "java": {
+    "title": "synchronized and race conditions"
+   },
+   "design": {
+    "title": "Microservices vs monolith; API gateway"
+   },
+   "ai": {
+    "title": "Spec-first prompting"
+   }
+  },
+  {
+   "day": 22,
+   "date": "2026-12-19",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Binary search trees",
+    "subtopics": [
+     "The BST rule",
+     "In-order traversal is sorted",
+     "Validating a BST"
+    ],
+    "problems": [
+     "98 Validate Binary Search Tree",
+     "230 Kth Smallest Element in a BST",
+     "235 Lowest Common Ancestor of a Binary Search Tree"
+    ]
+   },
+   "java": {
+    "title": "volatile and the Java Memory Model"
+   },
+   "design": {
+    "title": "Observability: logs, metrics, traces"
+   },
+   "ai": {
+    "title": "AI coding agents: Copilot, Claude Code, Cursor"
+   }
+  },
+  {
+   "day": 23,
+   "date": "2026-12-21",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Trees: hard problems",
+    "subtopics": [
+     "Building a tree from traversals",
+     "Maximum path sum"
+    ],
+    "problems": [
+     "105 Construct Binary Tree from Preorder and Inorder Traversal",
+     "124 Binary Tree Maximum Path Sum"
+    ]
+   },
+   "java": {
+    "title": "Deadlock, livelock, starvation"
+   },
+   "design": {
+    "title": "Object storage and large files"
+   },
+   "ai": {
+    "title": "When not to use AI in an interview"
+   }
+  },
+  {
+   "day": 24,
+   "date": "2026-12-22",
+   "phase": "Core patterns",
+   "dsa": {
+    "title": "Heaps + week 4 review",
+    "subtopics": [
+     "What a heap is",
+     "Top-K with a heap",
+     "PriorityQueue in Java"
+    ],
+    "problems": [
+     "703 Kth Largest Element in a Stream",
+     "215 Kth Largest Element in an Array",
+     "973 K Closest Points to Origin"
+    ]
+   },
+   "java": {
+    "title": "Week 4 review: concurrency basics quiz"
+   },
+   "design": {
+    "title": "The system design interview framework + full design: URL shortener"
+   },
+   "ai": {
+    "title": "First AI-enabled mock + week 4 review"
+   }
+  },
+  {
+   "day": 25,
+   "date": "2026-12-23",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Heaps 2",
+    "subtopics": [
+     "Two heaps for a running median",
+     "Scheduling with a heap"
+    ],
+    "problems": [
+     "295 Find Median from Data Stream",
+     "621 Task Scheduler"
+    ]
+   },
+   "java": {
+    "title": "ExecutorService and thread pools"
+   },
+   "design": {
+    "title": "Unique ID generation"
+   },
+   "ai": {
+    "title": "Caching in LLM apps"
+   }
+  },
+  {
+   "day": 26,
+   "date": "2026-12-24",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Tries",
+    "subtopics": [
+     "Prefix trees",
+     "Insert, search, startsWith",
+     "Wildcard search"
+    ],
+    "problems": [
+     "208 Implement Trie (Prefix Tree)",
+     "211 Design Add and Search Words Data Structure"
+    ]
+   },
+   "java": {
+    "title": "Locks: ReentrantLock, ReadWriteLock, Condition"
+   },
+   "design": {
+    "title": "Distributed transactions: two-phase commit, sagas, outbox"
+   },
+   "ai": {
+    "title": "LLM serving: latency, tokens per second, cost"
+   }
+  },
+  {
+   "day": 27,
+   "date": "2026-12-25",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Intervals",
+    "subtopics": [
+     "Sort by start",
+     "Merging overlaps",
+     "Counting overlaps"
+    ],
+    "problems": [
+     "56 Merge Intervals",
+     "57 Insert Interval",
+     "435 Non-overlapping Intervals"
+    ]
+   },
+   "java": {
+    "title": "Concurrent collections: ConcurrentHashMap, BlockingQueue"
+   },
+   "design": {
+    "title": "Event sourcing and CQRS"
+   },
+   "ai": {
+    "title": "Fine-tuning vs RAG vs prompting"
+   }
+  },
+  {
+   "day": 28,
+   "date": "2026-12-26",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Backtracking",
+    "subtopics": [
+     "Choose, explore, un-choose",
+     "Subsets and permutations"
+    ],
+    "problems": [
+     "78 Subsets",
+     "46 Permutations"
+    ]
+   },
+   "java": {
+    "title": "CompletableFuture and async code"
+   },
+   "design": {
+    "title": "Real-time: WebSockets, server-sent events, polling"
+   },
+   "ai": {
+    "title": "The AWS GenAI stack: Bedrock, SageMaker, Amazon Q"
+   }
+  },
+  {
+   "day": 29,
+   "date": "2026-12-28",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Backtracking 2",
+    "subtopics": [
+     "Pruning",
+     "Combination sums",
+     "Searching a grid"
+    ],
+    "problems": [
+     "39 Combination Sum",
+     "79 Word Search",
+     "22 Generate Parentheses"
+    ]
+   },
+   "java": {
+    "title": "Atomics, CAS and producer-consumer"
+   },
+   "design": {
+    "title": "Consensus and leader election"
+   },
+   "ai": {
+    "title": "Amazon's GenAI fluency questions"
+   }
+  },
+  {
+   "day": 30,
+   "date": "2026-12-29",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Graphs + week 5 review",
+    "subtopics": [
+     "Graph vocabulary",
+     "Adjacency lists",
+     "BFS vs DFS on grids"
+    ],
+    "problems": [
+     "200 Number of Islands",
+     "695 Max Area of Island"
+    ]
+   },
+   "java": {
+    "title": "Virtual threads (Java 21) + week 5 review"
+   },
+   "design": {
+    "title": "Full design: rate limiter + week 5 review"
+   },
+   "ai": {
+    "title": "Second AI-enabled mock + week 5 review"
+   }
+  },
+  {
+   "day": 31,
+   "date": "2026-12-30",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Graphs 2",
+    "subtopics": [
+     "Multi-source BFS",
+     "Cloning a graph",
+     "Flowing from borders"
+    ],
+    "problems": [
+     "994 Rotting Oranges",
+     "133 Clone Graph",
+     "417 Pacific Atlantic Water Flow"
+    ]
+   },
+   "java": {
+    "title": "Spring Core: IoC, dependency injection, bean scopes and lifecycle"
+   },
+   "design": {
+    "title": "Bloom filters and probabilistic structures"
+   },
+   "ai": {
+    "title": "Responsible AI in regulated finance"
+   }
+  },
+  {
+   "day": 32,
+   "date": "2026-12-31",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Topological sort",
+    "subtopics": [
+     "Dependencies as a graph",
+     "Kahn's algorithm",
+     "Detecting cycles"
+    ],
+    "problems": [
+     "207 Course Schedule",
+     "210 Course Schedule II"
+    ]
+   },
+   "java": {
+    "title": "Spring Boot: auto-configuration, starters, profiles"
+   },
+   "design": {
+    "title": "Search and inverted indexes"
+   },
+   "ai": {
+    "title": "Reviewing code that AI wrote"
+   }
+  },
+  {
+   "day": 33,
+   "date": "2027-01-01",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Union-find and shortest paths",
+    "subtopics": [
+     "Union-find",
+     "Dijkstra's algorithm",
+     "Minimum spanning tree"
+    ],
+    "problems": [
+     "684 Redundant Connection",
+     "743 Network Delay Time",
+     "1584 Min Cost to Connect All Points"
+    ]
+   },
+   "java": {
+    "title": "Spring MVC and REST: controllers, validation, error handling"
+   },
+   "design": {
+    "title": "Batch vs stream processing"
+   },
+   "ai": {
+    "title": "Text-to-SQL and its risks"
+   }
+  },
+  {
+   "day": 34,
+   "date": "2027-01-02",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Dynamic programming: the basics",
+    "subtopics": [
+     "What DP is",
+     "Recursion, then memo, then table"
+    ],
+    "problems": [
+     "70 Climbing Stairs",
+     "198 House Robber",
+     "213 House Robber II"
+    ]
+   },
+   "java": {
+    "title": "Spring Data JPA and Hibernate: entities, lazy loading, N+1"
+   },
+   "design": {
+    "title": "Security basics: authentication, authorization, encryption"
+   },
+   "ai": {
+    "title": "Your \"how I use GenAI\" interview story"
+   }
+  },
+  {
+   "day": 35,
+   "date": "2027-01-04",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Dynamic programming 1D",
+    "subtopics": [
+     "Coin change",
+     "Word break",
+     "Palindromes"
+    ],
+    "problems": [
+     "322 Coin Change",
+     "139 Word Break",
+     "5 Longest Palindromic Substring"
+    ]
+   },
+   "java": {
+    "title": "@Transactional: propagation, isolation, rollback"
+   },
+   "design": {
+    "title": "Disaster recovery and multi-region"
+   },
+   "ai": {
+    "title": "Where GenAI fits in fintech systems"
+   }
+  },
+  {
+   "day": 36,
+   "date": "2027-01-05",
+   "phase": "Going deeper",
+   "dsa": {
+    "title": "Dynamic programming 2D + week 6 review",
+    "subtopics": [
+     "Grid DP",
+     "Longest common subsequence",
+     "Longest increasing subsequence"
+    ],
+    "problems": [
+     "62 Unique Paths",
+     "1143 Longest Common Subsequence",
+     "300 Longest Increasing Subsequence"
+    ]
+   },
+   "java": {
+    "title": "Spring AOP and proxies + week 6 review"
+   },
+   "design": {
+    "title": "Full design: payments and ledger + week 6 review"
+   },
+   "ai": {
+    "title": "Week 6 review: AI concepts quiz"
+   }
+  },
+  {
+   "day": 37,
+   "date": "2027-01-06",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Knapsack and greedy",
+    "subtopics": [
+     "0/1 knapsack idea",
+     "Kadane's algorithm",
+     "When greedy is safe"
+    ],
+    "problems": [
+     "416 Partition Equal Subset Sum",
+     "53 Maximum Subarray",
+     "55 Jump Game"
+    ]
+   },
+   "java": {
+    "title": "Spring Security: filter chain, JWT, OAuth2"
+   },
+   "design": {
+    "title": "Distributed locks"
+   },
+   "ai": {
+    "title": "Model routing and fallbacks"
+   }
+  },
+  {
+   "day": 38,
+   "date": "2027-01-07",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Matrix and bit tricks",
+    "subtopics": [
+     "In-place matrix moves",
+     "Bit operations basics"
+    ],
+    "problems": [
+     "48 Rotate Image",
+     "54 Spiral Matrix",
+     "136 Single Number",
+     "191 Number of 1 Bits"
+    ]
+   },
+   "java": {
+    "title": "Spring Kafka: consumers, retries, dead-letter topics"
+   },
+   "design": {
+    "title": "Location search: geohash and quadtrees"
+   },
+   "ai": {
+    "title": "Recommendations with embeddings"
+   }
+  },
+  {
+   "day": 39,
+   "date": "2027-01-08",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Design-style data structures",
+    "subtopics": [
+     "Combining structures for O(1) operations"
+    ],
+    "problems": [
+     "380 Insert Delete GetRandom O(1)",
+     "1396 Design Underground System"
+    ]
+   },
+   "java": {
+    "title": "Caching (@Cacheable, Redis) and resilience (Resilience4j)"
+   },
+   "design": {
+    "title": "Data warehouse vs lake vs lakehouse"
+   },
+   "ai": {
+    "title": "Orchestrating AI agent workflows"
+   }
+  },
+  {
+   "day": 40,
+   "date": "2027-01-09",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "SQL for bank online tests",
+    "subtopics": [
+     "Joins",
+     "GROUP BY",
+     "Window functions"
+    ],
+    "problems": [
+     "176 Second Highest Salary",
+     "184 Department Highest Salary",
+     "185 Department Top Three Salaries"
+    ]
+   },
+   "java": {
+    "title": "Testing Spring Boot: JUnit 5, Mockito, Testcontainers"
+   },
+   "design": {
+    "title": "Full design: notification system"
+   },
+   "ai": {
+    "title": "Adding LLM features to streaming pipelines"
+   }
+  },
+  {
+   "day": 41,
+   "date": "2027-01-11",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Concurrency coding problems",
+    "subtopics": [
+     "Coordinating threads in code"
+    ],
+    "problems": [
+     "1114 Print in Order",
+     "1115 Print FooBar Alternately"
+    ]
+   },
+   "java": {
+    "title": "SOLID part 1: Single Responsibility, Open/Closed"
+   },
+   "design": {
+    "title": "Full design: news feed"
+   },
+   "ai": {
+    "title": "Exploring design trade-offs with AI"
+   }
+  },
+  {
+   "day": 42,
+   "date": "2027-01-12",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Mixed review + week 7 mock",
+    "subtopics": [
+     "Timed mixed set"
+    ],
+    "problems": [
+     "1249 Minimum Remove to Make Valid Parentheses",
+     "528 Random Pick with Weight"
+    ]
+   },
+   "java": {
+    "title": "SOLID part 2: Liskov, Interface Segregation, Dependency Inversion + week 7 review"
+   },
+   "design": {
+    "title": "Full design: AI assistant over documents (RAG)"
+   },
+   "ai": {
+    "title": "AI in system design: the RAG design day"
+   }
+  },
+  {
+   "day": 43,
+   "date": "2027-01-13",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Hard practice 1",
+    "subtopics": [
+     "Stacks and trees at hard level"
+    ],
+    "problems": [
+     "84 Largest Rectangle in Histogram",
+     "297 Serialize and Deserialize Binary Tree"
+    ]
+   },
+   "java": {
+    "title": "Design patterns 1: Singleton, Factory, Builder"
+   },
+   "design": {
+    "title": "Full design: job scheduler"
+   },
+   "ai": {
+    "title": "Using AI to grade your mock"
+   }
+  },
+  {
+   "day": 44,
+   "date": "2027-01-14",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Hard practice 2",
+    "subtopics": [
+     "Heaps and binary search at hard level"
+    ],
+    "problems": [
+     "23 Merge k Sorted Lists",
+     "4 Median of Two Sorted Arrays"
+    ]
+   },
+   "java": {
+    "title": "Design patterns 2: Strategy, Observer, Template Method"
+   },
+   "design": {
+    "title": "Full design: real-time event pipeline"
+   },
+   "ai": {
+    "title": "Learning a new codebase fast with AI"
+   }
+  },
+  {
+   "day": 45,
+   "date": "2027-01-15",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Graph practice",
+    "subtopics": [
+     "BFS on words",
+     "Weighted graph queries"
+    ],
+    "problems": [
+     "127 Word Ladder",
+     "399 Evaluate Division"
+    ]
+   },
+   "java": {
+    "title": "Design patterns 3: Adapter, Decorator, Chain of Responsibility"
+   },
+   "design": {
+    "title": "Full design: chat system"
+   },
+   "ai": {
+    "title": "Building a feature with an AI coding agent"
+   }
+  },
+  {
+   "day": 46,
+   "date": "2027-01-16",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Greedy practice",
+    "subtopics": [
+     "Grouping greedily",
+     "Interval greedy"
+    ],
+    "problems": [
+     "846 Hand of Straights",
+     "452 Minimum Number of Arrows to Burst Balloons"
+    ]
+   },
+   "java": {
+    "title": "Microservice patterns in Spring: gateway, saga, outbox"
+   },
+   "design": {
+    "title": "Full design: LLM chatbot at scale"
+   },
+   "ai": {
+    "title": "How banks govern AI use"
+   }
+  },
+  {
+   "day": 47,
+   "date": "2027-01-18",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "String practice",
+    "subtopics": [
+     "String parsing",
+     "Custom sorting"
+    ],
+    "problems": [
+     "151 Reverse Words in a String",
+     "692 Top K Frequent Words",
+     "937 Reorder Data in Log Files"
+    ]
+   },
+   "java": {
+    "title": "Observability in Spring Boot: Actuator, Micrometer, tracing"
+   },
+   "design": {
+    "title": "Presenting your own project's design"
+   },
+   "ai": {
+    "title": "How you would add AI to your IA platform"
+   }
+  },
+  {
+   "day": 48,
+   "date": "2027-01-19",
+   "phase": "Design & depth",
+   "dsa": {
+    "title": "Full mock loop + week 8 review",
+    "subtopics": [
+     "One coding round, one design round"
+    ],
+    "problems": [
+     "Pick 2 unseen Mediums"
+    ]
+   },
+   "java": {
+    "title": "How to do a low-level design round + parking lot"
+   },
+   "design": {
+    "title": "Mock design round + scoring rubric"
+   },
+   "ai": {
+    "title": "Week 8 review"
+   }
+  },
+  {
+   "day": 49,
+   "date": "2027-01-20",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Google focus",
+    "subtopics": [
+     "Google-style problems"
+    ],
+    "problems": [
+     "1268 Search Suggestions System",
+     "17 Letter Combinations of a Phone Number"
+    ]
+   },
+   "java": {
+    "title": "LLD: thread-safe LRU cache and rate limiter"
+   },
+   "design": {
+    "title": "Google-style: collaborative document editing"
+   },
+   "ai": {
+    "title": "Simulating Google's code comprehension round"
+   }
+  },
+  {
+   "day": 50,
+   "date": "2027-01-21",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Meta focus",
+    "subtopics": [
+     "Meta-style problems"
+    ],
+    "problems": [
+     "236 Lowest Common Ancestor of a Binary Tree",
+     "680 Valid Palindrome II"
+    ]
+   },
+   "java": {
+    "title": "LLD: Splitwise"
+   },
+   "design": {
+    "title": "Meta-style: live comments"
+   },
+   "ai": {
+    "title": "Simulating Meta's AI-enabled round"
+   }
+  },
+  {
+   "day": 51,
+   "date": "2027-01-22",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Amazon focus",
+    "subtopics": [
+     "Amazon-style problems"
+    ],
+    "problems": [
+     "763 Partition Labels",
+     "138 Copy List with Random Pointer"
+    ]
+   },
+   "java": {
+    "title": "LLD: elevator system"
+   },
+   "design": {
+    "title": "Amazon-style: order checkout"
+   },
+   "ai": {
+    "title": "GenAI fluency drill"
+   }
+  },
+  {
+   "day": 52,
+   "date": "2027-01-23",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Microsoft focus",
+    "subtopics": [
+     "Microsoft-style problems"
+    ],
+    "problems": [
+     "8 String to Integer (atoi)",
+     "73 Set Matrix Zeroes"
+    ]
+   },
+   "java": {
+    "title": "LLD: BookMyShow (concurrent seat booking)"
+   },
+   "design": {
+    "title": "Microsoft-style: file storage and sync"
+   },
+   "ai": {
+    "title": "Copilot in VS Code: a timed task"
+   }
+  },
+  {
+   "day": 53,
+   "date": "2027-01-25",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Bank online test practice",
+    "subtopics": [
+     "HackerRank-style timed set"
+    ],
+    "problems": [
+     "202 Happy Number",
+     "409 Longest Palindrome"
+    ]
+   },
+   "java": {
+    "title": "LLD: order book / matching engine"
+   },
+   "design": {
+    "title": "Bank-style: order matching and trade booking"
+   },
+   "ai": {
+    "title": "AI-specific behavioral questions"
+   }
+  },
+  {
+   "day": 54,
+   "date": "2027-01-26",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Weak-spot review 1",
+    "subtopics": [
+     "Redo problems from your mistake log"
+    ],
+    "problems": [
+     "Redo 3 from mistake log"
+    ]
+   },
+   "java": {
+    "title": "LLD: Amazon locker"
+   },
+   "design": {
+    "title": "Top-K and heavy hitters"
+   },
+   "ai": {
+    "title": "A personal drill built from your mistake log"
+   }
+  },
+  {
+   "day": 55,
+   "date": "2027-01-27",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Mock with a human",
+    "subtopics": [
+     "Peer or paid mock"
+    ],
+    "problems": [
+     "2 unseen Mediums"
+    ]
+   },
+   "java": {
+    "title": "Rapid-fire: 30 Java and Spring questions"
+   },
+   "design": {
+    "title": "Distributed cache"
+   },
+   "ai": {
+    "title": "Debriefing a mock with AI"
+   }
+  },
+  {
+   "day": 56,
+   "date": "2027-01-28",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Hard mix",
+    "subtopics": [
+     "DP and stack at hard level"
+    ],
+    "problems": [
+     "72 Edit Distance",
+     "32 Longest Valid Parentheses"
+    ]
+   },
+   "java": {
+    "title": "Bank Java round: 25 core Java and Spring questions"
+   },
+   "design": {
+    "title": "Startup-style: an MVP that can scale"
+   },
+   "ai": {
+    "title": "AI news briefing for interviews"
+   }
+  },
+  {
+   "day": 57,
+   "date": "2027-01-29",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "AI-enabled round practice",
+    "subtopics": [
+     "Multi-part problem with an AI assistant"
+    ],
+    "problems": [
+     "One multi-part problem"
+    ]
+   },
+   "java": {
+    "title": "Clean Spring Boot structure for take-home tasks"
+   },
+   "design": {
+    "title": "Trade-off language interviewers want to hear"
+   },
+   "ai": {
+    "title": "Take-home task with AI"
+   }
+  },
+  {
+   "day": 58,
+   "date": "2027-01-30",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Weak-spot review 2",
+    "subtopics": [
+     "Redo problems from your mistake log"
+    ],
+    "problems": [
+     "Redo 3 from mistake log"
+    ]
+   },
+   "java": {
+    "title": "Weak-spot review: Java, Spring, LLD"
+   },
+   "design": {
+    "title": "Redo your hardest design"
+   },
+   "ai": {
+    "title": "Drafting your AI pitch"
+   }
+  },
+  {
+   "day": 59,
+   "date": "2027-02-01",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Final mock",
+    "subtopics": [
+     "Full coding round"
+    ],
+    "problems": [
+     "2 unseen Mediums"
+    ]
+   },
+   "java": {
+    "title": "Mock low-level design round"
+   },
+   "design": {
+    "title": "Full mock design in 45 minutes"
+   },
+   "ai": {
+    "title": "Final AI-enabled mock"
+   }
+  },
+  {
+   "day": 60,
+   "date": "2027-02-02",
+   "phase": "Interview mode",
+   "dsa": {
+    "title": "Wrap-up: pattern cheat sheet",
+    "subtopics": [
+     "All patterns on one page"
+    ],
+    "problems": []
+   },
+   "java": {
+    "title": "One-page Java and Spring cheat sheet"
+   },
+   "design": {
+    "title": "One-page system design cheat sheet"
+   },
+   "ai": {
+    "title": "Your 60-second AI pitch"
+   }
+  }
+ ]
+}
