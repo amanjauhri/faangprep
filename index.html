@@ -74,7 +74,7 @@ main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 .band{background:var(--tc);color:#fff;border-radius:18px;padding:clamp(18px,3vw,30px);margin-top:12px}
 .band h1{color:#fff}.band p{margin:6px 0 0}.band a{color:#fff}
 .lesson{display:grid;grid-template-columns:230px minmax(0,1fr);gap:32px;margin-top:22px}
-.rail{position:sticky;top:96px;align-self:start;font-size:14px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 120px);overflow:auto}
+.railbox{position:sticky;top:96px;align-self:start}.rail{font-size:14px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 120px);overflow:auto}
 .rail a{color:var(--ink);font-weight:500;text-decoration:none;padding:6px 10px;border-left:3px solid var(--line)}
 .rail a:hover{border-left-color:var(--tc);background:var(--tt)}
 .rail b{margin:10px 0 4px;font-size:13px}
@@ -130,7 +130,28 @@ a.row:hover{background:var(--tt)}
 .pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px}
 .muted{color:var(--ink2);font-size:14px}
 .card-drill{border:2px solid var(--tc);border-radius:18px;padding:24px;max-width:760px;margin-top:18px;background:var(--tt)}
-@media(max-width:860px){.lesson{grid-template-columns:1fr}.rail{position:static;max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border:1px solid var(--line);border-radius:999px}.hero{grid-template-columns:1fr}.ring{width:100px;height:100px}}
+.scroll{overflow-x:auto}
+.railbox{border:0;margin:0;background:transparent}
+@media(min-width:861px){.railbox>summary{display:none}}
+@media(max-width:860px){.railbox{border:1px solid var(--line);border-radius:12px;margin-top:14px;background:var(--paper)}.railbox .rail{padding:0 12px 12px}}
+@media(max-width:600px){
+ .bar{padding:8px 12px}#nav{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#nav a{flex:none}
+ main{padding:16px 12px 60px}
+ .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tabs a{flex:none}
+ .hero{padding:18px;gap:14px}.hero .ring{order:-1;width:84px;height:84px}.ring b{font-size:20px}.ring b small{font-size:11px}
+ .lead{font-size:16px}
+ .stack thead{display:none}.stack tr{display:block;padding:8px 0;border-bottom:1px solid var(--line)}.stack td{display:block;border:0;padding:3px 8px}.stack td::before{content:attr(data-l);display:block;font-size:12px;font-weight:700;color:var(--ink2)}
+ .stack td[data-l="Day"]{font-size:15px}.stack td[data-l="Day"]::before{display:inline;margin-right:4px;font-size:15px;color:var(--ink)}.stack td[data-l="Day"] br{display:none}.stack td[data-l="Day"] .muted{margin-left:8px}
+ .hero{grid-template-columns:1fr}
+ .flow{flex-direction:column}.flow .box{flex:none}.flow .arr{transform:rotate(90deg)}
+ .steps li{padding:10px 12px 10px 46px}.steps li:before{left:10px}
+ .prob,.panel{padding:14px}.card-drill{padding:16px}.band{border-radius:14px}
+ .tcard header,.tcard .body{padding-left:14px;padding-right:14px}
+ pre{font-size:13px;padding:14px 12px}
+ .pager .btn{width:100%}
+}
+@media(min-width:601px) and (max-width:900px){.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.lesson{gap:16px}}
+@media(max-width:860px){.lesson{grid-template-columns:1fr}.railbox{position:static}.rail{max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border:1px solid var(--line);border-radius:999px}.ring{width:100px;height:100px}}
 @media(max-width:600px){.row{grid-template-columns:56px minmax(0,1fr)}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.iv dl{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px}#nav{margin-left:0}#nav a{padding:8px 11px;font-size:14px}}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
 </style>
@@ -177,7 +198,7 @@ function block(b){
   case"compare":return`<div class="grid">${b.items.map(it=>`<div class="panel"><h3>${md(it.title)}</h3><ul>${it.points.map(p=>`<li>${md(p)}</li>`).join("")}</ul></div>`).join("")}</div>`;
  }return""}
 function codeBox(c){return`<div class="codewrap"><button class="copy" data-copy>Copy</button><pre><code style="background:none;border:0;padding:0;color:inherit">${esc(c)}</code></pre></div>`}
-function ring(pct,label,sub){const r=52,C=2*Math.PI*r;return`<div class="ring" role="img" aria-label="${esc(label)} ${esc(sub)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--dsa)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg><b>${esc(label)}<small>${esc(sub)}</small></b></div>`}
+function ring(pct,label,sub){const r=52,C=2*Math.PI*r;return`<div class="ring" role="img" aria-label="${esc(label)} ${esc(sub)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--dsa)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg><b>${esc(label)}<small>${esc(sub)}</small></b></div>`}
 const newsRows=()=>NEWS?`<div class="news">${NEWS.items.slice(0,2).map(i=>`<div class="nrow"><span class="tg">${esc(i.tag)}</span><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.headline)}</a><p><b>Why it matters:</b> ${md(i.why)} <span class="muted">${esc(i.source)}, ${fmt(i.date)}</span></p></div>`).join("")}</div>`:"";
 function viewToday(){
  const L=STATE.latest_day;
@@ -234,8 +255,8 @@ function viewLesson(t,n,anchor){
   <section class="sub" id="lesson-${t}-${n}-recap"><h2>Recap</h2><ul>${T.takeaways.map(x=>`<li>${md(x)}</li>`).join("")}</ul><h3 style="margin-top:18px">Go deeper</h3><ul>${T.resources.map(r=>`<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a></li>`).join("")}</ul>
   <p style="margin-top:20px"><button class="btn" id="mark">${isDone(t,n)?"✓ Marked done · undo":"Mark this lesson done"}</button></p></section>
   <div class="pager">${n>1?`<a class="btn ghost" href="#lesson-${t}-${n-1}">← Day ${n-1}: ${esc(CUR.days[n-2][t].title)}</a>`:"<span></span>"}${n<STATE.latest_day?`<a class="btn ghost" href="#lesson-${t}-${n+1}">Day ${n+1} →</a>`:`<span class="muted">Next: ${esc((CUR.days[n]||{})[t]?.title||"")}${CUR.days[n]?" · opens "+fmt(CUR.days[n].date):""}</span>`}</div>`;
-  app.innerHTML=`<div style="${sty(t)}">${trackTabs(t)}<div class="band"><p style="margin:0;font-weight:600"><a href="#track-${t}">${TR[t].name}</a> · Day ${n} · ${fmt(les.date)} · ${T.minutes} min · ${esc(T.level)}</p><h1 style="margin-top:6px">${esc(T.title)}</h1></div><div class="lesson"><nav class="rail" aria-label="Lesson contents">${rail}</nav><div>${h}</div></div></div>`;
-  document.getElementById("mark").onclick=()=>{toggleDone(t,n);viewLesson(t,n)};
+  app.innerHTML=`<div style="${sty(t)}">${trackTabs(t)}<div class="band"><p style="margin:0;font-weight:600"><a href="#track-${t}">${TR[t].name}</a> · Day ${n} · ${fmt(les.date)} · ${T.minutes} min · ${esc(T.level)}</p><h1 style="margin-top:6px">${esc(T.title)}</h1></div><div class="lesson"><details class="railbox" ${innerWidth>860?"open":""}><summary>On this page</summary><nav class="rail" aria-label="Lesson contents">${rail}</nav></details><div>${h}</div></div></div>`;
+  app.querySelectorAll(".rail a").forEach(a=>a.addEventListener("click",()=>{if(innerWidth<=860)a.closest("details").open=false}));document.getElementById("mark").onclick=()=>{toggleDone(t,n);viewLesson(t,n)};
   const el=anchor&&document.getElementById(anchor);if(el)el.scrollIntoView();else scrollTo(0,0);
  }).catch(()=>app.innerHTML=`<h1>Lesson not found</h1><p><a href="#today">Back to today</a></p>`);
 }
