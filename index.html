@@ -99,6 +99,8 @@ main{max-width:1240px;margin:0 auto;padding:24px max(4vw,14px) 80px}
 table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
 th{background:var(--tc,var(--btn));color:#fff;text-align:left;padding:9px 10px;font-weight:600}
 td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}
+.ttab td[data-l="Day"]{width:48px;font-size:17px}.ttab td[data-l="Date"]{white-space:nowrap;width:110px}.ttab td[data-l="Status"]{white-space:nowrap;width:130px}.ttab td[data-l="Practice"]{width:190px}.ttab tr.locked td{opacity:.7}.ttab tr.today td{background:color-mix(in srgb,var(--tc) 12%,transparent)}.ttab tbody tr:hover td{background:color-mix(in srgb,var(--tc) 7%,transparent)}.ttab .small{font-size:13px;margin-top:3px}.ttab td[data-l="Topic"] a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tc);text-decoration-thickness:2px;text-underline-offset:3px}
+@media(max-width:600px){.ttab tr.today{background:color-mix(in srgb,var(--tc) 12%,transparent)}.ttab tr.today td,.ttab tbody tr:hover td{background:none}.ttab td[data-l="Date"],.ttab td[data-l="Day"]{display:inline-block;width:auto}.ttab td[data-l="Date"]::before{display:none}.ttab td{width:auto!important}}
 tbody tr:nth-child(even){background:var(--tt,var(--paper))}
 .callout{border-left:5px solid var(--tc);border-radius:12px;padding:12px 16px;margin:14px 0;max-width:780px;background:var(--paper)}
 .callout.warn{border-left-color:#b91c1c;background:light-dark(#fdecec,#2d1414)}.callout.work{border-left-color:var(--accent);background:light-dark(#eef1ff,#1c2040)}
@@ -249,13 +251,18 @@ function viewTracks(){
 function viewTrack(t){
  const L=STATE.latest_day;
  let html=`${trackTabs(t)}<div class="band" style="${sty(t)}"><h1>${TR[t].name}</h1><p>60 lessons, from basics to interview level. ${trackDone(t)} done so far. Lessons open on their day; later ones show their topic so you can see where it leads.</p></div><div style="${sty(t)}">`;
- let ph="";
- CUR.days.forEach(d=>{
-  if(d.phase!==ph){ph=d.phase;const p=CUR.phases.find(x=>x.name===ph);html+=`<p class="phase" style="color:${TR[t].c}">${esc(ph)} · days ${p.from}–${p.to}</p>`}
-  const open=d.day<=L,dn=isDone(t,d.day);
-  const sub=t==="dsa"&&d.dsa.problems.length?`<div class="muted">${esc(d.dsa.problems.join(" · "))}</div>`:"";
-  html+=open?`<a class="row" href="#lesson-${t}-${d.day}"><b>Day ${d.day}</b><span class="dt muted">${fmt(d.date)}</span><span>${esc(d[t].title)}${sub}</span><span class="st" style="color:${TR[t].c}">${dn?"✓ Done":d.day===L?"Today →":"Open →"}</span></a>`
-   :`<div class="row locked"><b>Day ${d.day}</b><span class="dt">${fmt(d.date)}</span><span>${esc(d[t].title)}${sub}</span><span class="st">Opens ${fmt(d.date)}</span></div>`;
+ const dsa=t==="dsa";
+ CUR.phases.forEach(p=>{
+  const days=CUR.days.filter(d=>d.phase===p.name);
+  html+=`<p class="phase" style="color:${TR[t].c}">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack ttab"><thead><tr><th>Day</th><th>Date</th><th>Topic</th>${dsa?"<th>Practice</th>":""}<th>Status</th></tr></thead><tbody>`;
+  days.forEach(d=>{
+   const open=d.day<=L,dn=isDone(t,d.day),href=`#lesson-${t}-${d.day}`;
+   const topic=open?`<a href="${href}"><b>${esc(d[t].title)}</b></a>`:esc(d[t].title);
+   const subs=dsa&&d.dsa.subtopics?`<div class="muted small">${esc(d.dsa.subtopics.join(" · "))}</div>`:"";
+   const st=open?`<a class="btn sm" href="${href}">${dn?"✓ Done":d.day===L?"Today →":"Open →"}</a>`:`<span class="muted">🔒 Opens ${fmt(d.date)}</span>`;
+   html+=`<tr class="${open?"":"locked"}${d.day===L?" today":""}"><td data-l="Day"><b>${d.day}</b></td><td data-l="Date">${fmt(d.date)}</td><td data-l="Topic">${topic}${subs}</td>${dsa?`<td data-l="Practice">${d.dsa.problems.length?esc(d.dsa.problems.join(", ")):"—"}</td>`:""}<td data-l="Status">${st}</td></tr>`;
+  });
+  html+="</tbody></table></div>";
  });
  app.innerHTML=html+"</div>";
 }
