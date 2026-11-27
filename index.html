@@ -166,12 +166,31 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 @media(max-width:860px){.lesson{grid-template-columns:1fr}.railbox{position:static}.rail{max-height:none;flex-direction:row;flex-wrap:wrap}.rail b{width:100%}.rail a{border:1px solid var(--line);border-radius:999px}.ring{width:100px;height:100px}}
 @media(max-width:600px){.row{grid-template-columns:56px minmax(0,1fr)}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.iv dl{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px}#nav{margin-left:0}#nav a{padding:8px 11px;font-size:14px}}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
+#pdfbtn{display:inline-flex;align-items:center;gap:6px}
+@media(max-width:600px){#pdfbtn{right:88px}}
+@media print{
+ @page{margin:14mm 12mm}
+ :root{color-scheme:light}
+ body{background:#fff!important;color:#111!important;font-size:11.5pt}
+ .top,dialog,#pdfbtn,.hbtn,.tabs,.railbox,.pager,.acts,[data-reveal],[data-know],[data-done],button{display:none!important}
+ main{padding:0!important;max-width:none!important}
+ .lesson{display:block!important}
+ details>*{display:block!important}
+ details>summary{list-style:none;font-weight:700}
+ [hidden]{display:block!important}
+ pre,code{white-space:pre-wrap!important;word-break:break-word}
+ pre,table,.prob,.panel,.tcard,.box,figure,.card-drill{break-inside:avoid}
+ h1,h2,h3{break-after:avoid}
+ a{color:inherit;text-decoration:none}
+ .tcard:hover,.tile:hover{transform:none!important}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact;box-shadow:none!important}
+}
 </style>
 </head>
 <body>
 <header class="top"><div class="bar">
  <a class="brand" href="#today"><span class="logo" aria-hidden="true"><i style="background:var(--dsa)"></i><i style="background:var(--java)"></i><i style="background:var(--design)"></i><i style="background:var(--ai)"></i></span>FAANG Prep</a>
- <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
+ <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="pdfbtn" title="Save this page as a PDF">⬇ PDF</button><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
 <dialog class="guide" id="guide" aria-labelledby="gtitle"><header><h2 id="gtitle">How to use FAANG Prep</h2><p>A two-minute tour. You can reopen this any time from the Guide button.</p></header>
 <ol>
 <li><span class="n" style="background:var(--btn)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
@@ -374,6 +393,19 @@ document.getElementById("gopen").onclick=openGuide;
 document.getElementById("gclose").onclick=()=>{store.set("seenGuide",true);G.close?G.close():G.removeAttribute("open")};
 G.addEventListener("close",()=>store.set("seenGuide",true));
 if(!store.get("seenGuide",false))setTimeout(openGuide,600);
+const pdfName=()=>{const h=location.hash.slice(1)||"today";let m;const nm={dsa:"Coding",java:"Java",design:"System-design",ai:"AI"};
+ if(m=h.match(/^lesson-(dsa|java|design|ai)-(\d+)/))return`FAANG-Prep-Day-${pad(m[2])}-${nm[m[1]]}`;
+ if(m=h.match(/^track-(dsa|java|design|ai)$/))return`FAANG-Prep-Track-${nm[m[1]]}`;
+ return"FAANG-Prep-"+h.charAt(0).toUpperCase()+h.slice(1)+"-"+todayISO()};
+document.getElementById("pdfbtn").onclick=()=>{
+ const t0=document.title,opened=[],shown=[];
+ app.querySelectorAll("details:not([open])").forEach(d=>{d.open=true;opened.push(d)});
+ app.querySelectorAll("[hidden]").forEach(e=>{e.hidden=false;shown.push(e)});
+ document.title=pdfName();
+ const undo=()=>{opened.forEach(d=>d.open=false);shown.forEach(e=>e.hidden=true);document.title=t0;removeEventListener("afterprint",undo)};
+ addEventListener("afterprint",undo);
+ setTimeout(()=>window.print(),50);
+};
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
 }
