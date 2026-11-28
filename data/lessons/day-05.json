@@ -1,0 +1,821 @@
+{
+ "day": 5,
+ "date": "2026-11-28",
+ "phase": "Foundations",
+ "headline": "Sets, contracts and load balancers: O(n) tricks, clean Java design and spreading traffic",
+ "intro": "Today you use HashSets to reach O(n) on two classic problems, learn when to use an interface or an abstract class, and see how a load balancer spreads traffic across servers. The AI track explains how Meta, Google and Amazon now treat AI in interviews.",
+ "connections": [
+  "The Sudoku box formula groups cells by a computed key (Coding), just like an L7 load balancer groups requests by path (Design).",
+  "Composition (Java) is what lets a service swap a strategy at runtime, the same way a load balancer swaps healthy servers in and out (Design).",
+  "Longest Consecutive Sequence (Coding) is today's AI-enabled practice; Valid Sudoku is the solo, Amazon-style one (AI)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Sets and sequences",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "HashSet questions test whether you can turn an O(n log n) or O(n²) idea into O(n). Longest Consecutive Sequence is a Google and Amazon favourite precisely because the O(n) trick is not obvious, and Valid Sudoku is a common Amazon and Microsoft screen that checks clean, careful code.",
+   "builds_on": "Day 1: HashSet for Contains Duplicate. Day 2: the 'have I seen this?' pattern. Day 3: designing keys.",
+   "next": "Day 6 is your first timed mock, using every pattern from Days 1 to 5.",
+   "subtopics": [
+    {
+     "id": "membership",
+     "title": "Membership checks with a set",
+     "in_one_line": "A HashSet answers 'is x here?' in O(1) on average.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Need",
+        "Structure",
+        "Cost of 'contains'"
+       ],
+       "rows": [
+        [
+         "Is x present?",
+         "HashSet",
+         "O(1) average"
+        ],
+        [
+         "Is x present, sorted order needed",
+         "TreeSet",
+         "O(log n)"
+        ],
+        [
+         "Values are small integers",
+         "boolean[] or a bitmask",
+         "O(1), smallest memory"
+        ]
+       ]
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "Set<Integer> set = new HashSet<>();\nfor (int x : nums) set.add(x);       // build once: O(n)\nif (set.contains(target)) { /* O(1) average */ }"
+      }
+     ]
+    },
+    {
+     "id": "starts",
+     "title": "Finding where a sequence starts",
+     "in_one_line": "Only start counting from a number whose predecessor is missing; then each number is visited a constant number of times.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "If you start counting from every number, a long run like 1, 2, 3, 4, 5 gets counted again from 2, from 3 and so on: O(n²). The fix: **x is a start only if x − 1 is not in the set.**"
+      },
+      {
+       "type": "table",
+       "head": [
+        "Number",
+        "Is x − 1 in the set?",
+        "Action"
+       ],
+       "rows": [
+        [
+         "100",
+         "No",
+         "Start: count 100 → length 1"
+        ],
+        [
+         "4",
+         "Yes (3)",
+         "Skip"
+        ],
+        [
+         "1",
+         "No",
+         "Start: count 1, 2, 3, 4 → length 4"
+        ],
+        [
+         "3",
+         "Yes (2)",
+         "Skip"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Explaining the Big-O",
+       "text": "\"The inner while loop looks nested, but each number is stepped over at most once across all starts, so the total work is O(n).\" Interviewers listen for this sentence."
+      }
+     ]
+    },
+    {
+     "id": "grids",
+     "title": "Validating grids with sets",
+     "in_one_line": "Keep one set per row, per column and per box, or one set of descriptive keys.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "For a grid, decide what 'already seen' means. In Sudoku a digit may appear once per row, once per column and once per 3×3 box. Box index = (r / 3) * 3 + c / 3."
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "int box = (r / 3) * 3 + (c / 3);   // boxes numbered 0..8, left to right, top to bottom"
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have validated uploaded files or ledger extracts, this is the same idea as checking for duplicate keys per account and per date: one set per group you care about, filled in a single pass."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 128,
+     "title": "Longest Consecutive Sequence",
+     "url": "https://leetcode.com/problems/longest-consecutive-sequence/",
+     "difficulty": "Medium",
+     "statement": "Given an unsorted array of integers nums, return the length of the longest sequence of consecutive integers. Your algorithm must run in O(n) time.",
+     "example": "nums = [100, 4, 200, 1, 3, 2] → 4 (the run 1, 2, 3, 4).",
+     "how_to_think": [
+      "Understand: duplicates may exist; the array may be empty (answer 0).",
+      "Simple: sort, then walk counting runs, skipping duplicates. O(n log n): correct but not O(n).",
+      "Improve: put everything in a set. Start counting only from numbers that begin a run (x − 1 not in the set)."
+     ],
+     "hints": [
+      "What makes a number the first one in a run?",
+      "Only from those starting numbers, walk x + 1, x + 2, … while they exist in the set."
+     ],
+     "solution": {
+      "approach": [
+       "Add all numbers to a HashSet.",
+       "For each x in the set: if x − 1 is in the set, skip it.",
+       "Otherwise count length while x + length is in the set.",
+       "Track the maximum length and return it."
+      ],
+      "code": "public int longestConsecutive(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int x : nums) set.add(x);\n\n    int best = 0;\n    for (int x : set) {                       // iterate the set: duplicates already removed\n        if (set.contains(x - 1)) continue;    // not the start of a run\n        int length = 1;\n        while (set.contains(x + length)) length++;\n        best = Math.max(best, length);\n    }\n    return best;\n}",
+      "time": "O(n): each number is part of exactly one run and visited a constant number of times",
+      "space": "O(n): the set"
+     },
+     "alternatives": [
+      {
+       "name": "Sort then scan",
+       "time": "O(n log n)",
+       "space": "O(1) to O(n)",
+       "note": "Good first answer; mention it"
+      },
+      {
+       "name": "HashSet with run starts",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Why iterate over the set rather than the array?",
+       "a": "With many duplicates in the array, iterating the array can repeat the same start's work; the set removes duplicates."
+      },
+      {
+       "q": "Could you use union-find instead?",
+       "a": "Yes, union x with x + 1 when both exist and track component sizes, but the set solution is simpler."
+      }
+     ]
+    },
+    {
+     "num": 36,
+     "title": "Valid Sudoku",
+     "url": "https://leetcode.com/problems/valid-sudoku/",
+     "difficulty": "Medium",
+     "statement": "Determine if a 9×9 Sudoku board is valid. Only the filled cells need to be checked: each row, each column and each 3×3 box must contain the digits 1–9 without repetition. Empty cells are '.'. The board does not need to be solvable.",
+     "example": "A board whose first row is 5 3 . . 7 . . . . and the standard example from LeetCode → true. If two 8s appear in the same 3×3 box → false.",
+     "how_to_think": [
+      "Understand: only check filled cells; a valid partial board might not be solvable, and that is fine.",
+      "Simple: check each row, then each column, then each box separately with a fresh set. 27 small checks: still O(81).",
+      "Cleaner: one pass over all 81 cells with 9 row sets, 9 column sets and 9 box sets."
+     ],
+     "hints": [
+      "Which three groups does a cell belong to?",
+      "box = (r / 3) * 3 + c / 3. If set.add() returns false for any of the three groups, the board is invalid."
+     ],
+     "solution": {
+      "approach": [
+       "Create rows[9], cols[9], boxes[9] as boolean[9][9] (digit seen?).",
+       "For each cell with a digit d (0-based): compute box.",
+       "If rows[r][d], cols[c][d] or boxes[box][d] is already true, return false.",
+       "Mark all three as true; after the loop return true."
+      ],
+      "code": "public boolean isValidSudoku(char[][] board) {\n    boolean[][] rows = new boolean[9][9], cols = new boolean[9][9], boxes = new boolean[9][9];\n    for (int r = 0; r < 9; r++) {\n        for (int c = 0; c < 9; c++) {\n            char ch = board[r][c];\n            if (ch == '.') continue;\n            int d = ch - '1';                       // digit '1'..'9' -> 0..8\n            int b = (r / 3) * 3 + c / 3;            // box 0..8\n            if (rows[r][d] || cols[c][d] || boxes[b][d]) return false;\n            rows[r][d] = cols[c][d] = boxes[b][d] = true;\n        }\n    }\n    return true;\n}",
+      "time": "O(1): always 81 cells (O(n²) for an n×n board)",
+      "space": "O(1): three fixed 9×9 tables"
+     },
+     "alternatives": [
+      {
+       "name": "Three separate passes with HashSet",
+       "time": "O(81)",
+       "space": "O(9)",
+       "note": "Easy to read"
+      },
+      {
+       "name": "One pass with HashSet<String> keys like \"5 in row 0\"",
+       "time": "O(81)",
+       "space": "O(81)",
+       "note": "Short to write, slower in practice"
+      },
+      {
+       "name": "One pass with boolean tables",
+       "time": "O(81)",
+       "space": "O(1)",
+       "note": "Fast and clear"
+      }
+     ],
+     "followups": [
+      {
+       "q": "How would you solve the Sudoku, not just validate it?",
+       "a": "Backtracking: try digits in empty cells, using these same three tables to reject invalid choices immediately. That is a later pattern."
+      },
+      {
+       "q": "How would you generalise to an n×n board?",
+       "a": "Use box size √n and tables of size n × n; the logic stays the same."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "How do you find the longest run of consecutive numbers in O(n)?",
+     "a": "Put all numbers in a HashSet. For each number whose predecessor is not in the set, count upward while the next number exists. Each number is visited a constant number of times, so it is O(n) time and space."
+    },
+    {
+     "q": "When would you choose a TreeSet over a HashSet?",
+     "a": "When you need sorted order or range queries like 'smallest element above x'. It costs O(log n) per operation instead of O(1) average."
+    },
+    {
+     "q": "How do you compute which 3×3 box a Sudoku cell belongs to?",
+     "a": "box = (row / 3) * 3 + (col / 3) with integer division, giving boxes 0 to 8."
+    }
+   ],
+   "takeaways": [
+    "HashSet gives O(1) membership; build it once.",
+    "Only start counting at the beginning of a run (x − 1 missing).",
+    "Nested-looking loops can still be O(n): count total work.",
+    "For grids, keep one set per row, column and box."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Oracle Java docs: HashSet",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashSet.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Google and Amazon (Longest Consecutive Sequence); Amazon and Microsoft screens (Valid Sudoku)",
+    "how_it_comes_up": "\"Find the length of the longest consecutive sequence in O(n)\", then \"Why is your nested loop not O(n²)?\"",
+    "strong_answer": "Say the sort-based O(n log n) first, then the set with the 'start of run' check, and justify O(n) by counting total steps.",
+    "pitfalls": "Counting from every number (O(n²)); claiming O(n) without justifying it; off-by-one in the Sudoku box formula."
+   }
+  },
+  "java": {
+   "title": "Abstract classes vs interfaces; composition over inheritance",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "\"Abstract class vs interface?\" is one of the most common core-Java questions at banks, and \"composition over inheritance\" is central to Amazon and Microsoft low-level design rounds. Since Java 8 the honest answer has changed, and interviewers check whether you know that.",
+   "builds_on": "Day 4: the four pillars of OOP, especially abstraction and the limits of inheritance.",
+   "next": "Day 6 reviews week 1 with a core-Java quiz; equals() and hashCode() follow on Day 7.",
+   "subtopics": [
+    {
+     "id": "compare",
+     "title": "Abstract class vs interface",
+     "in_one_line": "An interface says what a type can do; an abstract class shares code and state among closely related classes.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "",
+        "Interface",
+        "Abstract class"
+       ],
+       "rows": [
+        [
+         "Fields",
+         "Only constants (public static final)",
+         "Any fields, including instance state"
+        ],
+        [
+         "Methods",
+         "Abstract, default, static and private methods",
+         "Abstract and concrete methods"
+        ],
+        [
+         "Constructors",
+         "No",
+         "Yes"
+        ],
+        [
+         "How many per class",
+         "A class can implement many",
+         "A class can extend only one"
+        ],
+        [
+         "Use for",
+         "A capability or contract (Comparable, Runnable)",
+         "A base with shared state and logic"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "java8",
+     "title": "What changed in Java 8 and 9",
+     "in_one_line": "Interfaces can now contain default and static methods (Java 8) and private helpers (Java 9).",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "public interface PricingRule {\n    BigDecimal price(Trade t);                       // abstract: each rule must implement\n\n    default BigDecimal priceWithFee(Trade t) {       // default: shared behaviour, can be overridden\n        return price(t).add(fee(t));\n    }\n    private BigDecimal fee(Trade t) {                // private helper (Java 9+)\n        return BigDecimal.ONE;\n    }\n    static PricingRule flat(BigDecimal p) {          // static factory\n        return t -> p;\n    }\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "The real difference now",
+       "text": "\"Since Java 8 both can hold behaviour, so the main difference is state and constructors: interfaces cannot hold instance state, and a class can implement many interfaces but extend only one class.\""
+      }
+     ]
+    },
+    {
+     "id": "composition",
+     "title": "Composition over inheritance",
+     "in_one_line": "Build behaviour by holding other objects (has-a) instead of extending a class (is-a).",
+     "blocks": [
+      {
+       "type": "compare",
+       "items": [
+        {
+         "title": "Inheritance (is-a)",
+         "points": [
+          "ReportService extends CsvExporter",
+          "Tied to the parent forever",
+          "Changing the export format means changing the class hierarchy",
+          "Hard to test the parts separately"
+         ]
+        },
+        {
+         "title": "Composition (has-a)",
+         "points": [
+          "ReportService has an Exporter field",
+          "Swap CsvExporter for ExcelExporter at runtime",
+          "Each part is tested on its own",
+          "This is how Spring dependency injection works"
+         ]
+        }
+       ]
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "public class ReportService {\n    private final Exporter exporter;                  // has-a: any implementation\n    public ReportService(Exporter exporter) {         // injected, e.g. by Spring\n        this.exporter = exporter;\n    }\n    public byte[] run(Report r) { return exporter.export(r); }\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your Spring Boot services inject repositories, clients and rule classes through constructors, you already use composition every day. Saying so, with an example from your IA or netting work, is a strong interview answer."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between an abstract class and an interface?",
+     "a": "An interface defines a contract; a class can implement many, and since Java 8 it can have default and static methods but no instance state or constructors. An abstract class can hold state, constructors and shared code, but a class can extend only one. I use interfaces for capabilities and abstract classes for a shared base among closely related types."
+    },
+    {
+     "q": "When would you choose an abstract class over an interface?",
+     "a": "When related classes share state or a fixed algorithm with some steps left open, the template method pattern. For example, a base job class that handles logging and retries, with an abstract process() step."
+    },
+    {
+     "q": "What does 'favour composition over inheritance' mean?",
+     "a": "Prefer giving a class the behaviour it needs through fields holding other objects, usually interfaces injected in the constructor, instead of extending a class. It is looser coupling, easier to test and can change at runtime."
+    },
+    {
+     "q": "What happens if a class implements two interfaces with the same default method?",
+     "a": "It will not compile until the class overrides that method. It can call a specific one with InterfaceName.super.method()."
+    }
+   ],
+   "takeaways": [
+    "Interface = contract, many allowed, no instance state.",
+    "Abstract class = shared state and code, only one parent.",
+    "Java 8+ interfaces have default, static and (Java 9) private methods.",
+    "Prefer composition: inject collaborators through the constructor."
+   ],
+   "resources": [
+    {
+     "title": "Baeldung: Interface vs abstract class in Java",
+     "url": "https://www.baeldung.com/java-interface-vs-abstract-class"
+    },
+    {
+     "title": "Oracle tutorial: Abstract methods and classes",
+     "url": "https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html"
+    },
+    {
+     "title": "Oracle tutorial: Default methods",
+     "url": "https://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Banks (UBS, Morgan Stanley, Nomura) in core-Java rounds; Amazon and Microsoft in low-level design",
+    "how_it_comes_up": "\"Abstract class vs interface, and when would you use each?\", \"What changed in Java 8?\", \"Why composition over inheritance?\"",
+    "strong_answer": "Give the table difference in two sentences, mention Java 8 default methods, then a real example: a strategy interface injected into a Spring service.",
+    "pitfalls": "A pre-Java-8 answer ('interfaces have no method bodies'); no example of when to pick each; confusing composition with aggregation jargon instead of explaining it simply."
+   }
+  },
+  "design": {
+   "title": "Load balancers: L4 vs L7",
+   "minutes": 12,
+   "level": "Basics",
+   "why": "Almost every high-level design starts with \"clients → load balancer → app servers\". Interviewers at Google, Amazon and Meta follow up with: what does the load balancer look at, how does it pick a server, and what happens when a server dies?",
+   "builds_on": "Day 4: stateless services and scaling out, which only works if something spreads the traffic.",
+   "next": "Day 6 reviews week 1 by drawing a basic web architecture that includes the load balancer.",
+   "subtopics": [
+    {
+     "id": "what",
+     "title": "What a load balancer does",
+     "in_one_line": "It spreads incoming requests across healthy servers and stops sending to unhealthy ones.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Clients",
+         "note": "Many requests"
+        },
+        {
+         "label": "Load balancer",
+         "note": "Picks a server per request or connection"
+        },
+        {
+         "label": "Server A / B / C",
+         "note": "Stateless app servers"
+        },
+        {
+         "label": "Health checks",
+         "note": "Unhealthy servers are taken out"
+        }
+       ]
+      },
+      {
+       "type": "list",
+       "items": [
+        "Spreads load so no single server is overwhelmed.",
+        "Removes failed servers using health checks.",
+        "Gives one stable address to clients while servers come and go."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l4-l7",
+     "title": "L4 vs L7",
+     "in_one_line": "L4 routes by IP and port without reading the request; L7 reads HTTP and can route by path, header or cookie.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "",
+        "Layer 4 (transport)",
+        "Layer 7 (application)"
+       ],
+       "rows": [
+        [
+         "Looks at",
+         "IP addresses and ports (TCP/UDP)",
+         "HTTP: URL path, headers, cookies"
+        ],
+        [
+         "Can route /api to one pool and /images to another?",
+         "No",
+         "Yes"
+        ],
+        [
+         "Speed",
+         "Very fast, low overhead",
+         "More work per request"
+        ],
+        [
+         "TLS",
+         "Usually passes it through",
+         "Often ends TLS here"
+        ],
+        [
+         "AWS example",
+         "Network Load Balancer (NLB)",
+         "Application Load Balancer (ALB)"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your Spring Boot services on EKS are exposed through an AWS Application Load Balancer (for example via an ingress), that is an L7 load balancer routing by host and path to Kubernetes services. That is a concrete example to give."
+      }
+     ]
+    },
+    {
+     "id": "algorithms",
+     "title": "How it picks a server",
+     "in_one_line": "Round robin is the default; least connections and hashing handle uneven work and stickiness.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Algorithm",
+        "How it works",
+        "Good when"
+       ],
+       "rows": [
+        [
+         "Round robin",
+         "Next server in turn",
+         "Requests cost about the same"
+        ],
+        [
+         "Weighted round robin",
+         "Bigger servers get more turns",
+         "Mixed server sizes"
+        ],
+        [
+         "Least connections",
+         "Server with fewest active connections",
+         "Some requests are long"
+        ],
+        [
+         "IP or key hash",
+         "Same client or key goes to the same server",
+         "You need stickiness or cache locality"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Single point of failure",
+       "text": "One load balancer can itself fail. Real setups run a redundant pair or use a managed service that is redundant across zones, and DNS points at it."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between an L4 and an L7 load balancer?",
+     "a": "An L4 balancer routes by IP and port without reading the request, so it is very fast. An L7 balancer understands HTTP, so it can route by path, header or cookie, end TLS and do things like rate limiting, at more cost per request."
+    },
+    {
+     "q": "How does a load balancer know a server is down?",
+     "a": "Health checks: it regularly calls an endpoint such as /health or opens a TCP connection. After a few failures it stops routing to that server, and adds it back when checks pass again."
+    },
+    {
+     "q": "Isn't the load balancer a single point of failure?",
+     "a": "It can be, so you run at least two in different availability zones, or use a managed load balancer that is already redundant, and keep it stateless."
+    }
+   ],
+   "takeaways": [
+    "A load balancer spreads traffic and removes unhealthy servers.",
+    "L4 = IP and port, fast; L7 = HTTP-aware, smarter routing.",
+    "Round robin by default; least connections for uneven work.",
+    "Make the load balancer itself redundant."
+   ],
+   "resources": [
+    {
+     "title": "Cloudflare Learning: What is load balancing?",
+     "url": "https://www.cloudflare.com/learning/performance/what-is-load-balancing/"
+    },
+    {
+     "title": "System Design Primer: load balancer",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Every system design round at Google, Amazon, Meta and Microsoft; banks for high-availability systems",
+    "how_it_comes_up": "\"What sits in front of your servers?\", \"L4 or L7 here, and why?\", \"What if a server or the load balancer dies?\"",
+    "strong_answer": "Name the choice with a reason (L7 because we route /api and /static differently), the algorithm, health checks, and redundancy for the balancer itself.",
+    "pitfalls": "Drawing one box labelled LB and moving on; forgetting health checks; ignoring that the load balancer needs redundancy."
+   }
+  },
+  "ai": {
+   "title": "How AI shows up in 2026 interviews (Meta, Google, Amazon)",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "Companies now differ sharply: some build AI into a round, others ban it completely. Knowing each company's rules protects you from an instant rejection and lets you practise the right skill for each loop.",
+   "builds_on": "Day 4: prompting with role, context, constraints and examples.",
+   "next": "Day 6 runs a full AI-assisted solve from start to finish.",
+   "subtopics": [
+    {
+     "id": "landscape",
+     "title": "Who allows what",
+     "in_one_line": "Meta and Google have AI-assisted rounds; Amazon bans AI tools; many others still ban them. Always confirm with your recruiter.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Company",
+        "What is reported",
+        "What to practise"
+       ],
+       "rows": [
+        [
+         "Meta",
+         "From October 2025, one of the two onsite coding rounds became a 60-minute AI-enabled round in CoderPad with an AI chat beside the code. Problems are larger: extend, fix or build on existing code.",
+         "Reading unfamiliar code fast, directing the AI, testing its output"
+        ],
+        [
+         "Google",
+         "Piloting a 'human-led, AI-assisted' coding round with an approved assistant, per reports in 2026.",
+         "Explaining your plan first, then using AI for parts you have already designed"
+        ],
+        [
+         "Amazon",
+         "Candidates must confirm they will not use GenAI tools during interviews and assessments; using them can lead to disqualification.",
+         "Classic solo coding and Leadership Principle stories, no AI"
+        ],
+        [
+         "Banks and many others",
+         "Mostly traditional rounds; AI use is usually not allowed.",
+         "Classic solo coding"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "The rule",
+       "text": "Never use AI in a round unless the company has told you it is allowed. If unsure, ask the recruiter in writing."
+      }
+     ]
+    },
+    {
+     "id": "graded",
+     "title": "What AI-enabled rounds grade",
+     "in_one_line": "They score your judgement in leading the AI, not the AI's output.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Signal",
+        "What good looks like"
+       ],
+       "rows": [
+        [
+         "Understanding",
+         "You read the existing code and explain it before changing it"
+        ],
+        [
+         "Direction",
+         "Clear, small requests to the AI with constraints"
+        ],
+        [
+         "Verification",
+         "You run tests, catch its bugs and edge cases"
+        ],
+        [
+         "Ownership",
+         "You can explain every line, Big-O and trade-offs without the AI"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "habits",
+     "title": "Habits to build now",
+     "in_one_line": "Plan first, delegate small pieces, verify everything, narrate.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Restate the problem and plan aloud before typing anything to the AI.",
+        "Ask the AI for one small piece, for example a helper method or test cases.",
+        "Read and run what it gives you; say what you are checking.",
+        "When it is wrong, say so and fix it yourself.",
+        "End with Big-O and trade-offs in your own words."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Practise one Meta-style AI-enabled solve, then one solo solve.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Valid Sudoku on your own, timed, no AI (Amazon or bank style).",
+        "For Longest Consecutive Sequence, use the prompt below to simulate an AI-enabled round.",
+        "Narrate out loud as if an interviewer is watching.",
+        "Write down one moment where you overrode the AI.",
+        "Type QUIZ JAVA to be quizzed on abstract classes and interfaces."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "Simulate Meta's AI-enabled coding round. You are the AI assistant in the editor, and I am the candidate. Problem: LeetCode 128, Longest Consecutive Sequence, in Java, O(n). Rules: only do exactly what I ask; keep answers short; if I ask for code, include one subtle bug about 30% of the time without telling me. After I finish, switch roles and act as the interviewer: grade me on understanding, direction, verification and ownership (weak / ok / strong) with one sentence each.",
+   "interview_qa": [
+    {
+     "q": "How do you feel about AI in coding interviews?",
+     "a": "I follow each company's rules: where it is allowed, I use it the way I would at work, planning first, delegating small parts and testing everything; where it is not, I solve on my own. Either way I can explain every line and its complexity."
+    },
+    {
+     "q": "In an AI-enabled round, what would you do if the AI's code fails a test?",
+     "a": "Read the failing case, find the bug myself, explain it to the interviewer, and either fix it directly or give the AI a precise correction. I would not keep regenerating hoping it works."
+    }
+   ],
+   "takeaways": [
+    "Meta and Google run AI-assisted rounds; Amazon and many banks ban AI.",
+    "Confirm each company's rules with the recruiter.",
+    "AI rounds grade your understanding, direction and verification.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "interviewing.io: Using AI in Meta's AI-assisted coding interview",
+     "url": "https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples"
+    },
+    {
+     "title": "Exponent: Google's AI-assisted coding interview (2026)",
+     "url": "https://www.tryexponent.com/blog/google-ai-coding-interview"
+    },
+    {
+     "title": "Hello Interview: Meta's AI-enabled coding interview",
+     "url": "https://www.hellointerview.com/blog/meta-ai-enabled-coding"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta (AI-enabled onsite round), Google (pilot), Amazon (explicit ban), banks (mostly traditional)",
+    "how_it_comes_up": "Recruiters explain the format beforehand; interviewers ask \"How do you use AI at work?\" and, in AI rounds, watch how you use it",
+    "strong_answer": "Show you know the rules differ, and describe a disciplined workflow: plan, delegate small, verify, own the result.",
+    "pitfalls": "Using AI where it is banned; letting the AI drive in an AI-enabled round; being unable to explain code the AI wrote."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Membership check",
+   "meaning": "Asking whether a value is present in a collection; O(1) on average with a HashSet."
+  },
+  {
+   "term": "TreeSet",
+   "meaning": "A Java set kept in sorted order, with O(log n) operations and range queries."
+  },
+  {
+   "term": "Consecutive sequence",
+   "meaning": "Numbers that follow each other with a step of 1, such as 4, 5, 6."
+  },
+  {
+   "term": "Abstract class",
+   "meaning": "A class that cannot be instantiated and may contain both implemented and abstract methods plus state."
+  },
+  {
+   "term": "Interface",
+   "meaning": "A Java contract listing methods a class promises to provide; a class can implement many."
+  },
+  {
+   "term": "Default method",
+   "meaning": "A method with a body inside an interface, added in Java 8."
+  },
+  {
+   "term": "Composition",
+   "meaning": "Building a class's behaviour by holding other objects as fields instead of extending a class."
+  },
+  {
+   "term": "Load balancer",
+   "meaning": "A component that spreads incoming requests across several servers and avoids unhealthy ones."
+  },
+  {
+   "term": "Layer 4 load balancer",
+   "meaning": "A load balancer that routes by IP address and port without reading the request content."
+  },
+  {
+   "term": "Layer 7 load balancer",
+   "meaning": "A load balancer that understands HTTP and can route by URL path, headers or cookies."
+  },
+  {
+   "term": "Health check",
+   "meaning": "A regular test a load balancer runs to see whether a server can take traffic."
+  },
+  {
+   "term": "AI-enabled interview",
+   "meaning": "A coding round where the company provides an approved AI assistant and grades how you use it."
+  }
+ ],
+ "checklist": [
+  "Read set membership, run starts and grid sets",
+  "Solve Valid Sudoku solo (25 minutes, no AI)",
+  "Solve Longest Consecutive Sequence with the AI-round simulation prompt",
+  "Explain why the nested loop is still O(n), out loud",
+  "Answer the 4 abstract class vs interface questions out loud",
+  "Draw clients → L7 load balancer → 3 servers with health checks",
+  "Add one line to your mistake log"
+ ]
+}

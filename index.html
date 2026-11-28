@@ -168,8 +168,8 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
 #pdfbtn{display:inline-flex;align-items:center;gap:6px}
 .pick{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:2px 4px 2px 12px;font-weight:600;font-size:14px;vertical-align:middle}.pick select{border:0;background:transparent;color:var(--ink);font:inherit;font-weight:700;padding:4px 6px;cursor:pointer}@media print{.pick{display:none!important}}
-@media(max-width:600px){#pdfbtn{right:88px}}
-@media(max-width:380px){.top .hbtn{font-size:13px;padding:4px 9px}#pdfbtn{right:76px}.brand{font-size:20px}}
+@media(max-width:600px){#pdfbtn{right:56px}#gopen{font-size:0;width:38px;padding:0;justify-content:center}#gopen::after{content:"?";font-size:17px;font-weight:700}}
+@media(max-width:380px){.top .hbtn#pdfbtn{font-size:13px;padding:4px 9px}#pdfbtn{right:54px}.brand{font-size:20px}}
 @media print{
  @page{margin:14mm 12mm}
  :root{color-scheme:light}
@@ -192,7 +192,7 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 <body>
 <header class="top"><div class="bar">
  <a class="brand" href="#today"><span class="logo" aria-hidden="true"><i style="background:var(--dsa)"></i><i style="background:var(--java)"></i><i style="background:var(--design)"></i><i style="background:var(--ai)"></i></span>FAANG Prep</a>
- <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="pdfbtn" data-pdf title="Download this day's full lesson as a PDF">⬇ PDF</button><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
+ <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="pdfbtn" data-pdf title="Download this day's full lesson as a PDF">⬇ PDF</button><button class="hbtn" id="gopen" aria-haspopup="dialog" aria-label="Guide">Guide</button></div></header>
 <dialog class="guide" id="guide" aria-labelledby="gtitle"><header><h2 id="gtitle">How to use FAANG Prep</h2><p>A two-minute tour. You can reopen this any time from the Guide button.</p></header>
 <ol>
 <li><span class="n" style="background:var(--btn)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
@@ -216,6 +216,7 @@ const store={get(k,d){try{return JSON.parse(localStorage.getItem("fp_"+k))??d}ca
 const pad=n=>String(n).padStart(2,"0");
 const fmt=d=>new Date(d+"T00:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
 const todayISO=()=>new Date(Date.now()+330*60000).toISOString().slice(0,10);
+const TODAY=()=>{let t=1;for(const d of CUR.days)if(d.date<=todayISO())t=d.day;return Math.max(1,Math.min(t,STATE.latest_day))};
 const sty=t=>`--tc:${TR[t].c};--tt:${TR[t].t}`;
 async function j(u){const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error(u);return r.json()}
 async function lesson(n){if(!LES[n])LES[n]=await j(`data/lessons/day-${pad(n)}.json`);return LES[n]}
@@ -225,7 +226,7 @@ function toggleDone(t,n){const d=done();d[t+"-"+n]=!d[t+"-"+n];store.set("done",
 const known=()=>store.get("known",{});
 function trackDone(t){let c=0;for(let n=1;n<=60;n++)if(isDone(t,n))c++;return c}
 function header(){
- const h=location.hash.slice(1)||"today";{const m=h.match(/^(?:lesson-[a-z]+-|day-)(\d+)/),n=m?+m[1]:STATE.latest_day,b=document.getElementById("pdfbtn");b.dataset.pdf=n;b.textContent=`⬇ Day ${n} PDF`;b.style.display=n>STATE.latest_day?"none":""}
+ const h=location.hash.slice(1)||"today";{const m=h.match(/^(?:lesson-[a-z]+-|day-)(\d+)/),n=m?+m[1]:TODAY(),b=document.getElementById("pdfbtn");b.dataset.pdf=n;b.textContent=`⬇ Day ${n} PDF`;b.style.display=n>STATE.latest_day?"none":""}
  const sec=h.startsWith("day-")?"today":(h.startsWith("lesson-")||h.startsWith("track-")||h);
  document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"],["glossary","Glossary"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
 }
@@ -244,11 +245,11 @@ function codeBox(c){return`<div class="codewrap"><button class="copy" data-copy>
 function ring(pct,label,sub){const r=52,C=2*Math.PI*r;return`<div class="ring" role="img" aria-label="${esc(label)} ${esc(sub)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--dsa)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg><b>${esc(label)}<small>${esc(sub)}</small></b></div>`}
 const newsRows=()=>NEWS?`<div class="news">${NEWS.items.slice(0,2).map(i=>`<div class="nrow"><span class="tg">${esc(i.tag)}</span><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.headline)}</a><p><b>Why it matters:</b> ${md(i.why)} <span class="muted">${esc(i.source)}, ${fmt(i.date)}</span></p></div>`).join("")}</div>`:"";
 function viewToday(D){
- const L=D||STATE.latest_day;
+ const L=D||TODAY();
  lesson(L).then(les=>{
   const nx=CUR.days[L],total=Object.values(done()).filter(Boolean).length;
   const preview=todayISO()<les.date;
-  app.innerHTML=`<section class="hero"><div><p class="eyebrow">${dayPicker(L)} <span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
+  app.innerHTML=`<section class="hero"><div><p class="eyebrow">${dayPicker(L)} <span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Ahead of schedule · planned for '+fmt(les.date)+'</span>':""}</p>
    <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p><p><button class="btn" data-pdf="${L}" style="--tc:var(--btn)">⬇ Download Day ${L} lesson (PDF)</button></p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
   <div class="grid g2">${ORDER.map(t=>{const T=les.tracks[t];return`<article class="tcard" style="${sty(t)}"><header><div class="k"><span>${TR[t].name}</span><span>${T.minutes} min · ${esc(T.level)}</span></div><h3>${esc(T.title)}</h3></header>
    <div class="body">${T.interview_angle?`<div class="ask"><b>In the interview:</b> ${md(T.interview_angle.how_it_comes_up)}</div>`:""}
@@ -282,7 +283,7 @@ function viewTracks(){
 }
 function viewTrack(t){
  const L=STATE.latest_day;
- let html=`${trackTabs(t)}<div class="band" style="${sty(t)}"><h1>${TR[t].name}</h1><p>60 lessons, from basics to interview level. ${trackDone(t)} done so far. Lessons open on their day; later ones show their topic so you can see where it leads.</p></div><div style="${sty(t)}">`;
+ let html=`${trackTabs(t)}<div class="band" style="${sty(t)}"><h1>${TR[t].name}</h1><p>60 lessons, from basics to interview level. ${trackDone(t)} done so far. Days 1–${L} are fully written; later days show their outline so you can see where it leads.</p></div><div style="${sty(t)}">`;
  const dsa=t==="dsa";
  CUR.phases.forEach(p=>{
   const days=CUR.days.filter(d=>d.phase===p.name);
@@ -291,8 +292,8 @@ function viewTrack(t){
    const open=d.day<=L,dn=isDone(t,d.day),href=`#lesson-${t}-${d.day}`;
    const topic=open?`<a href="${href}"><b>${esc(d[t].title)}</b></a>`:esc(d[t].title);
    const subs=dsa&&d.dsa.subtopics?`<div class="muted small">${esc(d.dsa.subtopics.join(" · "))}</div>`:"";
-   const st=open?`<a class="btn sm" href="${href}">${dn?"✓ Done":d.day===L?"Today →":"Open →"}</a>`:`<span class="muted">🔒 Opens ${fmt(d.date)}</span>`;
-   html+=`<tr class="${open?"":"locked"}${d.day===L?" today":""}"><td data-l="Day"><b>${d.day}</b></td><td data-l="Date">${fmt(d.date)}</td><td data-l="Topic">${topic}${subs}</td>${dsa?`<td data-l="Practice">${d.dsa.problems.length?esc(d.dsa.problems.join(", ")):"—"}</td>`:""}<td data-l="Status">${st}</td></tr>`;
+   const st=open?`<a class="btn sm" href="${href}">${dn?"✓ Done":d.day===TODAY()?"Today →":"Open →"}</a>`:`<a class="muted" href="#day-${d.day}">Outline only →</a>`;
+   html+=`<tr class="${open?"":"locked"}${d.day===TODAY()?" today":""}"><td data-l="Day"><b>${d.day}</b></td><td data-l="Date">${fmt(d.date)}</td><td data-l="Topic">${topic}${subs}</td>${dsa?`<td data-l="Practice">${d.dsa.problems.length?esc(d.dsa.problems.join(", ")):"—"}</td>`:""}<td data-l="Status">${st}</td></tr>`;
   });
   html+="</tbody></table></div>";
  });
@@ -345,8 +346,8 @@ async function viewDrill(){
 }
 function viewRoadmap(){
  const L=STATE.latest_day;
- app.innerHTML=`<h1>The 60-day roadmap</h1><p class="lead">Four tracks side by side, each from basics to interview level. Sundays are off. Today is Day ${L}.</p>
- ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--btn);color:#fff">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===L?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
+ app.innerHTML=`<h1>The 60-day roadmap</h1><p class="lead">Four tracks side by side, each from basics to interview level. Sundays are off. Today is Day ${TODAY()}; Days 1–${L} are fully written.</p>
+ ${CUR.phases.map(p=>`<p class="phase">${esc(p.name)} · days ${p.from}–${p.to}</p><div class="scroll"><table class="stack"><thead><tr><th style="background:var(--btn);color:#fff">Day</th>${ORDER.map(t=>`<th style="background:${TR[t].c}">${TR[t].name}</th>`).join("")}</tr></thead><tbody>${CUR.days.slice(p.from-1,p.to).map(d=>`<tr${d.day===TODAY()?' style="outline:3px solid var(--accent)"':""}><td data-l="Day"><b>${d.day}</b><br><span class="muted">${fmt(d.date)}</span></td>${ORDER.map(t=>`<td data-l="${TR[t].name}">${d.day<=L?`<a href="#lesson-${t}-${d.day}" style="color:${TR[t].c}">${esc(d[t].title)}</a>`:esc(d[t].title)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`).join("")}`;
 }
 async function viewGlossary(){
  const L=STATE.latest_day,map=new Map();
@@ -410,7 +411,7 @@ if(!store.get("seenGuide",false))setTimeout(openGuide,600);
 const pdfName=()=>{const h=location.hash.slice(1)||"today";let m;const nm={dsa:"Coding",java:"Java",design:"System-design",ai:"AI"};
  if(m=h.match(/^lesson-(dsa|java|design|ai)-(\d+)/))return`FAANG-Prep-Day-${pad(m[2])}-${nm[m[1]]}`;
  if(m=h.match(/^track-(dsa|java|design|ai)$/))return`FAANG-Prep-Track-${nm[m[1]]}`;
- if(m=h.match(/^day-(\d+)$/)||(h==="today"&&[0,STATE.latest_day]))return`FAANG-Prep-Day-${pad(m[1])}`;
+ if(m=h.match(/^day-(\d+)$/)||(h==="today"&&[0,TODAY()]))return`FAANG-Prep-Day-${pad(m[1])}`;
  return"FAANG-Prep-"+h.charAt(0).toUpperCase()+h.slice(1)+"-"+todayISO()};
 function printPage(){
  const t0=document.title,opened=[],shown=[];
@@ -427,8 +428,8 @@ async function downloadDay(n){
   const a=document.createElement("a");a.href=url;a.download=`FAANG-Prep-Day-${pad(n)}.pdf`;document.body.appendChild(a);a.click();a.remove();
  }catch(e){printPage()}
 }
-document.addEventListener("change",e=>{if(e.target.id==="daypick"){const n=+e.target.value;location.hash=n===STATE.latest_day?"today":"day-"+n}});
-document.addEventListener("click",e=>{const b=e.target.closest("[data-pdf]");if(b){e.preventDefault();downloadDay(+b.dataset.pdf||STATE.latest_day)}});
+document.addEventListener("change",e=>{if(e.target.id==="daypick"){const n=+e.target.value;location.hash=n===TODAY()?"today":"day-"+n}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-pdf]");if(b){e.preventDefault();downloadDay(+b.dataset.pdf||TODAY())}});
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
 }

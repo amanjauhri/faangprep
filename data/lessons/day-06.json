@@ -1,0 +1,718 @@
+{
+ "day": 6,
+ "date": "2026-11-30",
+ "phase": "Foundations",
+ "headline": "Week 1 review: your first timed mock, a Java quiz and the baseline architecture",
+ "intro": "Today you consolidate week 1. Run a timed mock on two classic Easy problems, answer ten core-Java questions out loud, draw the baseline web architecture in two minutes, and do one complete AI-assisted solve.",
+ "connections": [
+  "The running minimum in Best Time to Buy and Sell Stock (Coding) is the same 'best so far' idea a load balancer uses with least connections (Design).",
+  "The 'what does this print?' traps (Java) are exactly the edge cases an AI tends to miss (AI).",
+  "Your baseline diagram (Design) is where you will place a cache tomorrow, which links to equals() and hashCode() for cache keys (Java, Day 7)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Week 1 review + first timed mock",
+   "minutes": 45,
+   "level": "Basics",
+   "why": "Real interviews are timed and spoken. Practising alone without a clock builds knowledge but not interview skill. Today you run your first mock: two Easy problems asked at Amazon, Microsoft, Meta and many banks, under real timing.",
+   "builds_on": "Days 1–5: Big-O, hash maps, counting and grouping, prefix sums, sets.",
+   "next": "Day 7 starts a new pattern: two pointers.",
+   "subtopics": [
+    {
+     "id": "mock",
+     "title": "How to run a mock on yourself",
+     "in_one_line": "Timer on, talk out loud, no AI, no peeking at hints until time is up.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Minute",
+        "What you do",
+        "Say out loud"
+       ],
+       "rows": [
+        [
+         "0–3",
+         "Restate the problem, ask clarifying questions, write 2 examples",
+         "\"So the input is…, edge cases are…\""
+        ],
+        [
+         "3–8",
+         "Brute force and its Big-O, then the better idea",
+         "\"Brute force is O(n²) because…; I can do better by…\""
+        ],
+        [
+         "8–20",
+         "Code it cleanly",
+         "Narrate each block as you write it"
+        ],
+        [
+         "20–25",
+         "Dry-run an example and edge cases, state final Big-O",
+         "\"Walking through [7,1,5,3,6,4]…\""
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Record yourself",
+       "text": "Use your phone to record audio. Listening back once shows long silences and unclear explanations faster than anything else."
+      }
+     ]
+    },
+    {
+     "id": "review",
+     "title": "Self-review checklist",
+     "in_one_line": "Score yourself on the same four areas interviewers use.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Area",
+        "Strong",
+        "Needs work"
+       ],
+       "rows": [
+        [
+         "Problem solving",
+         "Found the optimal idea with little help",
+         "Stuck on brute force"
+        ],
+        [
+         "Coding",
+         "Clean, compiles, good names",
+         "Bugs, messy indexes"
+        ],
+        [
+         "Communication",
+         "Explained before and while coding",
+         "Long silences"
+        ],
+        [
+         "Testing",
+         "Dry-ran and found own bugs",
+         "Said 'done' without testing"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Write one line per mock in your **mistake log**: what went wrong and the rule that prevents it next time."
+      }
+     ]
+    },
+    {
+     "id": "patterns",
+     "title": "Patterns so far",
+     "in_one_line": "Five tools from week 1 and the signal that tells you to use each.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Pattern",
+        "Signal in the problem",
+        "Day"
+       ],
+       "rows": [
+        [
+         "HashSet membership",
+         "'Seen before?', duplicates",
+         "1, 5"
+        ],
+        [
+         "HashMap value → index",
+         "Find a pair that adds up to something",
+         "2"
+        ],
+        [
+         "Counting / grouping",
+         "Frequencies, anagrams, 'most common'",
+         "3"
+        ],
+        [
+         "Prefix sums",
+         "Range sums, 'subarray sums to k'",
+         "4"
+        ],
+        [
+         "Track best so far in one pass",
+         "Max profit, running minimum",
+         "6 (today)"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 121,
+     "title": "Best Time to Buy and Sell Stock",
+     "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+     "difficulty": "Easy",
+     "statement": "You are given an array prices where prices[i] is a stock's price on day i. Choose one day to buy and a later day to sell to maximise profit. Return the maximum profit, or 0 if no profit is possible.",
+     "example": "prices = [7, 1, 5, 3, 6, 4] → 5 (buy at 1, sell at 6). prices = [7, 6, 4, 3, 1] → 0.",
+     "how_to_think": [
+      "Understand: you must buy before you sell; at most one transaction; profit can be 0.",
+      "Brute force: try every buy day with every later sell day. O(n²).",
+      "Improve: on each day, the best sale today uses the lowest price seen so far. Keep a running minimum and the best profit: one pass."
+     ],
+     "hints": [
+      "If you sold today, which earlier day would you have wanted to buy on?",
+      "Track minPrice so far; profit today = price − minPrice."
+     ],
+     "solution": {
+      "approach": [
+       "minPrice = first price (or Integer.MAX_VALUE), best = 0.",
+       "For each price: best = max(best, price − minPrice).",
+       "Then minPrice = min(minPrice, price).",
+       "Return best."
+      ],
+      "code": "public int maxProfit(int[] prices) {\n    int minPrice = Integer.MAX_VALUE;   // cheapest buy seen so far\n    int best = 0;\n    for (int p : prices) {\n        best = Math.max(best, p - minPrice);   // sell today\n        minPrice = Math.min(minPrice, p);      // or remember a cheaper buy\n    }\n    return best;\n}",
+      "time": "O(n): one pass",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "Every pair",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Say it first, then improve"
+      },
+      {
+       "name": "Running minimum",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if you can buy and sell as many times as you like?",
+       "a": "Add up every positive day-to-day increase: that is LeetCode 122, still O(n)."
+      },
+      {
+       "q": "Does p − Integer.MAX_VALUE overflow on the first day?",
+       "a": "No: a small non-negative number minus MAX_VALUE stays above Integer.MIN_VALUE, so the result is just very negative and ignored by max()."
+      }
+     ]
+    },
+    {
+     "num": 169,
+     "title": "Majority Element",
+     "url": "https://leetcode.com/problems/majority-element/",
+     "difficulty": "Easy",
+     "statement": "Given an array nums of size n, return the majority element: the value that appears more than n / 2 times. It always exists.",
+     "example": "nums = [3, 2, 3] → 3. nums = [2, 2, 1, 1, 1, 2, 2] → 2.",
+     "how_to_think": [
+      "Understand: a majority element is guaranteed.",
+      "Simple: count with a HashMap and return the value with count > n / 2. O(n) time, O(n) space.",
+      "Clever: Boyer–Moore voting. Pair off different values against each other; the majority survives. O(n) time, O(1) space."
+     ],
+     "hints": [
+      "The HashMap solution is perfectly fine to start with. Can you do it with O(1) extra memory?",
+      "Keep a candidate and a counter. Same value: +1. Different: −1. Counter at 0: take the current value as the new candidate."
+     ],
+     "solution": {
+      "approach": [
+       "candidate = 0, count = 0.",
+       "For each x: if count == 0, candidate = x.",
+       "count += (x == candidate) ? 1 : −1.",
+       "Return candidate (guaranteed to be the majority)."
+      ],
+      "code": "public int majorityElement(int[] nums) {\n    int candidate = 0, count = 0;\n    for (int x : nums) {\n        if (count == 0) candidate = x;          // start a new candidate\n        count += (x == candidate) ? 1 : -1;     // vote for, or cancel out\n    }\n    return candidate;\n}",
+      "time": "O(n): one pass",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "HashMap counting",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Easy, a good first answer"
+      },
+      {
+       "name": "Sort and take the middle",
+       "time": "O(n log n)",
+       "space": "O(1)",
+       "note": "The majority always sits at index n / 2"
+      },
+      {
+       "name": "Boyer–Moore voting",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Best, explain the cancelling idea"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if a majority might not exist?",
+       "a": "Run Boyer–Moore, then do a second pass counting the candidate to confirm it appears more than n / 2 times."
+      },
+      {
+       "q": "Why does voting work?",
+       "a": "Each 'different' vote cancels one majority vote at most; since the majority has more than half, it cannot be fully cancelled."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Walk me through how you approach a coding problem.",
+     "a": "I restate it and confirm inputs and edge cases, give the brute force with its Big-O, look for the repeated work to remove, pick a data structure, code it while explaining, then dry-run an example and edge cases and state the final complexity."
+    },
+    {
+     "q": "How do you test your code without running it?",
+     "a": "I trace a small normal example line by line with variable values, then edge cases: empty input, one element, duplicates, negatives, and the largest values for overflow."
+    }
+   ],
+   "takeaways": [
+    "Mock with a timer and speak the whole time.",
+    "Score yourself on problem solving, coding, communication, testing.",
+    "Keep a mistake log with one rule per mistake.",
+    "Match signals to patterns: seen-before, pairs, counts, ranges, best-so-far."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Tech Interview Handbook: coding interview cheatsheet",
+     "url": "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Phone screens at Amazon, Microsoft and Meta; bank online tests (UBS, Morgan Stanley, Nomura) often use these exact Easy problems",
+    "how_it_comes_up": "Two Easy problems in 35–45 minutes, with \"What's the complexity?\" and \"Any edge cases?\" after each",
+    "strong_answer": "Finish both with clean code, explain one-pass logic clearly, and test without being asked.",
+    "pitfalls": "Silence while thinking; skipping the dry run; spending too long on the first problem and leaving no time for the second."
+   }
+  },
+  "java": {
+   "title": "Week 1 review: core Java quiz",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "Banks often run a rapid-fire core-Java round: ten short questions in fifteen minutes. Reviewing week 1 out loud now turns reading into recall, which is what that round tests.",
+   "builds_on": "Days 1–5: JVM, memory, Strings, OOP, interfaces and composition.",
+   "next": "Day 7: equals() and hashCode(), the contract behind every HashMap and HashSet.",
+   "subtopics": [
+    {
+     "id": "quiz",
+     "title": "The quiz: answer out loud first",
+     "in_one_line": "Cover the answers, say yours in 30 seconds, then check.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "#",
+        "Question",
+        "Key points to hit"
+       ],
+       "rows": [
+        [
+         "1",
+         "JDK vs JRE vs JVM?",
+         "JVM runs bytecode; JRE = JVM + libraries; JDK = JRE + tools"
+        ],
+        [
+         "2",
+         "Is Java compiled or interpreted?",
+         "Both: javac to bytecode; interpreter plus JIT at runtime"
+        ],
+        [
+         "3",
+         "Stack vs heap?",
+         "Frames and locals per thread vs shared objects; GC cleans heap"
+        ],
+        [
+         "4",
+         "Is Java pass-by-reference?",
+         "No, always by value; for objects the value is the reference"
+        ],
+        [
+         "5",
+         "Integer a = 128, b = 128; a == b?",
+         "false: cache is -128..127; use equals()"
+        ],
+        [
+         "6",
+         "Why is String immutable?",
+         "Sharing, thread safety, cached hash, security, pool"
+        ],
+        [
+         "7",
+         "StringBuilder vs StringBuffer?",
+         "Same API; Buffer is synchronized, Builder is faster"
+        ],
+        [
+         "8",
+         "Overloading vs overriding?",
+         "Compile time by parameters vs runtime by object"
+        ],
+        [
+         "9",
+         "Abstract class vs interface (Java 8+)?",
+         "State and constructors vs many-allowed contracts with default methods"
+        ],
+        [
+         "10",
+         "Composition over inheritance?",
+         "Has-a via injected interfaces; looser coupling, easier tests"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "traps",
+     "title": "Five 'what does this print?' traps",
+     "in_one_line": "Short code questions banks love.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "String a = \"hi\", b = \"h\" + \"i\";       // compile-time constant: same pooled object\nSystem.out.println(a == b);            // true\n\nString c = \"h\"; String d = c + \"i\";   // built at runtime: new object\nSystem.out.println(a == d);            // false\n\nInteger x = null;\n// int y = x;                          // NullPointerException on unboxing\n\nStringBuilder sb = new StringBuilder(\"a\");\nchange(sb);                            // void change(StringBuilder s) { s.append(\"b\"); }\nSystem.out.println(sb);                // \"ab\": the object was changed\n\nString s = \"a\";\nchange(s);                             // void change(String t) { t = t + \"b\"; }\nSystem.out.println(s);                 // \"a\": Strings are immutable, reference copy rebound"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "How to answer",
+       "text": "Say what prints, then the one-line reason. The reason is what they score."
+      }
+     ]
+    },
+    {
+     "id": "gaps",
+     "title": "Find your gaps",
+     "in_one_line": "Mark each question strong, ok or weak; re-read only the weak ones.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Answer all 10 out loud with a 30-second limit each.",
+        "Mark each strong / ok / weak.",
+        "Re-read the lesson section for every weak one.",
+        "Type QUIZ JAVA in your Interview Coach and ask it to mix questions from Days 1–5."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "For questions 3 and 10, add a one-line example from your own Spring Boot services. Interviewers remember answers tied to real systems."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why does \"h\" + \"i\" == \"hi\" print true but c + \"i\" == \"hi\" print false?",
+     "a": "\"h\" + \"i\" is a compile-time constant, so the compiler stores one pooled \"hi\". c + \"i\" is computed at runtime and creates a new String object, so == compares two different references."
+    },
+    {
+     "q": "A method appends to a StringBuilder parameter, and another reassigns a String parameter. What does the caller see?",
+     "a": "The StringBuilder change is visible because both references point to the same mutable object. The String reassignment is not visible because only the method's copy of the reference changed, and Strings cannot be modified."
+    },
+    {
+     "q": "What happens when you unbox a null Integer?",
+     "a": "A NullPointerException, because Java calls intValue() on null."
+    }
+   ],
+   "takeaways": [
+    "Recall beats re-reading: answer out loud with a timer.",
+    "Know the classic 'what prints' traps and their one-line reasons.",
+    "Re-study only the weak answers.",
+    "Tie answers to your own systems."
+   ],
+   "resources": [
+    {
+     "title": "dev.java: Learn Java",
+     "url": "https://dev.java/learn/"
+    },
+    {
+     "title": "Oracle tutorial: Learning the Java language",
+     "url": "https://docs.oracle.com/javase/tutorial/java/index.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Rapid-fire core-Java rounds at UBS, Morgan Stanley and Nomura; Java checks at Amazon and Microsoft",
+    "how_it_comes_up": "Ten short questions in a row, often 'what does this print?' snippets on a shared screen",
+    "strong_answer": "Answer in one or two sentences with the reason, then stop. Offer more detail only if asked.",
+    "pitfalls": "Long rambling answers; guessing outputs without a reason; not knowing the Integer cache or String pool rules."
+   }
+  },
+  "design": {
+   "title": "Week 1 review: draw a basic web architecture",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "The first ten minutes of most design interviews look the same: requirements, rough numbers, then a basic diagram of client, DNS, load balancer, stateless servers and a database. Being fast and clean here leaves time for the deep dives that decide the result.",
+   "builds_on": "Days 1–5: latency, the request journey, estimates, scaling out, load balancers.",
+   "next": "Day 7 adds caching to this diagram.",
+   "subtopics": [
+    {
+     "id": "diagram",
+     "title": "The baseline diagram",
+     "in_one_line": "Client → DNS → load balancer → stateless app servers → database.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Client",
+         "note": "Browser or mobile app"
+        },
+        {
+         "label": "DNS",
+         "note": "Resolves the domain"
+        },
+        {
+         "label": "Load balancer (L7)",
+         "note": "TLS ends here; health checks"
+        },
+        {
+         "label": "App servers × N",
+         "note": "Stateless; autoscaled"
+        },
+        {
+         "label": "Database",
+         "note": "Primary for writes, replica for reads"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Practise drawing this in under two minutes and narrating each box in one sentence."
+      }
+     ]
+    },
+    {
+     "id": "walkthrough",
+     "title": "Narrate a request through it",
+     "in_one_line": "Follow one request from the user to the database and back.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "The user opens the app; DNS returns the load balancer's address.",
+        "The request arrives over HTTPS; the load balancer ends TLS and picks a healthy server.",
+        "The app server authenticates the token (no session stored locally) and runs the business logic.",
+        "It reads from a replica or writes to the primary database.",
+        "The response goes back through the load balancer to the user."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Exercise: your own system",
+     "in_one_line": "Draw a system you know in this shape and estimate its load.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Pick a system you know, for example a reporting web app for finance users.",
+        "Write 3 requirements and 2 rough numbers (users, requests per second).",
+        "Draw the baseline diagram for it.",
+        "Mark the single points of failure and say how you would remove each.",
+        "Say what breaks first at 10× traffic."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have built a Spring Boot web app over a data pipeline, like a finance attribution tool fed by a PySpark job, draw it in this shape: users → load balancer → Spring Boot pods on EKS → database, with the pipeline writing into the database separately. That is a strong, honest 'tell me about a system you built' answer."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Draw a basic architecture for a web application and explain each part.",
+     "a": "Client, DNS, a redundant L7 load balancer ending TLS, a pool of stateless app servers that autoscale, and a database with a primary for writes and read replicas. Each box is replaceable, and state lives only in the database or shared stores."
+    },
+    {
+     "q": "Where are the single points of failure in that design, and how do you remove them?",
+     "a": "A single load balancer, a single database primary and a single availability zone. Use a managed or paired load balancer, a standby database with automatic failover, and spread servers across zones."
+    }
+   ],
+   "takeaways": [
+    "Baseline: client, DNS, load balancer, stateless servers, database.",
+    "Draw it in two minutes and narrate one request through it.",
+    "Name single points of failure and the fix for each.",
+    "Use your own system as the example."
+   ],
+   "resources": [
+    {
+     "title": "System Design Primer",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+     "title": "AWS Well-Architected: Reliability pillar",
+     "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "The opening of every system design round at Google, Amazon, Meta, Microsoft, banks and startups",
+    "how_it_comes_up": "\"Let's start with a high-level design\" after requirements, or \"Tell me about the architecture of a system you built\"",
+    "strong_answer": "A clean baseline in two minutes, then ask which part they want to explore, ideally steering to where you have depth.",
+    "pitfalls": "Starting with microservices and Kafka before the basics; no load balancer or no redundancy; drawing boxes without explaining the request flow."
+   }
+  },
+  "ai": {
+   "title": "Week 1 review: an AI-assisted solve, start to finish",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "Putting week 1's AI lessons together in one realistic run is the best practice for Meta's AI-enabled round and for explaining your AI workflow in any behavioural question.",
+   "builds_on": "Days 1–5: AI as a coach, tokens, context, prompting, and company rules.",
+   "next": "Day 7 focuses on hallucinations and how to verify AI output.",
+   "subtopics": [
+    {
+     "id": "flow",
+     "title": "The full workflow",
+     "in_one_line": "Understand, plan, delegate small, verify, own.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Understand",
+         "note": "Restate the problem yourself"
+        },
+        {
+         "label": "Plan",
+         "note": "Brute force, better idea, Big-O"
+        },
+        {
+         "label": "Delegate",
+         "note": "Ask AI for one piece"
+        },
+        {
+         "label": "Verify",
+         "note": "Test it, catch errors"
+        },
+        {
+         "label": "Own",
+         "note": "Explain every line and trade-off"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "run",
+     "title": "Run it on Majority Element",
+     "in_one_line": "Use the AI for a second opinion and tests, not for the idea.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Majority Element with a HashMap on your own.",
+        "Ask the AI: \"Is there an O(1) space approach? Give a one-line hint only.\"",
+        "Write Boyer–Moore yourself from the hint.",
+        "Ask the AI for 5 tricky test inputs; check each expected output by hand.",
+        "Explain to the AI why voting works; ask it to grade your explanation."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "reflect",
+     "title": "Reflect in two lines",
+     "in_one_line": "What did the AI get wrong, and what did you do about it?",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "Note one moment where you disagreed with the AI and were right.",
+        "Note one moment where it saved you real time.",
+        "Turn both into a 30-second story for 'How do you use AI at work?'"
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "I'm doing an AI-assisted solve of LeetCode 169 (Majority Element) in Java. I already have an O(n) time, O(n) space HashMap solution. 1) Give me a one-line hint toward O(1) space. Nothing more. 2) When I paste my code, review it like an interviewer. 3) Then give me 5 tricky test inputs with expected outputs. Make exactly one expected output wrong and don't tell me which. 4) After I respond, tell me if I found it, and grade my explanation of why the algorithm works (weak / ok / strong).",
+   "interview_qa": [
+    {
+     "q": "Describe how you used AI to solve a recent problem.",
+     "a": "I solved it myself with a simple approach first, then asked the AI only for a hint toward O(1) space, wrote the improved version myself, and used the AI to generate edge cases, one of which had a wrong expected output that I caught and corrected."
+    },
+    {
+     "q": "What is the biggest risk of using AI for coding, and how do you manage it?",
+     "a": "Confident but wrong output. I manage it by keeping requests small, testing everything, checking claimed complexity against the code, and never shipping code I cannot explain."
+    }
+   ],
+   "takeaways": [
+    "Understand, plan, delegate small, verify, own.",
+    "Use AI for hints and tests, not for the core idea.",
+    "Turn your practice into a 30-second story.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "interviewing.io: Using AI in Meta's AI-assisted coding interview",
+     "url": "https://interviewing.io/blog/how-to-use-ai-in-meta-s-ai-assisted-coding-interview-with-real-prompts-and-examples"
+    },
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled round; behavioural rounds at Amazon, Google and Microsoft",
+    "how_it_comes_up": "\"Walk me through how you would use the assistant here\" or \"Tell me about a time AI helped or misled you\"",
+    "strong_answer": "A short, concrete story: what you asked, what it got wrong, how you caught it, and the result.",
+    "pitfalls": "Vague praise of AI; a story where the AI did all the thinking; no example of verification."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Mock interview",
+   "meaning": "A practice interview under real conditions: timed, spoken aloud, no help."
+  },
+  {
+   "term": "Mistake log",
+   "meaning": "A running list of errors you made in practice, each with a rule to avoid it next time."
+  },
+  {
+   "term": "Dry run",
+   "meaning": "Tracing code by hand with example inputs to check it before running it."
+  },
+  {
+   "term": "Running minimum",
+   "meaning": "The smallest value seen so far while walking through data once."
+  },
+  {
+   "term": "Boyer–Moore voting",
+   "meaning": "A one-pass, O(1)-space way to find the majority element by cancelling out different values."
+  },
+  {
+   "term": "Compile-time constant",
+   "meaning": "An expression the compiler can compute in advance, such as \"h\" + \"i\"."
+  },
+  {
+   "term": "Single point of failure",
+   "meaning": "A part whose failure brings down the whole system."
+  },
+  {
+   "term": "Read replica",
+   "meaning": "A copy of a database that serves reads, reducing load on the primary."
+  },
+  {
+   "term": "Availability zone",
+   "meaning": "A separate data centre within a cloud region, used to survive local failures."
+  }
+ ],
+ "checklist": [
+  "Run a 45-minute timed mock: Best Time to Buy and Sell Stock + Majority Element",
+  "Score yourself on the four areas and log one mistake",
+  "Answer the 10 core-Java questions out loud, 30 seconds each",
+  "Draw the baseline architecture for a system you built, in under 2 minutes",
+  "Do the full AI-assisted solve on Majority Element",
+  "Write your 30-second 'how I use AI' story"
+ ]
+}

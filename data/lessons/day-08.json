@@ -1,0 +1,777 @@
+{
+ "day": 8,
+ "date": "2026-12-02",
+ "phase": "Foundations",
+ "headline": "Greedy pointers, choosing collections and keeping caches correct",
+ "intro": "Today you learn when moving the smaller side is safe, solving two classic water problems. The Java track maps the Collections framework by Big-O, the design track explains how caches stay correct, and the AI track turns AI into a test-case generator you double-check.",
+ "connections": [
+  "Trapping Rain Water's leftMax array (Coding) is a prefix computation like Day 4, and ArrayDeque (Java) is the stack used in its alternative solution.",
+  "LinkedHashMap with access order (Java) is a ready-made LRU cache (Design).",
+  "AI-generated test cases (AI) are checked with the brute-force version of today's problems (Coding)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Two pointers 2",
+   "minutes": 40,
+   "level": "Intermediate",
+   "why": "Container With Most Water and Trapping Rain Water are among the most asked problems at Amazon, Google, Meta and Goldman-style bank tests. Both reward one key insight: you can safely move the smaller side. Trapping Rain Water is a Hard problem that interviewers love because it has a clear path from O(n²) to O(n) time and O(1) space.",
+   "builds_on": "Day 7: two pointers from both ends on sorted data.",
+   "next": "Day 9 starts the sliding window, another two-index technique where both pointers move in the same direction.",
+   "subtopics": [
+    {
+     "id": "greedy",
+     "title": "Greedy pointer moves",
+     "in_one_line": "At each step, make the move that cannot lose the best answer.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "**Greedy** means taking the locally best step without looking back. It only works when you can prove the discarded options were never going to win. With two pointers, the proof is usually: \"every pair using the side I am dropping is no better than what I already have.\""
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "How to sound convincing",
+       "text": "Say the proof out loud in one sentence before coding. Interviewers care more about why the move is safe than about the code."
+      }
+     ]
+    },
+    {
+     "id": "smaller",
+     "title": "Why moving the smaller side works",
+     "in_one_line": "The area or water is limited by the shorter wall, so the shorter wall can never do better with a closer partner.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Situation",
+        "Move",
+        "Reason"
+       ],
+       "rows": [
+        [
+         "height[left] < height[right]",
+         "left++",
+         "Any container using left with a closer right is narrower and no taller than height[left]"
+        ],
+        [
+         "height[left] ≥ height[right]",
+         "right--",
+         "Mirror argument for right"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** two people carrying a plank across a gap. The shorter person sets the height. Replacing the taller person cannot raise the plank, so you replace the shorter one."
+      }
+     ]
+    },
+    {
+     "id": "water",
+     "title": "Trapping water: the max-so-far idea",
+     "in_one_line": "Water above a bar = min(tallest bar to its left, tallest to its right) − its own height.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Approach",
+        "How",
+        "Time",
+        "Space"
+       ],
+       "rows": [
+        [
+         "For each bar, scan left and right",
+         "Find both maxima each time",
+         "O(n²)",
+         "O(1)"
+        ],
+        [
+         "Prefix and suffix max arrays",
+         "leftMax[i], rightMax[i] precomputed",
+         "O(n)",
+         "O(n)"
+        ],
+        [
+         "Two pointers",
+         "Process the side with the smaller max so far",
+         "O(n)",
+         "O(1)"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "The prefix-max array is the same running-total idea from Day 4, with max instead of sum. Many monitoring metrics, such as 'peak queue depth so far today', are computed this way."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 11,
+     "title": "Container With Most Water",
+     "url": "https://leetcode.com/problems/container-with-most-water/",
+     "difficulty": "Medium",
+     "statement": "Given an array height where height[i] is the height of a vertical line at position i, find two lines that, with the x-axis, form a container holding the most water. Return that maximum area.",
+     "example": "height = [1, 8, 6, 2, 5, 4, 8, 3, 7] → 49 (lines at index 1 and 8: width 7 × height 7).",
+     "how_to_think": [
+      "Understand: area = (right − left) × min(height[left], height[right]); you cannot tilt the container.",
+      "Brute force: try every pair. O(n²).",
+      "Improve: start with the widest container, then move the shorter side inward, since that is the only move that could find a taller limit."
+     ],
+     "hints": [
+      "Start with left = 0 and right = n − 1: the widest possible.",
+      "Which side is limiting the area? Can keeping it ever help?"
+     ],
+     "solution": {
+      "approach": [
+       "left = 0, right = n − 1, best = 0.",
+       "area = (right − left) × min(height[left], height[right]); update best.",
+       "Move the pointer at the shorter line inward.",
+       "Stop when they meet; return best."
+      ],
+      "code": "public int maxArea(int[] height) {\n    int left = 0, right = height.length - 1, best = 0;\n    while (left < right) {\n        int h = Math.min(height[left], height[right]);\n        best = Math.max(best, h * (right - left));\n        if (height[left] < height[right]) left++;   // the shorter side limits the area\n        else right--;\n    }\n    return best;\n}",
+      "time": "O(n)",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "Every pair",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Correct, too slow for 100,000 lines"
+      },
+      {
+       "name": "Two pointers",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if both lines are equal height?",
+       "a": "Move either one. Any container keeping one of them and a closer partner is narrower and at most that tall."
+      },
+      {
+       "q": "How is this different from Trapping Rain Water?",
+       "a": "Here you pick only two lines and ignore everything between; there you add up water above every bar."
+      }
+     ]
+    },
+    {
+     "num": 42,
+     "title": "Trapping Rain Water",
+     "url": "https://leetcode.com/problems/trapping-rain-water/",
+     "difficulty": "Hard",
+     "statement": "Given n non-negative integers representing an elevation map where each bar has width 1, compute how much water it can trap after raining.",
+     "example": "height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1] → 6.",
+     "how_to_think": [
+      "Understand: water above bar i = min(max to the left, max to the right) − height[i], never negative.",
+      "Brute force: for every i, scan both sides for the maxima. O(n²).",
+      "Better: precompute leftMax and rightMax arrays. O(n) time, O(n) space.",
+      "Best: two pointers. If leftMax < rightMax, the water at left is decided by leftMax alone, so process left; otherwise process right. O(1) space."
+     ],
+     "hints": [
+      "Write the formula for water above one bar first.",
+      "With two pointers, which side's water can you already compute exactly, and why?"
+     ],
+     "solution": {
+      "approach": [
+       "left = 0, right = n − 1, leftMax = rightMax = 0, water = 0.",
+       "While left < right: if height[left] < height[right], update leftMax with height[left], add leftMax − height[left], then left++.",
+       "Otherwise update rightMax with height[right], add rightMax − height[right], then right--.",
+       "Return water."
+      ],
+      "code": "public int trap(int[] height) {\n    int left = 0, right = height.length - 1;\n    int leftMax = 0, rightMax = 0, water = 0;\n    while (left < right) {\n        if (height[left] < height[right]) {\n            leftMax = Math.max(leftMax, height[left]);\n            water += leftMax - height[left];      // a taller bar exists on the right\n            left++;\n        } else {\n            rightMax = Math.max(rightMax, height[right]);\n            water += rightMax - height[right];    // a bar at least this tall exists on the left\n            right--;\n        }\n    }\n    return water;\n}",
+      "time": "O(n): each bar processed once",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "Scan both sides for every bar",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Good first statement"
+      },
+      {
+       "name": "leftMax / rightMax arrays",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Easiest correct O(n); great stepping stone"
+      },
+      {
+       "name": "Monotonic stack",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Fills water layer by layer; you will meet stacks later"
+      },
+      {
+       "name": "Two pointers",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Best"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Why is adding leftMax − height[left] safe when height[left] < height[right]?",
+       "a": "There is a bar at least height[right] tall on the right, which is taller than height[left], and the bar that blocks water on the left is leftMax. So the level here is set by leftMax."
+      },
+      {
+       "q": "What about a 2D version?",
+       "a": "Trapping Rain Water II uses a min-heap from the borders inward: a later, harder pattern."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why is it safe to move the shorter line in Container With Most Water?",
+     "a": "The area is limited by the shorter line. Pairing it with any line closer than the current partner makes the width smaller and the height no larger, so none of those pairs can beat the current area. Dropping it loses nothing."
+    },
+    {
+     "q": "How do you compute trapped water at one position?",
+     "a": "It is min(highest bar to the left, highest bar to the right) minus the bar's height, if positive."
+    },
+    {
+     "q": "How do you get Trapping Rain Water to O(1) space?",
+     "a": "Two pointers with leftMax and rightMax. Move the side whose max is smaller, because that max alone decides the water on that side."
+    }
+   ],
+   "takeaways": [
+    "Greedy moves need a one-sentence proof.",
+    "Move the smaller side: it is the limit.",
+    "Water at i = min(maxLeft, maxRight) − height[i].",
+    "Prefix-max arrays → two pointers for O(1) space."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap: Two Pointers",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "LeetCode: Container With Most Water",
+     "url": "https://leetcode.com/problems/container-with-most-water/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Amazon, Google and Meta onsite rounds; Trapping Rain Water is a common 'Hard' at Amazon and in bank online tests",
+    "how_it_comes_up": "\"Find two lines that hold the most water\" or \"Compute how much rain water is trapped\", with \"Can you do it in O(1) space?\"",
+    "strong_answer": "Give the brute force, then the max-arrays version, then the two-pointer version, explaining the 'smaller side decides' proof each time.",
+    "pitfalls": "Moving the taller side; jumping to the two-pointer code without the proof; off-by-one when updating maxima before adding water."
+   }
+  },
+  "java": {
+   "title": "The Collections framework map: List, Set, Map, Queue",
+   "minutes": 15,
+   "level": "Intermediate",
+   "why": "\"Which collection would you use and why?\" comes up in every Java interview and in low-level design at Amazon and Microsoft. Picking the right structure, with its Big-O, shows you understand both Java and algorithms.",
+   "builds_on": "Day 2: arrays and HashMap. Day 7: equals and hashCode, which HashSet and HashMap depend on.",
+   "next": "Day 9 opens up ArrayList and LinkedList; Day 10 opens up HashMap.",
+   "subtopics": [
+    {
+     "id": "map",
+     "title": "The family tree",
+     "in_one_line": "Four main interfaces: List (ordered, duplicates), Set (unique), Queue/Deque (ends), Map (key → value).",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Interface",
+        "Main idea",
+        "Common implementations"
+       ],
+       "rows": [
+        [
+         "List",
+         "Ordered by index, duplicates allowed",
+         "ArrayList, LinkedList"
+        ],
+        [
+         "Set",
+         "No duplicates",
+         "HashSet, LinkedHashSet, TreeSet"
+        ],
+        [
+         "Queue / Deque",
+         "Add and remove at the ends",
+         "ArrayDeque, PriorityQueue, LinkedList"
+        ],
+        [
+         "Map",
+         "Key → value, unique keys (not a Collection subtype)",
+         "HashMap, LinkedHashMap, TreeMap"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "choose",
+     "title": "Choosing by Big-O",
+     "in_one_line": "Pick the structure whose fast operations match what you do most.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Implementation",
+        "get/contains",
+        "add",
+        "Order"
+       ],
+       "rows": [
+        [
+         "ArrayList",
+         "get(i) O(1); contains O(n)",
+         "O(1) amortised at end",
+         "Insertion"
+        ],
+        [
+         "LinkedList",
+         "get(i) O(n)",
+         "O(1) at ends",
+         "Insertion"
+        ],
+        [
+         "HashSet / HashMap",
+         "O(1) average",
+         "O(1) average",
+         "None"
+        ],
+        [
+         "LinkedHashMap",
+         "O(1) average",
+         "O(1) average",
+         "Insertion (or access) order"
+        ],
+        [
+         "TreeMap / TreeSet",
+         "O(log n)",
+         "O(log n)",
+         "Sorted"
+        ],
+        [
+         "ArrayDeque",
+         "Peek ends O(1)",
+         "O(1) at ends",
+         "Stack or queue"
+        ],
+        [
+         "PriorityQueue",
+         "Peek min O(1)",
+         "O(log n)",
+         "Heap order (smallest first)"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview defaults",
+       "text": "List → ArrayList. Set → HashSet. Map → HashMap. Stack or queue → ArrayDeque (not Stack or LinkedList). Sorted → TreeMap. 'Smallest next' → PriorityQueue."
+      }
+     ]
+    },
+    {
+     "id": "gotchas",
+     "title": "Gotchas interviewers check",
+     "in_one_line": "Concurrent modification, immutable lists and legacy classes.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "List<Integer> ids = new ArrayList<>(List.of(1, 2, 3, 4));\n// for (Integer id : ids) if (id % 2 == 0) ids.remove(id);  // ConcurrentModificationException\nids.removeIf(id -> id % 2 == 0);                            // safe: [1, 3]\n\nList<String> fixed = List.of(\"EUR\", \"USD\");\n// fixed.add(\"GBP\");          // UnsupportedOperationException: List.of is immutable\n\nDeque<Integer> stack = new ArrayDeque<>();   // prefer over the legacy Stack class\nstack.push(1); stack.pop();"
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have kept recent items in insertion order or built a small LRU cache in a service, LinkedHashMap with access order and removeEldestEntry is the standard Java answer. It links straight to yesterday's caching lesson."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Which collection would you use for a stack or a queue, and why?",
+     "a": "ArrayDeque. It has O(1) operations at both ends, no synchronisation overhead like the legacy Stack class, and better memory locality than LinkedList."
+    },
+    {
+     "q": "HashMap vs TreeMap vs LinkedHashMap?",
+     "a": "HashMap: O(1) average, no order. TreeMap: sorted keys, O(log n), supports range queries like floorKey. LinkedHashMap: O(1) with insertion or access order, useful for LRU caches."
+    },
+    {
+     "q": "How do you remove items from a list while iterating?",
+     "a": "Use list.removeIf(...) or an explicit Iterator with iterator.remove(). Removing through the list inside a for-each loop throws ConcurrentModificationException."
+    },
+    {
+     "q": "What is the difference between Collection and Collections?",
+     "a": "Collection is the root interface for List, Set and Queue. Collections is a utility class with static helpers like sort, unmodifiableList and synchronizedList."
+    }
+   ],
+   "takeaways": [
+    "List, Set, Queue/Deque and Map cover almost everything.",
+    "Defaults: ArrayList, HashSet, HashMap, ArrayDeque.",
+    "TreeMap for sorted keys; PriorityQueue for 'smallest next'.",
+    "Remove while iterating with removeIf or Iterator.remove."
+   ],
+   "resources": [
+    {
+     "title": "Oracle tutorial: Collections",
+     "url": "https://docs.oracle.com/javase/tutorial/collections/intro/index.html"
+    },
+    {
+     "title": "Oracle tutorial: Collection implementations",
+     "url": "https://docs.oracle.com/javase/tutorial/collections/implementations/index.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Banks (UBS, Morgan Stanley, Nomura) and Amazon/Microsoft LLD rounds",
+    "how_it_comes_up": "\"Which collection would you use for X?\", \"HashMap vs TreeMap?\", \"Why not java.util.Stack?\"",
+    "strong_answer": "Answer with the implementation, its key Big-O, and one reason tied to the use case.",
+    "pitfalls": "Using LinkedList by default; not knowing List.of is immutable; removing inside a for-each loop."
+   }
+  },
+  "design": {
+   "title": "Cache strategies and invalidation",
+   "minutes": 12,
+   "level": "Intermediate",
+   "why": "After 'add a cache', the next question is always 'how does it stay correct?'. Choosing cache-aside vs write-through, and explaining invalidation, separates a strong design answer from a weak one at Amazon, Google and Meta.",
+   "builds_on": "Day 7: what a cache is, hit ratio, TTL and LRU eviction.",
+   "next": "Day 9 moves caching to the edge of the internet with CDNs.",
+   "subtopics": [
+    {
+     "id": "patterns",
+     "title": "Four caching patterns",
+     "in_one_line": "Who loads the cache, and when do writes reach the database?",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Pattern",
+        "Read path",
+        "Write path",
+        "Trade-off"
+       ],
+       "rows": [
+        [
+         "Cache-aside (lazy loading)",
+         "App checks cache; on miss reads DB and fills cache",
+         "App writes DB, then deletes the cache entry",
+         "Most common; first read after change is slow"
+        ],
+        [
+         "Read-through",
+         "Cache itself loads from DB on miss",
+         "Usually paired with write-through",
+         "Simpler app code; cache library must support it"
+        ],
+        [
+         "Write-through",
+         "Cache always has the data",
+         "Write to cache and DB together",
+         "Fresh data; slower writes"
+        ],
+        [
+         "Write-back (write-behind)",
+         "Cache always has the data",
+         "Write to cache; DB updated later in batches",
+         "Fast writes; risk of losing data if cache fails"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "aside",
+     "title": "Cache-aside step by step",
+     "in_one_line": "Read: cache, then DB, then fill. Write: DB, then delete the cache key.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "public Rate getRate(String pair) {\n    Rate r = cache.get(pair);\n    if (r != null) return r;                 // hit\n    r = repository.findByPair(pair);         // miss: go to the database\n    cache.put(pair, r, Duration.ofMinutes(5)); // fill with a TTL\n    return r;\n}\n\npublic void updateRate(String pair, Rate r) {\n    repository.save(r);                      // 1) write the source of truth\n    cache.evict(pair);                       // 2) delete, don't update, the cached copy\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Why delete instead of update?",
+       "text": "If two writers update the cache in a different order from the database, the cache can end up with the older value. Deleting means the next read fetches the fresh value."
+      }
+     ]
+    },
+    {
+     "id": "invalidation",
+     "title": "Invalidation and its classic problems",
+     "in_one_line": "Stale data, thundering herds and cold starts.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Problem",
+        "What happens",
+        "Fix"
+       ],
+       "rows": [
+        [
+         "Stale data",
+         "Cache shows an old value",
+         "Delete on write, plus a TTL as a safety net"
+        ],
+        [
+         "Thundering herd (stampede)",
+         "A popular key expires; thousands of requests hit the DB at once",
+         "Let one request reload while others wait, or refresh before expiry"
+        ],
+        [
+         "Cold start",
+         "Empty cache after restart overloads the DB",
+         "Warm the cache with popular keys before taking traffic"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your pipeline refreshes general-ledger data at known times, an event when the refresh finishes (for example a Kinesis or Kafka message) is a clean trigger to evict or warm the related cache entries, instead of waiting for TTLs."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Explain cache-aside and its trade-offs.",
+     "a": "The application reads the cache first; on a miss it reads the database and fills the cache. On writes it updates the database and deletes the cached entry. It is simple and resilient, but the first read after a change is slower and there is a short window for stale reads."
+    },
+    {
+     "q": "Write-through vs write-back?",
+     "a": "Write-through writes to cache and database together, so data is fresh and safe but writes are slower. Write-back writes to the cache and flushes to the database later, which is fast but risks losing recent writes if the cache fails."
+    },
+    {
+     "q": "What is a cache stampede and how do you prevent it?",
+     "a": "When a hot key expires, many requests miss at once and all hit the database. Prevent it with a lock so one request reloads, early refresh before expiry, or slightly randomised TTLs."
+    }
+   ],
+   "takeaways": [
+    "Cache-aside is the default: read cache → DB → fill; write DB → delete key.",
+    "Write-through: fresh but slower writes. Write-back: fast but risky.",
+    "Use TTLs as a safety net against stale data.",
+    "Guard hot keys against stampedes."
+   ],
+   "resources": [
+    {
+     "title": "AWS whitepaper: Database caching strategies using Redis",
+     "url": "https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html"
+    },
+    {
+     "title": "System Design Primer: cache",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Amazon, Google and Meta design rounds; banks for reference and market data",
+    "how_it_comes_up": "\"How do you keep the cache consistent with the database?\", \"What happens when a popular key expires?\"",
+    "strong_answer": "Pick cache-aside with delete-on-write and a TTL, explain the race you avoid by deleting, and name one stampede protection.",
+    "pitfalls": "Updating the cache before the database; no TTL; never mentioning stampedes or cold starts."
+   }
+  },
+  "ai": {
+   "title": "Using AI to generate test cases",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "Testing is one of the four areas interviewers score, and generating edge cases is where AI genuinely helps. In AI-enabled rounds, asking the assistant for tests, and then checking them, is a strong signal.",
+   "builds_on": "Day 7: hallucinations and the verification checklist.",
+   "next": "Day 9 uses AI for debugging: finding why code fails a test.",
+   "subtopics": [
+    {
+     "id": "why",
+     "title": "Why tests first",
+     "in_one_line": "Tests turn 'looks right' into 'is right'.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "Normal cases confirm the main idea.",
+        "Edge cases catch off-by-one errors and empty input.",
+        "Large cases check performance and overflow."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "categories",
+     "title": "Edge-case categories to ask for",
+     "in_one_line": "Give the AI a list so it does not just repeat easy cases.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Category",
+        "Example for Trapping Rain Water"
+       ],
+       "rows": [
+        [
+         "Empty or tiny",
+         "[], [5], [2, 1]"
+        ],
+        [
+         "All equal",
+         "[3, 3, 3]"
+        ],
+        [
+         "Strictly increasing or decreasing",
+         "[1, 2, 3], [3, 2, 1] (no water)"
+        ],
+        [
+         "Single valley",
+         "[3, 0, 3] → 3"
+        ],
+        [
+         "Many valleys",
+         "[0,1,0,2,1,0,1,3,2,1,2,1] → 6"
+        ],
+        [
+         "Large input",
+         "100,000 bars for performance"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "check",
+     "title": "Always check the expected outputs",
+     "in_one_line": "AI-generated expected values are often wrong; compute them yourself.",
+     "blocks": [
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "The trap",
+       "text": "A wrong expected value makes correct code look broken, or broken code look fine. Work out each expected output by hand or with a simple brute-force version."
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Pro move",
+       "text": "Write the slow brute force too, and compare it with your fast solution on many random inputs. This is called a differential test."
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Generate, check and run tests for Trapping Rain Water.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Trapping Rain Water yourself.",
+        "Use the prompt below to get 8 categorised tests.",
+        "Verify each expected output by hand.",
+        "Run your code on all 8; fix any failure yourself.",
+        "Type QUIZ JAVA to be quizzed on the Collections framework."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "I'm practising Trapping Rain Water (LeetCode 42) in Java. Give me 8 test cases, one from each category: empty, single bar, two bars, all equal heights, strictly increasing, strictly decreasing, a single valley, many valleys. For each give the input and the expected output. Then give me a brute-force O(n²) Java method I can use to double-check the expected values. Do not show me an optimal solution.",
+   "interview_qa": [
+    {
+     "q": "How do you use AI for testing?",
+     "a": "I ask it for edge cases by category, such as empty, single element, all equal, sorted and large inputs, then I verify every expected output myself, often against a brute-force version, before running my code."
+    },
+    {
+     "q": "What is a differential test?",
+     "a": "Running a simple, obviously correct version and the optimised version on many inputs and checking they agree. It catches bugs the hand-written examples miss."
+    }
+   ],
+   "takeaways": [
+    "Ask AI for tests by category, not just 'some tests'.",
+    "Verify every expected output yourself.",
+    "Compare fast code against a brute force.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "JUnit 5 user guide",
+     "url": "https://junit.org/junit5/docs/current/user-guide/"
+    },
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled round and testing discussions at Google, Amazon and Microsoft",
+    "how_it_comes_up": "\"How would you test this?\" or watching whether you test the AI's code",
+    "strong_answer": "Name categories of edge cases, show you check expected outputs, and mention a brute-force comparison.",
+    "pitfalls": "Only testing the given example; trusting AI-generated expected values."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Greedy algorithm",
+   "meaning": "An approach that makes the best local choice at each step, valid only when you can prove it never loses the best answer."
+  },
+  {
+   "term": "Prefix maximum",
+   "meaning": "For each position, the largest value seen from the start up to that position."
+  },
+  {
+   "term": "Elevation map",
+   "meaning": "An array of bar heights, as in Trapping Rain Water."
+  },
+  {
+   "term": "ArrayDeque",
+   "meaning": "A Java double-ended queue backed by a resizable array; the preferred stack and queue."
+  },
+  {
+   "term": "PriorityQueue",
+   "meaning": "A Java queue that always gives the smallest element first, backed by a heap."
+  },
+  {
+   "term": "TreeMap",
+   "meaning": "A Java map with keys kept in sorted order, O(log n) per operation."
+  },
+  {
+   "term": "ConcurrentModificationException",
+   "meaning": "The error thrown when a collection is changed while being iterated in a for-each loop."
+  },
+  {
+   "term": "Cache-aside",
+   "meaning": "A pattern where the application reads the cache first and loads from the database on a miss."
+  },
+  {
+   "term": "Write-through",
+   "meaning": "Writing to the cache and the database at the same time."
+  },
+  {
+   "term": "Write-back",
+   "meaning": "Writing to the cache first and to the database later, in batches."
+  },
+  {
+   "term": "Cache stampede",
+   "meaning": "Many requests hitting the database at once after a popular cache entry expires."
+  },
+  {
+   "term": "Differential test",
+   "meaning": "Comparing a simple correct version and an optimised version on many inputs to find bugs."
+  }
+ ],
+ "checklist": [
+  "Read greedy moves and the 'smaller side' proof",
+  "Solve Container With Most Water (25 minutes, no AI), then Trapping Rain Water",
+  "Explain both proofs out loud in one sentence each",
+  "Answer the 4 Collections questions out loud",
+  "Explain cache-aside with delete-on-write using a diagram",
+  "Generate and verify 8 test cases with AI",
+  "Add one line to your mistake log"
+ ]
+}

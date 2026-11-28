@@ -1954,6 +1954,296 @@
    "term": "Offer negotiation",
    "category": "Interview",
    "meaning": "Discussing salary, bonus, stock and level after an offer; competing offers give leverage."
+  },
+  {
+   "term": "Stack (memory)",
+   "category": "Java",
+   "meaning": "Per-thread memory holding method frames, local variables and references; freed when a method returns."
+  },
+  {
+   "term": "Pass-by-value",
+   "category": "Java",
+   "meaning": "Passing a copy of a variable's value into a method; for objects, the copy is of the reference."
+  },
+  {
+   "term": "HTTP status code",
+   "category": "System design",
+   "meaning": "A three-digit number in a response saying how the request went, e.g. 200 OK, 404 Not Found, 500 Server Error."
+  },
+  {
+   "term": "Grouping key",
+   "category": "Coding",
+   "meaning": "A value computed from an item so that all items in the same group get exactly the same key."
+  },
+  {
+   "term": "Bucket sort",
+   "category": "Coding",
+   "meaning": "Sorting by putting items into numbered buckets, here indexed by count, then reading the buckets in order."
+  },
+  {
+   "term": "Immutable",
+   "category": "Java",
+   "meaning": "Cannot be changed after it is created; 'changes' produce a new object."
+  },
+  {
+   "term": "Requests per second (RPS)",
+   "category": "System design",
+   "meaning": "How many requests a system handles each second; a measure of throughput."
+  },
+  {
+   "term": "Back-of-the-envelope estimate",
+   "category": "System design",
+   "meaning": "A quick, rounded calculation of load or storage used to size a design."
+  },
+  {
+   "term": "Range query",
+   "category": "Coding",
+   "meaning": "A question about a slice of an array, such as the sum from index i to j."
+  },
+  {
+   "term": "Subarray",
+   "category": "Coding",
+   "meaning": "A contiguous run of elements inside an array."
+  },
+  {
+   "term": "Overloading",
+   "category": "Java",
+   "meaning": "Several methods with the same name but different parameters, chosen at compile time."
+  },
+  {
+   "term": "Overriding",
+   "category": "Java",
+   "meaning": "A subclass replacing a parent's method with the same signature, chosen at runtime."
+  },
+  {
+   "term": "Autoscaling",
+   "category": "System design",
+   "meaning": "Automatically adding or removing servers or pods based on load."
+  },
+  {
+   "term": "HashSet",
+   "category": "Java",
+   "meaning": "A Java set backed by a hash table: O(1) average add, remove and contains, no ordering."
+  },
+  {
+   "term": "TreeSet",
+   "category": "Java",
+   "meaning": "A Java set kept in sorted order, with O(log n) operations and range queries."
+  },
+  {
+   "term": "Consecutive sequence",
+   "category": "Coding",
+   "meaning": "Numbers that follow each other with a step of 1, such as 4, 5, 6."
+  },
+  {
+   "term": "Default method",
+   "category": "Java",
+   "meaning": "A method with a body inside an interface, added in Java 8."
+  },
+  {
+   "term": "Composition",
+   "category": "LLD & patterns",
+   "meaning": "Building a class's behaviour by holding other objects as fields instead of extending a class."
+  },
+  {
+   "term": "Layer 4 load balancer",
+   "category": "System design",
+   "meaning": "A load balancer that routes by IP address and port without reading the request content."
+  },
+  {
+   "term": "Layer 7 load balancer",
+   "category": "System design",
+   "meaning": "A load balancer that understands HTTP and can route by URL path, headers or cookies."
+  },
+  {
+   "term": "AI-enabled interview",
+   "category": "Interview",
+   "meaning": "A coding round where the company provides an approved AI assistant and grades how you use it."
+  },
+  {
+   "term": "Running minimum",
+   "category": "Coding",
+   "meaning": "The smallest value seen so far while walking through data once."
+  },
+  {
+   "term": "Boyer–Moore voting",
+   "category": "Coding",
+   "meaning": "A one-pass, O(1)-space way to find the majority element by cancelling out different values."
+  },
+  {
+   "term": "Compile-time constant",
+   "category": "Java",
+   "meaning": "An expression the compiler can compute in advance, such as \"h\" + \"i\"."
+  },
+  {
+   "term": "Single point of failure",
+   "category": "System design",
+   "meaning": "A part whose failure brings down the whole system."
+  },
+  {
+   "term": "Read replica",
+   "category": "System design",
+   "meaning": "A copy of a database that serves reads, reducing load on the primary."
+  },
+  {
+   "term": "Availability zone",
+   "category": "System design",
+   "meaning": "A separate data centre within a cloud region, used to survive local failures."
+  },
+  {
+   "term": "Palindrome",
+   "category": "Coding",
+   "meaning": "Text that reads the same forwards and backwards."
+  },
+  {
+   "term": "Triplet",
+   "category": "Coding",
+   "meaning": "A group of three values, as in 3Sum."
+  },
+  {
+   "term": "equals/hashCode contract",
+   "category": "Java",
+   "meaning": "The rule that equal objects must return the same hash code."
+  },
+  {
+   "term": "Identity hash code",
+   "category": "Java",
+   "meaning": "The default hash code from Object, different for each object unless overridden."
+  },
+  {
+   "term": "Hit ratio",
+   "category": "System design",
+   "meaning": "The fraction of reads served from the cache."
+  },
+  {
+   "term": "LRU",
+   "category": "System design",
+   "meaning": "Least recently used: an eviction rule that removes the entry not used for the longest time."
+  },
+  {
+   "term": "Verification",
+   "category": "AI",
+   "meaning": "Checking AI output by compiling, testing and reviewing it before trusting it."
+  },
+  {
+   "term": "Prefix maximum",
+   "category": "Coding",
+   "meaning": "For each position, the largest value seen from the start up to that position."
+  },
+  {
+   "term": "Elevation map",
+   "category": "Coding",
+   "meaning": "An array of bar heights, as in Trapping Rain Water."
+  },
+  {
+   "term": "ConcurrentModificationException",
+   "category": "Java",
+   "meaning": "The error thrown when a collection is changed while being iterated in a for-each loop."
+  },
+  {
+   "term": "Write-through",
+   "category": "System design",
+   "meaning": "Writing to the cache and the database at the same time."
+  },
+  {
+   "term": "Write-back",
+   "category": "System design",
+   "meaning": "Writing to the cache first and to the database later, in batches."
+  },
+  {
+   "term": "Differential test",
+   "category": "AI",
+   "meaning": "Comparing a simple correct version and an optimised version on many inputs to find bugs."
+  },
+  {
+   "term": "Substring",
+   "category": "Coding",
+   "meaning": "A contiguous run of characters inside a string."
+  },
+  {
+   "term": "Fixed-size window",
+   "category": "Coding",
+   "meaning": "A sliding window whose length stays the same as it moves."
+  },
+  {
+   "term": "Variable-size window",
+   "category": "Coding",
+   "meaning": "A sliding window that grows and shrinks to stay valid."
+  },
+  {
+   "term": "Amortised O(1)",
+   "category": "Coding",
+   "meaning": "Constant cost per operation on average over many operations, even if a few are expensive."
+  },
+  {
+   "term": "Capacity (ArrayList)",
+   "category": "Java",
+   "meaning": "The size of the backing array, which can be larger than the number of elements."
+  },
+  {
+   "term": "Memory locality",
+   "category": "Java",
+   "meaning": "Data stored close together in memory, which the CPU can read much faster."
+  },
+  {
+   "term": "Edge server",
+   "category": "System design",
+   "meaning": "A CDN server close to users that serves cached content."
+  },
+  {
+   "term": "Origin server",
+   "category": "System design",
+   "meaning": "Your own server that holds the original content a CDN copies from."
+  },
+  {
+   "term": "Cache-Control",
+   "category": "System design",
+   "meaning": "An HTTP header that tells browsers and CDNs how long a response may be cached."
+  },
+  {
+   "term": "Regression test",
+   "category": "AI",
+   "meaning": "A test added after fixing a bug, so the same bug cannot quietly return."
+  },
+  {
+   "term": "Permutation",
+   "category": "Coding",
+   "meaning": "A rearrangement of all the characters of a string; an anagram."
+  },
+  {
+   "term": "Minimum window",
+   "category": "Coding",
+   "meaning": "The shortest substring that contains every required character."
+  },
+  {
+   "term": "Bucket",
+   "category": "Java",
+   "meaning": "One slot of a hash table's array, holding the entries whose hashes map to it."
+  },
+  {
+   "term": "Red-black tree",
+   "category": "Coding",
+   "meaning": "A self-balancing binary search tree with O(log n) operations."
+  },
+  {
+   "term": "Schema",
+   "category": "System design",
+   "meaning": "The defined structure of data, such as a table's columns and types."
+  },
+  {
+   "term": "Wide-column store",
+   "category": "System design",
+   "meaning": "A NoSQL database organising data by partition key into sorted rows, such as Cassandra."
+  },
+  {
+   "term": "Cosine similarity",
+   "category": "AI",
+   "meaning": "A score from -1 to 1 measuring how closely two vectors point in the same direction."
+  },
+  {
+   "term": "Membership check",
+   "category": "Coding",
+   "meaning": "Asking whether a value is present in a collection; O(1) on average with a HashSet."
   }
  ]
 }

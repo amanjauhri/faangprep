@@ -1,0 +1,757 @@
+{
+ "day": 7,
+ "date": "2026-12-01",
+ "phase": "Foundations",
+ "headline": "Two pointers, the equals/hashCode contract and your first cache",
+ "intro": "Today you learn two pointers, which solve pair and triple problems in O(n) or O(n²) with no extra memory. The Java track explains the contract that makes HashMap work, the design track adds a cache to your baseline diagram, and the AI track shows how to catch confident but wrong AI output.",
+ "connections": [
+  "3Sum builds List.of triplets (Coding); those lists work in a HashSet only because List has a correct equals() and hashCode() (Java).",
+  "A cache key (Design) is a HashMap key, so it needs a correct equals/hashCode and must be immutable (Java).",
+  "The AI's planted 3Sum bugs (AI) are caught with the same duplicate-skipping logic you learned today (Coding)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Two pointers",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "Two pointers turns many O(n²) pair searches into O(n) with no extra memory. 3Sum is one of the most asked Medium problems at Meta, Amazon, Google and Microsoft, and Valid Palindrome is a classic warm-up that tests clean index handling.",
+   "builds_on": "Day 2: Two Sum with a hash map. Day 6: one-pass thinking with a running value.",
+   "next": "Day 8 uses two pointers greedily: Container With Most Water and Trapping Rain Water.",
+   "subtopics": [
+    {
+     "id": "ends",
+     "title": "Pointers from both ends",
+     "in_one_line": "Put one index at the start and one at the end, and move them toward each other.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "int left = 0, right = s.length() - 1;\nwhile (left < right) {\n    // compare or combine s[left] and s[right]\n    // then move one or both pointers inward\n}"
+      },
+      {
+       "type": "p",
+       "text": "Each step moves at least one pointer, so the loop runs at most n times: **O(n) time, O(1) space**."
+      }
+     ]
+    },
+    {
+     "id": "sorted",
+     "title": "Sorted input is a signal",
+     "in_one_line": "In sorted data, if the sum is too small move left up; if too big move right down.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "sum of nums[left] + nums[right]",
+        "Move",
+        "Why"
+       ],
+       "rows": [
+        [
+         "Equal to target",
+         "Record answer",
+         "Found it"
+        ],
+        [
+         "Less than target",
+         "left++",
+         "Only a bigger left value can raise the sum"
+        ],
+        [
+         "Greater than target",
+         "right--",
+         "Only a smaller right value can lower the sum"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview line",
+       "text": "\"The array is sorted, so I can drop half the pairs at every step with two pointers instead of a hash map, which also gives O(1) space.\""
+      }
+     ]
+    },
+    {
+     "id": "dupes",
+     "title": "Skipping duplicates",
+     "in_one_line": "After using a value, move past equal neighbours so each distinct answer is found once.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "while (left < right && nums[left] == nums[left + 1]) left++;     // skip equal values\nwhile (left < right && nums[right] == nums[right - 1]) right--;"
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Common bug",
+       "text": "Skipping duplicates before recording the answer, or forgetting the left < right check inside the skip loop, which can run past the end of the array."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 125,
+     "title": "Valid Palindrome",
+     "url": "https://leetcode.com/problems/valid-palindrome/",
+     "difficulty": "Easy",
+     "statement": "A phrase is a palindrome if, after converting letters to lowercase and removing all non-alphanumeric characters, it reads the same forward and backward. Given a string s, return true if it is a palindrome.",
+     "example": "s = \"A man, a plan, a canal: Panama\" → true. s = \"race a car\" → false.",
+     "how_to_think": [
+      "Understand: ignore case, spaces and punctuation; digits count.",
+      "Simple: build a cleaned lowercase string and compare it with its reverse. O(n) time, O(n) space.",
+      "Improve: two pointers on the original string, skipping non-alphanumeric characters. O(1) space."
+     ],
+     "hints": [
+      "Compare the first and last useful characters, then move inward.",
+      "Character.isLetterOrDigit and Character.toLowerCase do the cleaning on the fly."
+     ],
+     "solution": {
+      "approach": [
+       "left = 0, right = n − 1.",
+       "Move left forward while s[left] is not a letter or digit; move right back likewise.",
+       "If lowercase s[left] != lowercase s[right], return false.",
+       "Move both inward; when they meet, return true."
+      ],
+      "code": "public boolean isPalindrome(String s) {\n    int left = 0, right = s.length() - 1;\n    while (left < right) {\n        while (left < right && !Character.isLetterOrDigit(s.charAt(left))) left++;\n        while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;\n        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}",
+      "time": "O(n): each character visited at most once",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "Clean, then reverse and compare",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Simple and fine"
+      },
+      {
+       "name": "Two pointers",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if you may delete at most one character?",
+       "a": "On the first mismatch, check whether skipping the left or the right character leaves a palindrome: LeetCode 680."
+      },
+      {
+       "q": "Why the left < right check inside the skip loops?",
+       "a": "So a string of only punctuation does not move a pointer past the other or off the end."
+      }
+     ]
+    },
+    {
+     "num": 167,
+     "title": "Two Sum II - Input Array Is Sorted",
+     "url": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
+     "difficulty": "Medium",
+     "statement": "Given a 1-indexed array numbers sorted in non-decreasing order, find two numbers that add up to target. Return their indices as [index1, index2] (1-based). Exactly one solution exists, and you must use only constant extra space.",
+     "example": "numbers = [2, 7, 11, 15], target = 9 → [1, 2].",
+     "how_to_think": [
+      "Understand: sorted; answer indices are 1-based; O(1) extra space required.",
+      "Day 2's hash map works but uses O(n) space.",
+      "Improve: pointers at both ends; if the sum is too small move left, too big move right."
+     ],
+     "hints": [
+      "Sorted order tells you which pointer to move.",
+      "Remember to add 1 to both indices."
+     ],
+     "solution": {
+      "approach": [
+       "left = 0, right = n − 1.",
+       "sum = numbers[left] + numbers[right].",
+       "If sum == target return [left + 1, right + 1].",
+       "If sum < target, left++; else right--."
+      ],
+      "code": "public int[] twoSumSorted(int[] numbers, int target) {\n    int left = 0, right = numbers.length - 1;\n    while (left < right) {\n        int sum = numbers[left] + numbers[right];\n        if (sum == target) return new int[] { left + 1, right + 1 };   // 1-based\n        if (sum < target) left++;      // need a bigger sum\n        else right--;                  // need a smaller sum\n    }\n    return new int[0];                 // not reached: a solution always exists\n}",
+      "time": "O(n)",
+      "space": "O(1)"
+     },
+     "alternatives": [
+      {
+       "name": "Hash map (Day 2)",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Ignores the sorted order"
+      },
+      {
+       "name": "Binary search for each partner",
+       "time": "O(n log n)",
+       "space": "O(1)",
+       "note": "Works, but slower"
+      },
+      {
+       "name": "Two pointers",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Why can't moving a pointer skip the answer?",
+       "a": "If the sum is too small, numbers[left] cannot pair with anything at or left of right to reach target, since those are all ≤ numbers[right]. So left is safely discarded. The mirror argument holds for right."
+      },
+      {
+       "q": "Note on the method name",
+       "a": "On LeetCode the method is called twoSum; it is renamed here only so it can sit next to Day 2's solution."
+      }
+     ]
+    },
+    {
+     "num": 15,
+     "title": "3Sum",
+     "url": "https://leetcode.com/problems/3sum/",
+     "difficulty": "Medium",
+     "statement": "Given an integer array nums, return all unique triplets [a, b, c] with a + b + c = 0. The answer must not contain duplicate triplets.",
+     "example": "nums = [-1, 0, 1, 2, -1, -4] → [[-1, -1, 2], [-1, 0, 1]].",
+     "how_to_think": [
+      "Understand: values can repeat; triplets must be unique by value; order inside the output does not matter.",
+      "Brute force: three nested loops plus a set to remove duplicates. O(n³).",
+      "Improve: sort. Fix the first number nums[i], then find pairs summing to −nums[i] with two pointers on the rest. O(n²)."
+     ],
+     "hints": [
+      "After sorting, 3Sum becomes 'for each i, solve Two Sum II on the part to the right'.",
+      "Skip i when nums[i] equals nums[i − 1]; after a hit, skip equal neighbours for both pointers."
+     ],
+     "solution": {
+      "approach": [
+       "Sort nums.",
+       "For i from 0 to n − 3: skip if i > 0 and nums[i] == nums[i − 1]. Stop early if nums[i] > 0.",
+       "left = i + 1, right = n − 1. Move them as in Two Sum II with target −nums[i].",
+       "On a hit, record it, move both pointers, and skip duplicates."
+      ],
+      "code": "public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> result = new ArrayList<>();\n    for (int i = 0; i < nums.length - 2; i++) {\n        if (nums[i] > 0) break;                              // all remaining are positive\n        if (i > 0 && nums[i] == nums[i - 1]) continue;       // same first number: skip\n        int left = i + 1, right = nums.length - 1;\n        while (left < right) {\n            int sum = nums[i] + nums[left] + nums[right];\n            if (sum < 0) left++;\n            else if (sum > 0) right--;\n            else {\n                result.add(List.of(nums[i], nums[left], nums[right]));\n                while (left < right && nums[left] == nums[left + 1]) left++;\n                while (left < right && nums[right] == nums[right - 1]) right--;\n                left++;\n                right--;\n            }\n        }\n    }\n    return result;\n}",
+      "time": "O(n²): n choices of i, each with an O(n) two-pointer scan (sorting is O(n log n))",
+      "space": "O(1) extra besides the output (sorting may use O(log n))"
+     },
+     "alternatives": [
+      {
+       "name": "Three loops + set",
+       "time": "O(n³)",
+       "space": "O(n)",
+       "note": "Too slow"
+      },
+      {
+       "name": "Fix i + hash set for pairs",
+       "time": "O(n²)",
+       "space": "O(n)",
+       "note": "Works but duplicates are harder"
+      },
+      {
+       "name": "Sort + two pointers",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Can 3Sum be done faster than O(n²)?",
+       "a": "Not in general for this comparison-based setting; O(n²) is the accepted best answer in interviews."
+      },
+      {
+       "q": "How would you do 4Sum?",
+       "a": "Add one more outer loop with the same duplicate skipping: O(n³)."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "When should you think of two pointers?",
+     "a": "When the input is sorted or can be sorted, and you look for pairs or triples meeting a condition; when you compare from both ends, like palindromes; or when you need O(1) extra space."
+    },
+    {
+     "q": "How does 3Sum avoid duplicate triplets?",
+     "a": "Sort first. Skip an outer value equal to the previous one, and after finding a triplet move both inner pointers past equal neighbours."
+    },
+    {
+     "q": "Two Sum with a hash map vs two pointers: which is better?",
+     "a": "If the array is unsorted and you need original indices, the hash map gives O(n) time. If it is sorted, two pointers give O(n) time with O(1) space."
+    }
+   ],
+   "takeaways": [
+    "Two pointers from both ends: O(n) time, O(1) space.",
+    "Sorted input is the signal: too small → left++, too big → right--.",
+    "3Sum = sort + fix one + two pointers: O(n²).",
+    "Skip duplicates after recording an answer."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap: Two Pointers",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Tech Interview Handbook: Array cheatsheet",
+     "url": "https://www.techinterviewhandbook.org/algorithms/array/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta, Amazon, Google and Microsoft (3Sum is very common); Valid Palindrome as a phone-screen warm-up",
+    "how_it_comes_up": "\"Find all unique triplets that sum to zero\", then \"How do you avoid duplicates?\" and \"Can you beat O(n²)?\"",
+    "strong_answer": "Sort, fix one number, run Two Sum II with two pointers on the rest, explain duplicate skipping, and state O(n²) is optimal in general here.",
+    "pitfalls": "Using a set of lists to remove duplicates afterwards; off-by-one pointer moves; forgetting to sort."
+   }
+  },
+  "java": {
+   "title": "equals() and hashCode(): the contract and why it matters",
+   "minutes": 15,
+   "level": "Intermediate",
+   "why": "\"What is the equals/hashCode contract?\" and \"What happens if you override equals but not hashCode?\" are top-five core-Java questions at banks, and Amazon asks them when you design a class used as a map key. The answer ties directly to how HashMap works (Day 2).",
+   "builds_on": "Day 2: how a HashMap uses hashCode() to pick a bucket and equals() to compare keys. Day 6: == vs equals().",
+   "next": "Day 8 tours the whole Collections framework; Day 10 opens up HashMap internals.",
+   "subtopics": [
+    {
+     "id": "contract",
+     "title": "The contract in plain words",
+     "in_one_line": "Equal objects must have equal hash codes; unequal objects may share one.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Rule",
+        "Meaning"
+       ],
+       "rows": [
+        [
+         "Reflexive",
+         "a.equals(a) is true"
+        ],
+        [
+         "Symmetric",
+         "a.equals(b) ⇔ b.equals(a)"
+        ],
+        [
+         "Transitive",
+         "a = b and b = c ⇒ a = c"
+        ],
+        [
+         "Consistent",
+         "Same answer each call while fields do not change"
+        ],
+        [
+         "Null",
+         "a.equals(null) is false"
+        ],
+        [
+         "hashCode rule",
+         "a.equals(b) ⇒ a.hashCode() == b.hashCode()"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "The one sentence to remember",
+       "text": "\"If two objects are equal they must have the same hash code, but the same hash code does not mean they are equal.\""
+      }
+     ]
+    },
+    {
+     "id": "broken",
+     "title": "What breaks if you only override equals()",
+     "in_one_line": "HashMap looks in the wrong bucket, so equal keys are not found.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "class TradeId {\n    final String book; final long seq;\n    TradeId(String book, long seq) { this.book = book; this.seq = seq; }\n    @Override public boolean equals(Object o) {\n        return o instanceof TradeId t && book.equals(t.book) && seq == t.seq;\n    }\n    // hashCode NOT overridden: uses identity, different for every object\n}\n\nMap<TradeId, String> m = new HashMap<>();\nm.put(new TradeId(\"FX\", 1), \"booked\");\nm.get(new TradeId(\"FX\", 1));   // null! different hash code -> different bucket"
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Also dangerous",
+       "text": "Changing a field used in hashCode() while the object is inside a HashSet or HashMap 'loses' it: it stays in the old bucket. Make key classes immutable."
+      }
+     ]
+    },
+    {
+     "id": "right",
+     "title": "Writing them correctly",
+     "in_one_line": "Use the same fields in both, or let a record generate them.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "@Override public boolean equals(Object o) {\n    if (this == o) return true;\n    if (!(o instanceof TradeId t)) return false;\n    return seq == t.seq && book.equals(t.book);\n}\n@Override public int hashCode() {\n    return Objects.hash(book, seq);       // same fields as equals()\n}\n\n// Simplest (Java 16+): records generate equals, hashCode and toString\nrecord TradeKey(String book, long seq) {}"
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have used composite keys such as (book, date) or (account, currency) in caches, maps or deduplication in a netting or attribution job, this is exactly where a correct equals/hashCode, or a record, matters. A bug here silently creates duplicates."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the contract between equals() and hashCode()?",
+     "a": "If a.equals(b) is true, a.hashCode() must equal b.hashCode(). The reverse is not required: different objects may share a hash code. equals must also be reflexive, symmetric, transitive, consistent and return false for null."
+    },
+    {
+     "q": "What happens if you override equals() but not hashCode()?",
+     "a": "Two equal objects will usually get different identity hash codes, land in different HashMap buckets, and the map will fail to find a key that is 'equal'. HashSet will also store duplicates."
+    },
+    {
+     "q": "Why should HashMap keys be immutable?",
+     "a": "If a field used in hashCode changes after insertion, the key sits in a bucket that no longer matches its hash, so get() and remove() cannot find it."
+    },
+    {
+     "q": "How do Java records help here?",
+     "a": "A record automatically generates equals, hashCode and toString from all its components, and its fields are final, so it makes a safe, correct map key with one line of code."
+    }
+   ],
+   "takeaways": [
+    "Equal objects ⇒ equal hash codes; not the reverse.",
+    "Override both, using the same fields.",
+    "Keep map keys immutable.",
+    "Records give correct equals/hashCode for free."
+   ],
+   "resources": [
+    {
+     "title": "Baeldung: equals() and hashCode() contracts",
+     "url": "https://www.baeldung.com/java-equals-hashcode-contracts"
+    },
+    {
+     "title": "Oracle Java docs: Object.hashCode",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Core-Java rounds at UBS, Morgan Stanley and Nomura; Amazon low-level design when a class is used as a map key",
+    "how_it_comes_up": "\"Explain the equals/hashCode contract\", \"What if you only override equals?\", \"Can two unequal objects have the same hash code?\"",
+    "strong_answer": "State the rule, then explain the HashMap failure step by step (wrong bucket), and mention immutability and records.",
+    "pitfalls": "Saying unequal objects must have different hash codes; forgetting that mutable keys break maps; using different fields in the two methods."
+   }
+  },
+  "design": {
+   "title": "Caching basics",
+   "minutes": 12,
+   "level": "Basics",
+   "why": "Caching is the first answer to 'make it faster' and 'reduce database load' in almost every design round. Interviewers at Amazon, Google and Meta then ask where the cache sits, what happens on a miss, and how data stays fresh.",
+   "builds_on": "Day 3: memory is far faster than disk or network. Day 6: the baseline architecture with a database.",
+   "next": "Day 8 covers cache strategies (cache-aside, write-through, write-back) and invalidation.",
+   "subtopics": [
+    {
+     "id": "what",
+     "title": "What a cache is",
+     "in_one_line": "A small, fast copy of data you read often, kept close to where it is needed.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "App server",
+         "note": "Needs data"
+        },
+        {
+         "label": "Cache (e.g. Redis)",
+         "note": "Hit: return in ~1 ms"
+        },
+        {
+         "label": "Database",
+         "note": "Miss: read, then store in cache"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "where",
+     "title": "Where caches live",
+     "in_one_line": "Browser, CDN, application memory, a shared cache, and the database's own cache.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Layer",
+        "Example",
+        "Shared by"
+       ],
+       "rows": [
+        [
+         "Browser",
+         "Cached images, CSS",
+         "One user"
+        ],
+        [
+         "CDN",
+         "Static files at the edge (Day 9)",
+         "Users in a region"
+        ],
+        [
+         "In-process",
+         "Caffeine or a HashMap in the JVM",
+         "One server"
+        ],
+        [
+         "Distributed cache",
+         "Redis, Memcached",
+         "All servers"
+        ],
+        [
+         "Database buffer",
+         "Pages kept in DB memory",
+         "The database"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "terms",
+     "title": "Hit ratio, TTL and eviction",
+     "in_one_line": "Measure hits, expire stale data, evict when full.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Term",
+        "Meaning",
+        "Typical choice"
+       ],
+       "rows": [
+        [
+         "Hit ratio",
+         "Share of reads served from the cache",
+         "Aim high, e.g. 90%+"
+        ],
+        [
+         "TTL",
+         "How long an entry lives before expiring",
+         "Seconds to hours, by how stale data may be"
+        ],
+        [
+         "Eviction",
+         "What to remove when full",
+         "LRU: least recently used"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your finance users open the same pivot views or reference data (books, accounts, FX rates) many times a day, that read-heavy, rarely-changing data is the textbook case for a cache in front of Oracle or Postgres."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why add a cache, and what are the risks?",
+     "a": "To cut latency and database load for data read often. The risks are stale data, extra complexity, and a cold or failed cache suddenly sending all traffic to the database."
+    },
+    {
+     "q": "What is LRU eviction?",
+     "a": "When the cache is full, remove the entry that was used least recently, on the bet that recently used data will be used again."
+    },
+    {
+     "q": "Local in-memory cache vs distributed cache like Redis?",
+     "a": "Local is fastest and simplest but each server has its own copy, so they can disagree and memory is duplicated. Redis is shared by all servers and survives app restarts, at the cost of a network hop."
+    }
+   ],
+   "takeaways": [
+    "Cache = fast copy of frequently read data.",
+    "Caches exist at many layers: browser, CDN, JVM, Redis, database.",
+    "Track hit ratio; set TTLs; evict with LRU.",
+    "Main risk: stale data."
+   ],
+   "resources": [
+    {
+     "title": "AWS: Caching overview",
+     "url": "https://aws.amazon.com/caching/"
+    },
+    {
+     "title": "System Design Primer: cache",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Every system design round; often the first optimisation asked at Amazon, Google and Meta",
+    "how_it_comes_up": "\"The database is overloaded with reads. What do you do?\" or \"How would you make this endpoint faster?\"",
+    "strong_answer": "Say what you cache and why it is safe (read-heavy, tolerates slight staleness), where the cache sits, the TTL, eviction policy and what happens on a miss.",
+    "pitfalls": "Caching everything; ignoring staleness; no plan for a cold cache after restart."
+   }
+  },
+  "ai": {
+   "title": "Hallucinations and how to verify AI output",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "The main risk with AI-written code is that it looks right and is wrong. Interviewers in AI-enabled rounds deliberately watch whether you catch these errors, and behavioural questions often ask how you keep AI-generated code safe.",
+   "builds_on": "Day 2: an LLM predicts likely text, which is why it can be fluent but wrong.",
+   "next": "Day 8 uses AI to generate test cases, a key way to verify code.",
+   "subtopics": [
+    {
+     "id": "what",
+     "title": "What a hallucination is",
+     "in_one_line": "A confident answer that is false: a made-up API, a wrong fact, a wrong Big-O.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Type",
+        "Example in code"
+       ],
+       "rows": [
+        [
+         "Invented API",
+         "Calls list.removeIfPresent(x), which does not exist"
+        ],
+        [
+         "Wrong complexity",
+         "Claims O(n) for code with a hidden nested loop"
+        ],
+        [
+         "Missed edge case",
+         "Fails on empty input or duplicates"
+        ],
+        [
+         "Outdated fact",
+         "Uses a library version or setting that has changed"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "verify",
+     "title": "A verification checklist",
+     "in_one_line": "Compile, test, check complexity, confirm APIs, read every line.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Does it compile, and does every method it calls really exist (check the docs)?",
+        "Run it on the examples and on edge cases: empty, one element, duplicates, negatives, very large values.",
+        "Count the loops yourself; does the claimed Big-O match?",
+        "Read each line and explain it; if you cannot, do not use it.",
+        "For facts, ask for a source and open it."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Catch the AI's mistakes on 3Sum.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve 3Sum yourself first.",
+        "Use the prompt below; the AI will include mistakes on purpose.",
+        "Find each one using the checklist.",
+        "Type QUIZ JAVA to be quizzed on equals() and hashCode()."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview line",
+       "text": "\"I treat AI code like a pull request from someone new: I compile it, test the edge cases and check the complexity before it goes anywhere.\""
+      }
+     ]
+    }
+   ],
+   "prompt": "We're practising 3Sum (LeetCode 15) in Java. Give me a solution that contains exactly three problems: one invented Java method that does not exist, one bug that produces duplicate triplets on some input, and one wrong claim about time complexity. Do not tell me where they are. After I list what I found, tell me which I caught and which I missed, and explain each in one sentence.",
+   "interview_qa": [
+    {
+     "q": "What is an AI hallucination, and how do you protect against it in code?",
+     "a": "It is confident but false output, such as a non-existent method or wrong complexity. I compile and test the code on edge cases, check every API against documentation, count the loops myself, and never use lines I cannot explain."
+    },
+    {
+     "q": "Have you ever caught an AI tool being wrong?",
+     "a": "Give a real example: what it claimed, how you noticed (a failing test, a missing method, a duplicate result), and what you changed."
+    }
+   ],
+   "takeaways": [
+    "Hallucination = confident but false output.",
+    "Verify: compile, test edge cases, check Big-O, confirm APIs.",
+    "Never use code you cannot explain.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "Anthropic docs: Reduce hallucinations",
+     "url": "https://docs.claude.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations"
+    },
+    {
+     "title": "Oracle Java SE 21 API docs (for checking methods exist)",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/index.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled round, Google's AI-assisted pilot, and behavioural questions everywhere",
+    "how_it_comes_up": "\"How do you make sure AI-generated code is correct?\" or the interviewer watching whether you test the AI's code",
+    "strong_answer": "A concrete checklist (compile, edge cases, Big-O, API check) plus one real example of catching an error.",
+    "pitfalls": "Saying you 'trust it for simple things'; no testing; not knowing how to check whether an API exists."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Two pointers",
+   "meaning": "A technique using two indexes that move through the data, often from both ends toward the middle."
+  },
+  {
+   "term": "Palindrome",
+   "meaning": "Text that reads the same forwards and backwards."
+  },
+  {
+   "term": "Triplet",
+   "meaning": "A group of three values, as in 3Sum."
+  },
+  {
+   "term": "equals/hashCode contract",
+   "meaning": "The rule that equal objects must return the same hash code."
+  },
+  {
+   "term": "Identity hash code",
+   "meaning": "The default hash code from Object, different for each object unless overridden."
+  },
+  {
+   "term": "Record",
+   "meaning": "A compact Java class (Java 16+) for immutable data that auto-generates equals, hashCode and toString."
+  },
+  {
+   "term": "Cache",
+   "meaning": "A fast store holding copies of frequently used data to avoid slower lookups."
+  },
+  {
+   "term": "Cache hit / miss",
+   "meaning": "A hit finds the data in the cache; a miss has to fetch it from the slower source."
+  },
+  {
+   "term": "Hit ratio",
+   "meaning": "The fraction of reads served from the cache."
+  },
+  {
+   "term": "LRU",
+   "meaning": "Least recently used: an eviction rule that removes the entry not used for the longest time."
+  },
+  {
+   "term": "Redis",
+   "meaning": "A popular in-memory data store often used as a shared cache."
+  },
+  {
+   "term": "Verification",
+   "meaning": "Checking AI output by compiling, testing and reviewing it before trusting it."
+  }
+ ],
+ "checklist": [
+  "Read the two-pointer template and the 'sorted is a signal' table",
+  "Solve Valid Palindrome and Two Sum II, then 3Sum (25 minutes, no AI)",
+  "Explain 3Sum's duplicate skipping out loud",
+  "Answer the 4 equals/hashCode questions out loud",
+  "Add a Redis cache to your baseline diagram and explain a miss",
+  "Run today's catch-the-mistakes AI exercise",
+  "Add one line to your mistake log"
+ ]
+}

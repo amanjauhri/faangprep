@@ -1,0 +1,947 @@
+{
+ "day": 2,
+ "date": "2026-11-25",
+ "phase": "Foundations",
+ "headline": "Hash maps, memory and the journey of a request: the building blocks under everything",
+ "intro": "Today you learn the data structure behind half of all coding questions, where Java keeps your objects, and what happens between a browser and a server. The AI track explains what an LLM really is, so you know why to check its work.",
+ "connections": [
+  "Two Sum's HashMap stores Integer objects on the heap (Java), which is why autoboxing and equals() matter when you compare map values.",
+  "The DNS cache (Design) is a hash map at internet scale: a name is the key, the IP address is the value, with an expiry time.",
+  "Your AI coach (AI) can explain Two Sum, but you check its edge cases using what you learned about duplicates and self-pairing (Coding)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Arrays and hash maps",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "Arrays and hash maps sit underneath most coding questions at Google, Amazon, Meta and Microsoft. Two Sum is the single most asked warm-up problem in the world, and the 'have I seen this before?' trick you learn today returns in prefix sums (Day 4), sliding windows (Day 9) and many more.",
+   "builds_on": "Day 1: Big-O and the 4-step method, and the HashSet you used for Contains Duplicate.",
+   "next": "Day 3 uses hash maps to group and count things (Group Anagrams, Top K Frequent).",
+   "subtopics": [
+    {
+     "id": "arrays",
+     "title": "How arrays sit in memory",
+     "in_one_line": "An array is one block of memory with slots side by side, so jumping to slot i is instant.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "An array stores its elements next to each other in memory. If you know where slot 0 starts and how big each slot is, the address of slot i is simple arithmetic. That is why `arr[i]` is **O(1)**."
+      },
+      {
+       "type": "table",
+       "head": [
+        "Operation",
+        "Cost",
+        "Why"
+       ],
+       "rows": [
+        [
+         "Read or write arr[i]",
+         "O(1)",
+         "Address = start + i × size"
+        ],
+        [
+         "Search for a value (unsorted)",
+         "O(n)",
+         "You may have to look at every slot"
+        ],
+        [
+         "Insert in the middle",
+         "O(n)",
+         "Everything after it must shift one place"
+        ],
+        [
+         "Append to an ArrayList",
+         "O(1) on average",
+         "Occasionally the backing array is copied to a bigger one"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview habit",
+       "text": "Say the cost out loud as you use a structure: \"Looking up by index is O(1), but searching is O(n), so I will want something faster.\""
+      }
+     ]
+    },
+    {
+     "id": "hashmap",
+     "title": "How a hash map finds things in O(1)",
+     "in_one_line": "A hash map turns a key into an array index, so it can jump straight to the right slot.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Key",
+         "note": "e.g. \"apple\""
+        },
+        {
+         "label": "hashCode()",
+         "note": "Turns the key into a number"
+        },
+        {
+         "label": "Bucket index",
+         "note": "Number squeezed into the array size"
+        },
+        {
+         "label": "Bucket",
+         "note": "Holds the key and its value"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** a cloakroom. You hand over your coat and get ticket 42. Later you show ticket 42 and the attendant goes straight to hook 42. No searching."
+      },
+      {
+       "type": "p",
+       "text": "Two different keys can land in the same bucket. That is a **collision**. Java keeps both in that bucket and compares them with `equals()`. With a good hash function collisions are rare, so lookups stay **O(1) on average**."
+      },
+      {
+       "type": "table",
+       "head": [
+        "HashMap method",
+        "What it does",
+        "Cost"
+       ],
+       "rows": [
+        [
+         "put(k, v)",
+         "Store or replace the value for k",
+         "O(1) average"
+        ],
+        [
+         "get(k)",
+         "Value for k, or null",
+         "O(1) average"
+        ],
+        [
+         "containsKey(k)",
+         "Is k stored?",
+         "O(1) average"
+        ],
+        [
+         "getOrDefault(k, d)",
+         "Value for k, or d if missing",
+         "O(1) average"
+        ],
+        [
+         "merge(k, 1, Integer::sum)",
+         "Add 1 to a counter",
+         "O(1) average"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Worst case",
+       "text": "If every key collided, a lookup would degrade. Since Java 8, a crowded bucket turns into a small tree, so the worst case is O(log n). You will see the details on Day 10."
+      }
+     ]
+    },
+    {
+     "id": "seen-before",
+     "title": "The \"have I seen this before?\" pattern",
+     "in_one_line": "Walk the array once and store what you need in a map, so each later question is answered in O(1).",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "**The signal:** the brute force compares every pair (two nested loops, O(n²)). Ask: what would I need to remember from earlier elements to answer instantly? Store exactly that in a map."
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "Map<Integer, Integer> seen = new HashMap<>();   // value -> index\nfor (int i = 0; i < nums.length; i++) {\n    int need = target - nums[i];             // what would complete the pair?\n    if (seen.containsKey(need)) {\n        // found the partner earlier in the array\n    }\n    seen.put(nums[i], i);                    // remember this element for later\n}"
+      },
+      {
+       "type": "table",
+       "head": [
+        "Brute force",
+        "With a hash map"
+       ],
+       "rows": [
+        [
+         "Two loops, O(n²) time, O(1) space",
+         "One loop, O(n) time, O(n) space"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "The trade you are making",
+       "text": "You spend memory (the map) to save time. Saying that sentence in the interview shows you understand the choice, not just the trick."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 1,
+     "title": "Two Sum",
+     "url": "https://leetcode.com/problems/two-sum/",
+     "difficulty": "Easy",
+     "statement": "Given an array of integers nums and an integer target, return the indices of the two numbers that add up to target. Exactly one answer exists, and you may not use the same element twice.",
+     "example": "nums = [2, 7, 11, 15], target = 9 → [0, 1] because 2 + 7 = 9.",
+     "how_to_think": [
+      "Understand: one valid pair always exists; numbers can be negative; return indices, not values.",
+      "Brute force: try every pair i < j. O(n²) time, O(1) space.",
+      "Improve: for each number x, the partner you need is target − x. If you have stored every earlier number with its index, you can check for the partner in O(1)."
+     ],
+     "hints": [
+      "What exactly do you need to know about earlier numbers to finish a pair?",
+      "Store value → index in a HashMap. Check for the partner before you store the current number, so you never pair an element with itself."
+     ],
+     "solution": {
+      "approach": [
+       "Create a HashMap from value to index.",
+       "For each index i, compute need = target − nums[i].",
+       "If need is already in the map, return [map.get(need), i].",
+       "Otherwise put nums[i] → i and continue."
+      ],
+      "code": "public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();   // value -> index\n    for (int i = 0; i < nums.length; i++) {\n        int need = target - nums[i];\n        if (seen.containsKey(need)) {\n            return new int[] { seen.get(need), i };\n        }\n        seen.put(nums[i], i);                       // store after checking: no self-pairing\n    }\n    return new int[0];                              // not reached: an answer always exists\n}",
+      "time": "O(n): one pass, O(1) average per map operation",
+      "space": "O(n): the map can hold every number"
+     },
+     "alternatives": [
+      {
+       "name": "Brute force",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Fine for tiny input only"
+      },
+      {
+       "name": "Sort + two pointers",
+       "time": "O(n log n)",
+       "space": "O(n)",
+       "note": "Needs to keep original indices, so more fiddly; you will meet two pointers on Day 7"
+      },
+      {
+       "name": "HashMap",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "The expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if the array is already sorted?",
+       "a": "Use two pointers from both ends: O(n) time and O(1) space. That is LeetCode 167, on Day 7."
+      },
+      {
+       "q": "What if there can be many pairs and you must return all of them?",
+       "a": "Keep the map of value to list of indices, or count values, and be careful not to repeat pairs."
+      }
+     ]
+    },
+    {
+     "num": 242,
+     "title": "Valid Anagram",
+     "url": "https://leetcode.com/problems/valid-anagram/",
+     "difficulty": "Easy",
+     "statement": "Given two strings s and t, return true if t is an anagram of s: the same letters with the same counts, in any order.",
+     "example": "s = \"anagram\", t = \"nagaram\" → true. s = \"rat\", t = \"car\" → false.",
+     "how_to_think": [
+      "Understand: the strings contain lowercase English letters. Different lengths means false straight away.",
+      "Brute force idea: sort both strings and compare. O(n log n).",
+      "Improve: count each letter. Only 26 letters exist, so an int[26] works as a tiny, fast hash map."
+     ],
+     "hints": [
+      "Two words are anagrams exactly when every letter appears the same number of times.",
+      "Add 1 for each letter of s and subtract 1 for each letter of t. What must every count be at the end?"
+     ],
+     "solution": {
+      "approach": [
+       "If lengths differ, return false.",
+       "Make int[26] counts.",
+       "For each position i: counts[s[i] − 'a']++ and counts[t[i] − 'a']−−.",
+       "If any count is not zero, return false; otherwise true."
+      ],
+      "code": "public boolean isAnagram(String s, String t) {\n    if (s.length() != t.length()) return false;\n    int[] counts = new int[26];                 // one slot per letter a..z\n    for (int i = 0; i < s.length(); i++) {\n        counts[s.charAt(i) - 'a']++;\n        counts[t.charAt(i) - 'a']--;\n    }\n    for (int c : counts) {\n        if (c != 0) return false;\n    }\n    return true;\n}",
+      "time": "O(n): one pass plus 26 checks",
+      "space": "O(1): the array is always 26 ints"
+     },
+     "alternatives": [
+      {
+       "name": "Sort both and compare",
+       "time": "O(n log n)",
+       "space": "O(n)",
+       "note": "Simple and acceptable, but slower"
+      },
+      {
+       "name": "HashMap<Character, Integer>",
+       "time": "O(n)",
+       "space": "O(k) distinct chars",
+       "note": "Works for any characters, including Unicode"
+      },
+      {
+       "name": "int[26]",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Best when input is lowercase a–z"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if the input can contain any Unicode character?",
+       "a": "Use a HashMap<Integer, Integer> keyed by code point instead of int[26]."
+      },
+      {
+       "q": "How would you check many words for being anagrams of each other?",
+       "a": "Give each word a key such as its sorted letters or its letter counts, and group by that key. That is Group Anagrams, tomorrow."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why is looking up a key in a HashMap O(1) on average?",
+     "a": "The key's hashCode is turned into an array index, so the map jumps straight to one bucket. Only the few keys in that bucket are compared with equals. With a good hash function buckets stay tiny, so the work does not grow with n."
+    },
+    {
+     "q": "When would you pick an array over a HashMap?",
+     "a": "When keys are small whole numbers in a known range, like letters a to z. An int[26] is faster, uses less memory and has no hashing cost."
+    },
+    {
+     "q": "What is the time-versus-space trade-off in Two Sum?",
+     "a": "Brute force uses no extra memory but takes O(n²). The hash map version stores up to n numbers, O(n) space, to bring time down to O(n)."
+    }
+   ],
+   "takeaways": [
+    "Arrays give O(1) access by index but O(n) search.",
+    "A hash map turns a key into an index: O(1) average for put and get.",
+    "Collisions are handled inside the bucket using equals().",
+    "Pattern: store what you have seen so far, then answer each question in O(1)."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap: Arrays & Hashing",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Oracle Java docs: HashMap",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Every big-tech phone screen (Google, Amazon, Meta, Microsoft) and most bank coding tests (UBS, Morgan Stanley, Nomura)",
+    "how_it_comes_up": "\"Given an array and a target, return the indices of two numbers that add up to the target.\" Often followed by: \"Can you do it faster than O(n²)?\"",
+    "strong_answer": "State the brute force and its cost in one line, then say what you need to remember (each value and its index), pick a HashMap, and walk through one example before coding.",
+    "pitfalls": "Jumping straight to the map without mentioning brute force; using the same element twice; forgetting to say the space cost."
+   }
+  },
+  "java": {
+   "title": "Memory basics: stack vs heap, references, primitives vs objects, autoboxing",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "\"Where do objects live?\", \"Is Java pass-by-value?\" and \"Why does Integer == Integer sometimes fail?\" are classic bank and Amazon questions. They test whether you really understand what your code does in memory, which also explains memory leaks and garbage collection later (Day 18).",
+   "builds_on": "Day 1: the JVM and its runtime memory areas (heap, stack, metaspace).",
+   "next": "Day 3 applies this to Strings: why they are immutable and how the String pool saves heap memory.",
+   "subtopics": [
+    {
+     "id": "stack-heap",
+     "title": "Stack vs heap",
+     "in_one_line": "Each method call gets a small private frame on the stack; every object lives on the shared heap.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "",
+        "Stack",
+        "Heap"
+       ],
+       "rows": [
+        [
+         "Holds",
+         "Method frames: local variables, parameters, references",
+         "All objects and arrays"
+        ],
+        [
+         "Owned by",
+         "One thread each",
+         "Shared by all threads"
+        ],
+        [
+         "Freed",
+         "Automatically when the method returns",
+         "By the garbage collector when nothing points to the object"
+        ],
+        [
+         "Size",
+         "Small (about 512 KB to 1 MB per thread)",
+         "Large (set with -Xmx)"
+        ],
+        [
+         "Error when full",
+         "StackOverflowError (often deep recursion)",
+         "OutOfMemoryError"
+        ]
+       ]
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "void process() {\n    int count = 5;                     // primitive: the value 5 sits in the stack frame\n    Order order = new Order(\"A1\");     // 'order' (a reference) is on the stack,\n                                       // the Order object itself is on the heap\n}                                      // frame popped; the Order is now garbage"
+      }
+     ]
+    },
+    {
+     "id": "references",
+     "title": "References and pass-by-value",
+     "in_one_line": "Java always passes a copy; for objects, the copy is of the reference, so both point to the same object.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "A variable of an object type does not hold the object. It holds a **reference**, like an address card pointing to the object on the heap."
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "void rename(Order o) { o.setId(\"B2\"); }     // changes the shared object: caller sees it\nvoid replace(Order o) { o = new Order(\"C3\"); } // changes only the local copy of the reference\n\nOrder x = new Order(\"A1\");\nrename(x);    // x.getId() is now \"B2\"\nreplace(x);   // x.getId() is still \"B2\""
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Say it like this",
+       "text": "\"Java is always pass-by-value. For objects, the value passed is the reference, so a method can change the object's fields but cannot make the caller's variable point to a different object.\""
+      }
+     ]
+    },
+    {
+     "id": "primitives",
+     "title": "Primitives vs objects",
+     "in_one_line": "Primitives are raw values with no object overhead; wrapper classes turn them into objects so they can live in collections.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Primitive",
+        "Wrapper",
+        "Default value"
+       ],
+       "rows": [
+        [
+         "int",
+         "Integer",
+         "0 (field) / null for Integer"
+        ],
+        [
+         "long",
+         "Long",
+         "0L"
+        ],
+        [
+         "double",
+         "Double",
+         "0.0"
+        ],
+        [
+         "boolean",
+         "Boolean",
+         "false"
+        ],
+        [
+         "char",
+         "Character",
+         "'\\u0000'"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Collections such as `List<Integer>` can only hold objects, so Java needs the wrapper classes. Each wrapper object costs extra memory (an object header plus the value)."
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have processed large ledger or trade batches in Java, a `List<Long>` of millions of amounts uses several times more memory than a `long[]`. That is why performance-sensitive code often uses primitive arrays."
+      }
+     ]
+    },
+    {
+     "id": "autoboxing",
+     "title": "Autoboxing and its traps",
+     "in_one_line": "Java converts between int and Integer automatically, which is convenient but hides two classic bugs.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "Integer a = 127, b = 127;\nSystem.out.println(a == b);       // true: values -128..127 come from a cache\nInteger c = 128, d = 128;\nSystem.out.println(c == d);       // false: two different objects\nSystem.out.println(c.equals(d));  // true: compare values with equals()\n\nInteger missing = map.get(\"absent\"); // null\nint total = missing;                 // NullPointerException when unboxing"
+      },
+      {
+       "type": "table",
+       "head": [
+        "Trap",
+        "Fix"
+       ],
+       "rows": [
+        [
+         "== on Integer compares references",
+         "Use equals(), or unbox to int first"
+        ],
+        [
+         "Unboxing null throws NullPointerException",
+         "Use getOrDefault, or check for null"
+        ],
+        [
+         "Boxing inside a hot loop creates many objects",
+         "Use a primitive accumulator (int sum)"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between the stack and the heap in Java?",
+     "a": "The stack holds one frame per method call with local variables and references, private to each thread and freed when the method returns. The heap holds all objects, is shared by all threads, and is cleaned by the garbage collector."
+    },
+    {
+     "q": "Is Java pass-by-value or pass-by-reference?",
+     "a": "Always pass-by-value. For objects the value is a copy of the reference, so a method can change the object's state but cannot rebind the caller's variable."
+    },
+    {
+     "q": "Why can Integer a == Integer b be false when both are 128?",
+     "a": "== compares references. Java caches Integer objects only from -128 to 127, so 128 creates two separate objects. Use equals() to compare values."
+    },
+    {
+     "q": "What causes StackOverflowError versus OutOfMemoryError?",
+     "a": "StackOverflowError comes from too many nested calls, usually runaway recursion. OutOfMemoryError means the heap (or metaspace) is full, often because objects are still referenced, a memory leak."
+    }
+   ],
+   "takeaways": [
+    "Objects live on the heap; local variables and references live on the stack.",
+    "Java is always pass-by-value; for objects the value is the reference.",
+    "Wrappers let primitives live in collections, at a memory cost.",
+    "Compare wrapper objects with equals(), never ==; beware unboxing null."
+   ],
+   "resources": [
+    {
+     "title": "Baeldung: Stack memory and heap space in Java",
+     "url": "https://www.baeldung.com/java-stack-heap"
+    },
+    {
+     "title": "Oracle tutorial: Autoboxing and unboxing",
+     "url": "https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Banks (UBS, Morgan Stanley, Nomura) in core-Java rounds; Amazon and Microsoft as quick Java checks",
+    "how_it_comes_up": "\"Explain stack vs heap\", \"Is Java pass-by-reference?\", \"What prints: Integer a = 128, b = 128; a == b?\"",
+    "strong_answer": "Draw two boxes (stack, heap) and an arrow from a reference to an object, then answer with that picture. Mention the Integer cache range -128 to 127 precisely.",
+    "pitfalls": "Saying Java is pass-by-reference for objects; saying primitives inside objects live on the stack (they live inside the object on the heap); not knowing why == on Integer misbehaves."
+   }
+  },
+  "design": {
+   "title": "The journey of a request: DNS, HTTP and HTTPS",
+   "minutes": 12,
+   "level": "Basics",
+   "why": "\"What happens when you type a URL into a browser?\" is one of the most common warm-up questions in system design and networking rounds. Every design you draw later starts with this path: client, DNS, load balancer, server.",
+   "builds_on": "Day 1: the basic words (client, server, latency).",
+   "next": "Day 3 puts numbers on each step: how long a DNS lookup, a network round trip or a disk read really takes.",
+   "subtopics": [
+    {
+     "id": "journey",
+     "title": "The full path, step by step",
+     "in_one_line": "Name lookup, connection, secure handshake, request, response.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Browser",
+         "note": "You type example.com"
+        },
+        {
+         "label": "DNS",
+         "note": "Name → IP address"
+        },
+        {
+         "label": "TCP",
+         "note": "Connection set up"
+        },
+        {
+         "label": "TLS",
+         "note": "Secure channel agreed"
+        },
+        {
+         "label": "HTTP request",
+         "note": "GET /page"
+        },
+        {
+         "label": "Server",
+         "note": "Builds the response"
+        },
+        {
+         "label": "Browser",
+         "note": "Renders the page"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** visiting a friend. You look up their address (DNS), drive there and knock (TCP), agree on a secret code so no one can eavesdrop (TLS), then ask for what you came for (HTTP)."
+      }
+     ]
+    },
+    {
+     "id": "dns",
+     "title": "DNS: the internet's phone book",
+     "in_one_line": "DNS turns a human name like example.com into the IP address of a server.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "The browser checks its own cache, then the operating system's cache.",
+        "If not found, it asks a **resolver** (usually your ISP or a public one like 8.8.8.8).",
+        "The resolver asks a root server, then the .com server, then the domain's own name server.",
+        "The answer comes back with a **TTL** (time to live) saying how long it may be cached."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Design hook",
+       "text": "Because answers are cached for the TTL, changing a DNS record is not instant. Teams lower the TTL before a migration so traffic moves quickly."
+      }
+     ]
+    },
+    {
+     "id": "http",
+     "title": "HTTP and HTTPS",
+     "in_one_line": "HTTP is the request and response format; HTTPS is the same thing inside an encrypted TLS channel.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Part",
+        "Example",
+        "Meaning"
+       ],
+       "rows": [
+        [
+         "Method",
+         "GET, POST, PUT, DELETE",
+         "What you want to do"
+        ],
+        [
+         "Path",
+         "/orders/42",
+         "Which resource"
+        ],
+        [
+         "Headers",
+         "Authorization, Content-Type",
+         "Extra information"
+        ],
+        [
+         "Status code",
+         "200, 201, 400, 401, 404, 500, 503",
+         "How it went"
+        ]
+       ]
+      },
+      {
+       "type": "table",
+       "head": [
+        "Status family",
+        "Means"
+       ],
+       "rows": [
+        [
+         "2xx",
+         "Success"
+        ],
+        [
+         "3xx",
+         "Go somewhere else (redirect)"
+        ],
+        [
+         "4xx",
+         "The client did something wrong"
+        ],
+        [
+         "5xx",
+         "The server failed"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**HTTPS** adds TLS: the server proves who it is with a certificate, and both sides agree on keys so traffic is encrypted. The handshake costs an extra round trip, which is why connections are reused (keep-alive)."
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your Spring Boot services on EKS sit behind an AWS load balancer, TLS is often ended at the load balancer and traffic inside the cluster may be plain HTTP or re-encrypted. Saying where TLS terminates is a strong detail in interviews."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What happens when you type a URL into the browser and press enter?",
+     "a": "The browser resolves the name to an IP through DNS (with caching at each level), opens a TCP connection, does a TLS handshake for HTTPS, sends an HTTP GET, the server or load balancer routes it and returns HTML, and the browser fetches further assets and renders the page."
+    },
+    {
+     "q": "What is the difference between HTTP and HTTPS?",
+     "a": "HTTPS is HTTP inside a TLS channel. The server proves its identity with a certificate and the traffic is encrypted, so it cannot be read or changed in transit."
+    },
+    {
+     "q": "What is a DNS TTL and why does it matter?",
+     "a": "It is how long resolvers may cache an answer. A long TTL means fewer lookups but slow changes; a short TTL lets you switch servers quickly but adds lookup load."
+    }
+   ],
+   "takeaways": [
+    "DNS turns names into IP addresses and is cached at many levels.",
+    "TCP sets up the connection, TLS secures it, HTTP carries the request.",
+    "Status codes: 2xx ok, 4xx client error, 5xx server error.",
+    "Connections are reused because handshakes cost round trips."
+   ],
+   "resources": [
+    {
+     "title": "Cloudflare Learning: What is DNS?",
+     "url": "https://www.cloudflare.com/learning/dns/what-is-dns/"
+    },
+    {
+     "title": "Cloudflare Learning: What is HTTPS?",
+     "url": "https://www.cloudflare.com/learning/ssl/what-is-https/"
+    },
+    {
+     "title": "System Design Primer",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Google and Amazon as a warm-up, and most bank and startup system design rounds",
+    "how_it_comes_up": "\"Walk me through what happens when you type google.com and press enter.\"",
+    "strong_answer": "Give the steps in order in under a minute (DNS, TCP, TLS, HTTP, server, render), then offer to go deeper into any one, for example DNS caching or where TLS ends.",
+    "pitfalls": "Skipping DNS or TLS; going extremely deep into one step and running out of time; mixing up 4xx and 5xx."
+   }
+  },
+  "ai": {
+   "title": "What an LLM is: tokens and next-word prediction",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "Interviewers at Meta and Google now let you use AI in some rounds, and many ask how you use it at work. Knowing how an LLM works explains its mistakes, so you can say why you always verify its code.",
+   "builds_on": "Day 1: you set up an Interview Coach chat and learned to use AI for hints, not answers.",
+   "next": "Day 3 explains context windows and temperature: why the same question can get different answers.",
+   "subtopics": [
+    {
+     "id": "what",
+     "title": "An LLM in one picture",
+     "in_one_line": "An LLM reads your text as tokens and predicts the most likely next token, again and again.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Your prompt",
+         "note": "\"Write a Java method that…\""
+        },
+        {
+         "label": "Tokens",
+         "note": "Text split into small pieces"
+        },
+        {
+         "label": "Model",
+         "note": "Scores every possible next token"
+        },
+        {
+         "label": "Pick one",
+         "note": "Add it to the text"
+        },
+        {
+         "label": "Repeat",
+         "note": "Until the answer is complete"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** a phone keyboard's next-word suggestion, trained on a huge amount of text and code, and much better at it. It does not look facts up; it produces what is likely to come next."
+      }
+     ]
+    },
+    {
+     "id": "tokens",
+     "title": "Tokens",
+     "in_one_line": "A token is a chunk of text, often part of a word; limits and pricing are counted in tokens.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Text",
+        "Rough token count"
+       ],
+       "rows": [
+        [
+         "\"HashMap\"",
+         "2 to 3 tokens"
+        ],
+        [
+         "One line of Java",
+         "10 to 20 tokens"
+        ],
+        [
+         "1,000 English words",
+         "about 1,300 tokens"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Why you care",
+       "text": "Long pasted code uses many tokens. When you ask for a review, paste the relevant method, not the whole project."
+      }
+     ]
+    },
+    {
+     "id": "why-mistakes",
+     "title": "Why it makes mistakes",
+     "in_one_line": "Predicting likely text is not the same as checking truth, so it can be fluent and wrong.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "It can invent a method that does not exist because it sounds right.",
+        "It can miss an edge case (empty array, negative numbers) because the common case is more likely in its training data.",
+        "It can state the wrong Big-O confidently."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Interview rule",
+       "text": "Treat AI output like code from a fast junior colleague: useful, but you review it before you trust it."
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Ask for Two Sum, then catch what it gets wrong or leaves out.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Two Sum yourself first (25 minutes).",
+        "Paste the prompt below into your Interview Coach chat.",
+        "Check its edge cases yourself: duplicates like [3, 3] with target 6, negative numbers, and no self-pairing.",
+        "Write down one thing it got wrong or did not mention.",
+        "Type QUIZ JAVA to be quizzed on stack vs heap."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "Today I'm learning how LLMs work. 1) Explain tokens and next-token prediction to me in plain words, then in technical words. 2) Give me a Java solution to Two Sum, but deliberately include one subtle bug. Do not tell me where. 3) Wait for me to find the bug and explain it. 4) Then ask me two interview questions about how I verify AI-generated code, and grade my answers (weak / ok / strong).",
+   "interview_qa": [
+    {
+     "q": "How does a large language model generate an answer?",
+     "a": "It splits the text into tokens and repeatedly predicts the most likely next token based on patterns learned in training. It does not look anything up by default, so it can be fluent but wrong, which is why I verify its output."
+    },
+    {
+     "q": "How do you check AI-generated code before using it?",
+     "a": "I read it as a reviewer: run it on edge cases, check complexity and error handling, and confirm any library calls exist. If it is important, I write tests first and make the code pass them."
+    }
+   ],
+   "takeaways": [
+    "An LLM predicts the next token, one at a time.",
+    "Tokens are chunks of text; limits and cost are counted in tokens.",
+    "Fluent does not mean correct: always verify.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "OpenAI Tokenizer (see how text splits into tokens)",
+     "url": "https://platform.openai.com/tokenizer"
+    },
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled coding round, Google's AI-assisted pilot, and behavioural rounds at Amazon and Microsoft",
+    "how_it_comes_up": "\"How do you use AI tools in your work?\" or, inside an AI-enabled round, the interviewer watching how you check the AI's code.",
+    "strong_answer": "A one-line explanation of next-token prediction, then a concrete habit: \"so I always run its code against edge cases before trusting it.\"",
+    "pitfalls": "Treating the AI as always right; describing it as a search engine; giving no example of verifying its output."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Array",
+   "meaning": "A fixed-size block of memory with slots side by side; reading slot i is O(1)."
+  },
+  {
+   "term": "Hash map",
+   "meaning": "A structure that turns a key into an array index so it can store and find values in O(1) on average."
+  },
+  {
+   "term": "Hash function",
+   "meaning": "A function that turns a key into a number used to pick a bucket."
+  },
+  {
+   "term": "Collision",
+   "meaning": "When two different keys land in the same bucket of a hash map."
+  },
+  {
+   "term": "Stack (memory)",
+   "meaning": "Per-thread memory holding method frames, local variables and references; freed when a method returns."
+  },
+  {
+   "term": "Heap",
+   "meaning": "Shared memory where all Java objects live; cleaned by the garbage collector."
+  },
+  {
+   "term": "Reference",
+   "meaning": "A variable's pointer to an object on the heap, like an address card."
+  },
+  {
+   "term": "Pass-by-value",
+   "meaning": "Passing a copy of a variable's value into a method; for objects, the copy is of the reference."
+  },
+  {
+   "term": "Autoboxing",
+   "meaning": "Java automatically converting a primitive like int to its wrapper object Integer, and back (unboxing)."
+  },
+  {
+   "term": "DNS",
+   "meaning": "Domain Name System: turns a name like example.com into a server's IP address."
+  },
+  {
+   "term": "TTL",
+   "meaning": "Time to live: how long a cached answer, such as a DNS record, may be reused."
+  },
+  {
+   "term": "TLS",
+   "meaning": "The encryption layer behind HTTPS; proves the server's identity and encrypts traffic."
+  },
+  {
+   "term": "HTTP status code",
+   "meaning": "A three-digit number in a response saying how the request went, e.g. 200 OK, 404 Not Found, 500 Server Error."
+  },
+  {
+   "term": "Token",
+   "meaning": "A small chunk of text, often part of a word, that an LLM reads and writes."
+  }
+ ],
+ "checklist": [
+  "Read how hash maps work and the 'seen before' pattern",
+  "Solve Two Sum (25 minutes, no AI), then Valid Anagram",
+  "Explain brute force vs hash map for Two Sum out loud with Big-O",
+  "Answer the 4 Java memory questions out loud",
+  "Explain the URL-to-page journey in under 60 seconds",
+  "Run today's AI exercise and find the planted bug",
+  "Add one line to your mistake log"
+ ]
+}

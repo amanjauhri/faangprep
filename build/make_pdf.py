@@ -53,15 +53,16 @@ def build(days):
         b = p.chromium.launch()
         ctx = b.new_context(viewport={"width": 1100, "height": 1400}, color_scheme="light")
         ctx.add_init_script("try{localStorage.setItem('fp_seenGuide','true')}catch(e){}")
-        pg = ctx.new_page()
+        pg = ctx.new_page()          # the site
+        cv = ctx.new_page()          # cover pages (kept separate so the site page keeps its URL)
         for n in days:
             f = ROOT / "data" / "lessons" / f"day-{n:02d}.json"
             if not f.exists():
                 print(f"Day {n}: no lesson file, skipped"); continue
             les = json.loads(f.read_text())
             w = PdfWriter()
-            pg.set_content(cover(les, n)); pg.emulate_media(media="print")
-            w.append(PdfReader(io.BytesIO(pg.pdf(format="A4"))))
+            cv.set_content(cover(les, n)); cv.emulate_media(media="print")
+            w.append(PdfReader(io.BytesIO(cv.pdf(format="A4"))))
             for t, _, _ in TRACKS:
                 pg.emulate_media(media="screen")
                 pg.goto(f"{base}/#lesson-{t}-{n}"); pg.wait_for_selector(".band", timeout=15000)

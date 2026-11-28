@@ -1,0 +1,825 @@
+{
+ "day": 4,
+ "date": "2026-11-27",
+ "phase": "Foundations",
+ "headline": "Running totals, OOP and scaling out: turn slow into fast and one server into many",
+ "intro": "Today you learn prefix sums, which make range questions instant, refresh the four pillars of OOP with real examples, and see why stateless services are the key to scaling. The AI track teaches the four parts of a good prompt.",
+ "connections": [
+  "Prefix sums trade a one-time O(n) build for O(1) queries (Coding), the same trade a cache makes in system design (Design).",
+  "Polymorphism (Java) lets a stateless service pick the right rule per request without holding state (Design).",
+  "A well-structured prompt (AI) gets you one hint toward the prefix-sum idea instead of a full answer (Coding)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Prefix sums",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "Prefix sums turn 'sum of a range' questions from O(n) each into O(1). Subarray Sum Equals K is a favourite at Meta, Google and Amazon because it combines prefix sums with the hash map trick from Day 2, and Product of Array Except Self is a classic Amazon and Microsoft question.",
+   "builds_on": "Day 2: the 'have I seen this before?' hash map pattern. Day 3: counting with a map.",
+   "next": "Days 5 and 6 add sets and a first timed mock; prefix sums come back in sliding window and 2D grid problems.",
+   "subtopics": [
+    {
+     "id": "running-total",
+     "title": "What a running total is",
+     "in_one_line": "prefix[i] is the sum of all elements before position i.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "i",
+        "nums[i]",
+        "prefix[i] (sum of the first i)"
+       ],
+       "rows": [
+        [
+         "0",
+         "3",
+         "0"
+        ],
+        [
+         "1",
+         "1",
+         "3"
+        ],
+        [
+         "2",
+         "4",
+         "4"
+        ],
+        [
+         "3",
+         "1",
+         "8"
+        ],
+        [
+         "4",
+         "(end)",
+         "9"
+        ]
+       ]
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "int[] prefix = new int[nums.length + 1];       // prefix[0] = 0\nfor (int i = 0; i < nums.length; i++) {\n    prefix[i + 1] = prefix[i] + nums[i];\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Why the extra slot",
+       "text": "Starting with prefix[0] = 0 removes special cases: the sum of the first i elements is always prefix[i]."
+      }
+     ]
+    },
+    {
+     "id": "range",
+     "title": "Range sums in O(1)",
+     "in_one_line": "sum(i..j) = prefix[j + 1] − prefix[i].",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "**Analogy:** a car's odometer. To know how far you drove between two towns, subtract the reading at the first town from the reading at the second. No need to re-drive the road."
+      },
+      {
+       "type": "table",
+       "head": [
+        "Approach",
+        "Build",
+        "Each query"
+       ],
+       "rows": [
+        [
+         "Add up the range every time",
+         "Nothing",
+         "O(n)"
+        ],
+        [
+         "Prefix sums",
+         "O(n) once",
+         "O(1)"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "The same idea works for products, counts, and 2D grids (a 'summed-area table')."
+      }
+     ]
+    },
+    {
+     "id": "prefix-map",
+     "title": "Prefix sum + hash map",
+     "in_one_line": "A subarray sums to k exactly when two prefix sums differ by k, so count earlier prefixes equal to current − k.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "If the running sum now is S, and earlier it was S − k, then the elements in between add up to k. So walk once, and keep a map from each prefix sum to how many times you have seen it."
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "Map<Integer, Integer> seen = new HashMap<>();\nseen.put(0, 1);                 // the empty prefix: lets a subarray start at index 0\nint sum = 0, count = 0;\nfor (int x : nums) {\n    sum += x;\n    count += seen.getOrDefault(sum - k, 0);\n    seen.merge(sum, 1, Integer::sum);\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Negative numbers",
+       "text": "With negatives the sliding window (Day 9) does not work, because growing the window can make the sum smaller. Prefix sum + map works for any numbers."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 238,
+     "title": "Product of Array Except Self",
+     "url": "https://leetcode.com/problems/product-of-array-except-self/",
+     "difficulty": "Medium",
+     "statement": "Given an integer array nums, return an array answer where answer[i] is the product of all elements of nums except nums[i]. Do it in O(n) time without using division.",
+     "example": "nums = [1, 2, 3, 4] → [24, 12, 8, 6].",
+     "how_to_think": [
+      "Understand: no division allowed; there may be zeros; the products fit in an int.",
+      "Brute force: for each i, multiply all the others. O(n²).",
+      "Improve: answer[i] = (product of everything left of i) × (product of everything right of i). Both are prefix products: one from the left, one from the right."
+     ],
+     "hints": [
+      "Split 'everything except i' into two parts.",
+      "Fill answer with left products in one pass, then multiply in right products in a second pass from the end using one variable."
+     ],
+     "solution": {
+      "approach": [
+       "answer[0] = 1; for i from 1: answer[i] = answer[i−1] × nums[i−1] (left products).",
+       "Keep right = 1. Walk i from the end to the start.",
+       "answer[i] *= right; then right *= nums[i].",
+       "Return answer."
+      ],
+      "code": "public int[] productExceptSelf(int[] nums) {\n    int n = nums.length;\n    int[] answer = new int[n];\n    answer[0] = 1;\n    for (int i = 1; i < n; i++) {\n        answer[i] = answer[i - 1] * nums[i - 1];   // product of everything left of i\n    }\n    int right = 1;                                 // product of everything right of i\n    for (int i = n - 1; i >= 0; i--) {\n        answer[i] *= right;\n        right *= nums[i];\n    }\n    return answer;\n}",
+      "time": "O(n): two passes",
+      "space": "O(1) extra: the output array does not count"
+     },
+     "alternatives": [
+      {
+       "name": "Brute force",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Too slow"
+      },
+      {
+       "name": "Total product ÷ nums[i]",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Not allowed, and breaks on zeros"
+      },
+      {
+       "name": "Left and right arrays",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Clear first step before optimising"
+      },
+      {
+       "name": "Left array + running right",
+       "time": "O(n)",
+       "space": "O(1) extra",
+       "note": "The expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "How does your solution handle zeros?",
+       "a": "No special case is needed: any product that includes the zero becomes 0, and the position of the zero itself gets the product of the others."
+      },
+      {
+       "q": "What if products could overflow int?",
+       "a": "Use long, or BigInteger if needed, and ask the interviewer about value ranges."
+      }
+     ]
+    },
+    {
+     "num": 560,
+     "title": "Subarray Sum Equals K",
+     "url": "https://leetcode.com/problems/subarray-sum-equals-k/",
+     "difficulty": "Medium",
+     "statement": "Given an integer array nums and an integer k, return the total number of contiguous non-empty subarrays whose sum equals k.",
+     "example": "nums = [1, 1, 1], k = 2 → 2. nums = [1, 2, 3], k = 3 → 2 ([1, 2] and [3]).",
+     "how_to_think": [
+      "Understand: numbers can be negative, so a sliding window will not work.",
+      "Brute force: try every start and end, keeping a running sum. O(n²).",
+      "Improve: a subarray ending here sums to k when an earlier prefix sum equals current − k. Count earlier prefix sums in a hash map."
+     ],
+     "hints": [
+      "Sum(i..j) = prefix[j+1] − prefix[i]. What must prefix[i] be for that to equal k?",
+      "Keep a map from prefix sum to how many times it has occurred. Start it with {0: 1}."
+     ],
+     "solution": {
+      "approach": [
+       "Map seen = {0: 1}; sum = 0; count = 0.",
+       "For each x: sum += x.",
+       "count += seen.getOrDefault(sum − k, 0).",
+       "seen[sum] += 1.",
+       "Return count."
+      ],
+      "code": "public int subarraySum(int[] nums, int k) {\n    Map<Integer, Integer> seen = new HashMap<>();   // prefix sum -> how many times seen\n    seen.put(0, 1);                                 // empty prefix\n    int sum = 0, count = 0;\n    for (int x : nums) {\n        sum += x;\n        count += seen.getOrDefault(sum - k, 0);     // earlier prefixes that leave exactly k\n        seen.merge(sum, 1, Integer::sum);\n    }\n    return count;\n}",
+      "time": "O(n): one pass with O(1) map operations",
+      "space": "O(n): up to n distinct prefix sums"
+     },
+     "alternatives": [
+      {
+       "name": "All start/end pairs",
+       "time": "O(n²)",
+       "space": "O(1)",
+       "note": "Fine for small n; good to say first"
+      },
+      {
+       "name": "Prefix sum + hash map",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Expected answer; works with negatives"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if all numbers are positive?",
+       "a": "Then a sliding window works in O(1) extra space: grow the right end, shrink the left while the sum is above k."
+      },
+      {
+       "q": "How would you return the longest such subarray instead?",
+       "a": "Store the first index of each prefix sum, and at each step compare i − firstIndex[sum − k]."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "How do you answer many range-sum queries quickly?",
+     "a": "Precompute prefix sums once in O(n). Then the sum from i to j is prefix[j+1] − prefix[i], O(1) per query."
+    },
+    {
+     "q": "How do you count subarrays that sum to k when numbers can be negative?",
+     "a": "Walk once with a running sum and a hash map counting previous prefix sums. At each step add the count of (sum − k). Seed the map with 0 → 1. O(n) time and space."
+    },
+    {
+     "q": "Why not use a sliding window for Subarray Sum Equals K?",
+     "a": "A sliding window needs the sum to grow when the window grows. With negative numbers that is not true, so you cannot decide when to shrink."
+    }
+   ],
+   "takeaways": [
+    "prefix[i] = sum of the first i elements; start with 0.",
+    "Range sum = prefix[j+1] − prefix[i] in O(1).",
+    "Subarray sums to k ⇔ two prefix sums differ by k.",
+    "Seed the map with {0: 1}."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "LeetCode: Range Sum Query - Immutable (practice)",
+     "url": "https://leetcode.com/problems/range-sum-query-immutable/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta and Google phone screens (Subarray Sum Equals K); Amazon and Microsoft (Product of Array Except Self)",
+    "how_it_comes_up": "\"Count the subarrays whose sum is k\" or \"Return an array where each element is the product of all others, without division, in O(n)\"",
+    "strong_answer": "Explain the odometer idea, write the formula, then show the map seeded with {0: 1} and walk one small example by hand.",
+    "pitfalls": "Forgetting the {0: 1} seed; using a sliding window with negative numbers; using division in Product of Array Except Self."
+   }
+  },
+  "java": {
+   "title": "OOP refresher: encapsulation, inheritance, polymorphism, abstraction",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "\"Explain the four pillars of OOP with examples\" opens many bank interviews and Amazon low-level design rounds. Strong answers use real examples from your own code, not textbook animals.",
+   "builds_on": "Day 2: references and objects on the heap. Day 3: String immutability, which is encapsulation done well.",
+   "next": "Day 5 goes deeper: abstract classes versus interfaces, and why composition often beats inheritance.",
+   "subtopics": [
+    {
+     "id": "four",
+     "title": "The four pillars in one table",
+     "in_one_line": "Hide data, reuse code, one call with many behaviours, show only what matters.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Pillar",
+        "Plain meaning",
+        "Java tool"
+       ],
+       "rows": [
+        [
+         "Encapsulation",
+         "Keep data private; change it only through methods that protect the rules",
+         "private fields, public methods"
+        ],
+        [
+         "Inheritance",
+         "A class reuses and extends another",
+         "extends"
+        ],
+        [
+         "Polymorphism",
+         "One method call, different behaviour depending on the real object",
+         "Overriding, interfaces"
+        ],
+        [
+         "Abstraction",
+         "Expose what something does, hide how",
+         "Interfaces, abstract classes"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "encapsulation",
+     "title": "Encapsulation with a real example",
+     "in_one_line": "An object protects its own rules so no caller can put it in a bad state.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "public class Account {\n    private BigDecimal balance = BigDecimal.ZERO;   // nobody can set this directly\n\n    public void withdraw(BigDecimal amount) {\n        if (amount.signum() <= 0) throw new IllegalArgumentException(\"amount must be positive\");\n        if (balance.compareTo(amount) < 0) throw new IllegalStateException(\"insufficient funds\");\n        balance = balance.subtract(amount);\n    }\n    public BigDecimal getBalance() { return balance; }  // read-only view\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Say why, not just what",
+       "text": "\"Encapsulation means the class enforces its own rules, so a balance can never go negative no matter who calls it.\""
+      }
+     ]
+    },
+    {
+     "id": "polymorphism",
+     "title": "Polymorphism: overriding vs overloading",
+     "in_one_line": "Overriding is chosen at runtime by the real object; overloading is chosen at compile time by the argument types.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "interface FeeRule { BigDecimal fee(Trade t); }\nclass EquityFee implements FeeRule { public BigDecimal fee(Trade t) { /* ... */ return BigDecimal.ONE; } }\nclass FxFee     implements FeeRule { public BigDecimal fee(Trade t) { /* ... */ return BigDecimal.TEN; } }\n\nFeeRule rule = pickRule(trade);   // could be EquityFee or FxFee\nrule.fee(trade);                  // the JVM calls the right one at runtime"
+      },
+      {
+       "type": "table",
+       "head": [
+        "",
+        "Overriding",
+        "Overloading"
+       ],
+       "rows": [
+        [
+         "Where",
+         "Subclass redefines a parent method",
+         "Same class, same name, different parameters"
+        ],
+        [
+         "Decided",
+         "At runtime (dynamic dispatch)",
+         "At compile time"
+        ],
+        [
+         "Example",
+         "FxFee.fee() replaces FeeRule.fee()",
+         "print(int) and print(String)"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your services pick behaviour per product line, for example different attribution rules for Trading, Sales, Payments and Securities, a shared interface with one implementation per product is exactly this pattern. Describe it that way in interviews."
+      }
+     ]
+    },
+    {
+     "id": "inheritance",
+     "title": "Inheritance and its limits",
+     "in_one_line": "Use extends for a true 'is-a' relationship; prefer interfaces and composition otherwise.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "Java allows extending only one class, but implementing many interfaces.",
+        "Deep inheritance chains are fragile: a change in the parent can break every child.",
+        "A subclass must be usable anywhere its parent is expected (this is the Liskov substitution principle, coming on later days)."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Classic trap",
+       "text": "Making Square extend Rectangle: setting the width of a square must also change its height, which breaks code that expects a Rectangle. 'Is-a' in English is not always 'is-a' in code."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Explain the four pillars of OOP.",
+     "a": "Encapsulation keeps state private and changes it through methods that enforce rules. Inheritance lets a class reuse and extend another. Polymorphism lets one call behave differently based on the real object, through overriding or interfaces. Abstraction exposes what an object does and hides how. I'd give an example from my own code for each."
+    },
+    {
+     "q": "What is the difference between overloading and overriding?",
+     "a": "Overloading is the same method name with different parameters in one class, resolved at compile time. Overriding is a subclass replacing a parent method with the same signature, resolved at runtime by the actual object type."
+    },
+    {
+     "q": "Can you override a static or private method?",
+     "a": "No. Static methods belong to the class and are hidden, not overridden; private methods are not visible to subclasses. Only instance methods that are visible can be overridden."
+    },
+    {
+     "q": "Why might you avoid inheritance?",
+     "a": "It couples the child tightly to the parent's internals, Java allows only one parent, and deep hierarchies become hard to change. Composition with interfaces is often more flexible."
+    }
+   ],
+   "takeaways": [
+    "Encapsulation: the object enforces its own rules.",
+    "Polymorphism: overriding at runtime, overloading at compile time.",
+    "Abstraction: interfaces show what, hide how.",
+    "Use inheritance only for true 'is-a'; otherwise compose."
+   ],
+   "resources": [
+    {
+     "title": "Oracle tutorial: Object-oriented programming concepts",
+     "url": "https://docs.oracle.com/javase/tutorial/java/concepts/index.html"
+    },
+    {
+     "title": "Oracle tutorial: Polymorphism",
+     "url": "https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Banks (UBS, Morgan Stanley, Nomura) as an opener; Amazon and Microsoft low-level design rounds",
+    "how_it_comes_up": "\"Explain OOP with examples from your work\", \"Overloading vs overriding?\", \"Can you override a static method?\"",
+    "strong_answer": "One sentence per pillar plus one example from your own domain (accounts, trades, fee rules), then mention a limit of inheritance to show judgement.",
+    "pitfalls": "Textbook animal examples only; saying static methods can be overridden; confusing abstraction with encapsulation."
+   }
+  },
+  "design": {
+   "title": "Scaling up vs scaling out; stateless services",
+   "minutes": 12,
+   "level": "Basics",
+   "why": "Every design interview reaches the moment: \"Traffic grows 10 times. What do you do?\" The expected first move is to make services stateless and add more machines behind a load balancer. This is the foundation of almost every high-level design.",
+   "builds_on": "Day 3: throughput, latency and back-of-the-envelope estimates.",
+   "next": "Day 5 looks at the load balancer that spreads requests across those machines: L4 vs L7.",
+   "subtopics": [
+    {
+     "id": "up-out",
+     "title": "Scaling up vs scaling out",
+     "in_one_line": "Up means a bigger machine; out means more machines.",
+     "blocks": [
+      {
+       "type": "compare",
+       "items": [
+        {
+         "title": "Scale up (vertical)",
+         "points": [
+          "Buy a bigger server: more CPU and RAM",
+          "No code changes",
+          "Has a hard ceiling and gets expensive",
+          "One machine is still a single point of failure"
+         ]
+        },
+        {
+         "title": "Scale out (horizontal)",
+         "points": [
+          "Add more servers behind a load balancer",
+          "Nearly unlimited growth",
+          "Survives one machine dying",
+          "Needs stateless services and handling of shared data"
+         ]
+        }
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Typical answer",
+       "text": "\"Scale up first for simplicity, but design to scale out: stateless app servers behind a load balancer, with the database scaled separately.\""
+      }
+     ]
+    },
+    {
+     "id": "stateless",
+     "title": "Stateless services",
+     "in_one_line": "A stateless server keeps nothing about a user between requests, so any server can handle any request.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "Client",
+         "note": "Sends a token with each request"
+        },
+        {
+         "label": "Load balancer",
+         "note": "Picks any server"
+        },
+        {
+         "label": "App server 1..N",
+         "note": "Stateless: no session in memory"
+        },
+        {
+         "label": "Shared store",
+         "note": "Database, cache (e.g. Redis)"
+        }
+       ]
+      },
+      {
+       "type": "table",
+       "head": [
+        "State",
+        "Where it should live"
+       ],
+       "rows": [
+        [
+         "User session",
+         "A signed token (JWT) or a shared cache like Redis"
+        ],
+        [
+         "Uploaded files",
+         "Object storage such as S3"
+        ],
+        [
+         "Business data",
+         "The database"
+        ],
+        [
+         "In-progress jobs",
+         "A queue or workflow engine"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Sticky sessions",
+       "text": "Pinning a user to one server works, but if that server dies the session is lost, and load becomes uneven. Treat it as a workaround, not a design."
+      }
+     ]
+    },
+    {
+     "id": "limits",
+     "title": "What still does not scale easily",
+     "in_one_line": "App servers scale out easily; the database is usually the hard part.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "Many app servers can overwhelm one database: add read replicas and caching first.",
+        "Writes are harder: later days cover sharding (splitting data across databases).",
+        "Autoscaling adds servers when CPU or requests per second cross a threshold."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If your Spring Boot services run as pods on EKS, Kubernetes scales them out by adding pods (for example with a Horizontal Pod Autoscaler). That only works because the pods are stateless; the data lives in Oracle, Postgres or Cassandra. That is a strong, real example for this question."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between vertical and horizontal scaling?",
+     "a": "Vertical means a bigger machine: simple but limited and still a single point of failure. Horizontal means more machines behind a load balancer: nearly unlimited and fault tolerant, but services must be stateless and shared data handled carefully."
+    },
+    {
+     "q": "Why do stateless services matter for scaling?",
+     "a": "If no server holds user state between requests, any server can serve any request, so you can add or remove servers freely and survive failures. State moves to shared stores like a database, cache or token."
+    },
+    {
+     "q": "Where would you keep user sessions in a horizontally scaled system?",
+     "a": "Either in a signed token such as a JWT sent with each request, or in a shared fast store like Redis. Not in one server's memory."
+    }
+   ],
+   "takeaways": [
+    "Scale up = bigger machine; scale out = more machines.",
+    "Stateless servers let any server handle any request.",
+    "Move state to a database, cache, object store or token.",
+    "The database is usually the next bottleneck."
+   ],
+   "resources": [
+    {
+     "title": "System Design Primer: scalability",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+     "title": "Kubernetes docs: Horizontal Pod Autoscaling",
+     "url": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Every system design round; often the first follow-up after a basic design at Amazon, Google and Meta",
+    "how_it_comes_up": "\"Your service gets 10× traffic. What breaks and what do you change?\"",
+    "strong_answer": "Say stateless app tier plus load balancer and autoscaling, name where state goes, then identify the database as the next bottleneck and mention replicas and caching.",
+    "pitfalls": "Only saying 'add more servers' without making them stateless; relying on sticky sessions; forgetting the database."
+   }
+  },
+  "ai": {
+   "title": "Prompting basics: role, context, constraints, examples",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "In AI-enabled interview rounds, the interviewer watches how you instruct the AI. A precise prompt shows the same clear thinking as a clear explanation to a colleague.",
+   "builds_on": "Day 3: context windows and why answers vary.",
+   "next": "Day 5 looks at how AI now appears in real interview loops at Meta, Google and Amazon.",
+   "subtopics": [
+    {
+     "id": "parts",
+     "title": "The four parts of a good prompt",
+     "in_one_line": "Role, context, constraints, examples.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Part",
+        "What to write",
+        "Example"
+       ],
+       "rows": [
+        [
+         "Role",
+         "Who the AI should act as",
+         "\"Act as a senior Java interviewer\""
+        ],
+        [
+         "Context",
+         "What you are working on",
+         "\"LeetCode 560, my solution is below\""
+        ],
+        [
+         "Constraints",
+         "Rules for the answer",
+         "\"Java only, O(n), no full solution, one hint\""
+        ],
+        [
+         "Examples",
+         "What a good answer looks like",
+         "\"Like: Hint 1: think about running totals\""
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "before-after",
+     "title": "A weak prompt versus a strong one",
+     "in_one_line": "Vague in, vague out.",
+     "blocks": [
+      {
+       "type": "compare",
+       "items": [
+        {
+         "title": "Weak",
+         "points": [
+          "\"Solve subarray sum.\"",
+          "Gets a full answer you did not want",
+          "No language, no complexity target, no checks"
+         ]
+        },
+        {
+         "title": "Strong",
+         "points": [
+          "\"Act as an interviewer. I'm solving LeetCode 560 in Java. Here is my O(n²) code. Give one hint toward O(n), no code.\"",
+          "Gets exactly one useful nudge",
+          "You still do the thinking"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "checks",
+     "title": "Ask for things you can check",
+     "in_one_line": "Ask the AI to show its reasoning and tests, so you can verify instead of trust.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "\"State the time and space complexity and justify it.\"",
+        "\"Give 5 edge-case inputs with expected outputs.\"",
+        "\"Explain each line of the code in one sentence.\""
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview line",
+       "text": "\"I give the AI a role, the context and constraints, and I ask for tests or reasoning I can check.\""
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Rewrite a weak prompt into a strong one and compare the results.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Subarray Sum Equals K yourself first.",
+        "Ask your coach: \"help with subarray sum\" and note what you get.",
+        "Now use the prompt below and compare.",
+        "Check its 5 edge cases by hand, including negatives and k = 0.",
+        "Type QUIZ JAVA to be quizzed on OOP."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "Act as a senior Java interviewer. I'm practising LeetCode 560 (Subarray Sum Equals K). Here is my current solution: [paste code]. Constraints: Java only; do not give me code; give exactly one hint toward an O(n) solution; then wait. After I reply, either give the next hint or, if I'm right, ask me to state the time and space complexity. Finally, give 5 edge-case inputs (include negative numbers and k = 0) with expected outputs.",
+   "interview_qa": [
+    {
+     "q": "How do you write an effective prompt for a coding task?",
+     "a": "I give a role, the context including my code, clear constraints like language, complexity and output format, and sometimes an example. I also ask for reasoning or test cases so I can verify the answer."
+    },
+    {
+     "q": "What would you do if an AI gave you a solution that looks right?",
+     "a": "Test it on edge cases, check the claimed complexity against the code, and make sure every library call exists. Looking right is not the same as being right."
+    }
+   ],
+   "takeaways": [
+    "Good prompts have a role, context, constraints and examples.",
+    "Ask for one hint, not a full solution, while practising.",
+    "Ask for outputs you can verify: Big-O, tests, line-by-line reasoning.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    },
+    {
+     "title": "OpenAI docs: Prompt engineering guide",
+     "url": "https://platform.openai.com/docs/guides/prompt-engineering"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled coding round; AI questions at Google, Amazon and Microsoft; startups that use AI tools daily",
+    "how_it_comes_up": "The interviewer watches your prompts during an AI-enabled round, or asks \"How do you get good results from AI tools?\"",
+    "strong_answer": "Name the four parts and give a before-and-after example; stress that you ask for checkable outputs.",
+    "pitfalls": "Dumping the whole problem and accepting the first answer; no constraints on language or complexity."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Prefix sum",
+   "meaning": "An array where each position holds the total of all elements before it, so range sums take O(1)."
+  },
+  {
+   "term": "Range query",
+   "meaning": "A question about a slice of an array, such as the sum from index i to j."
+  },
+  {
+   "term": "Subarray",
+   "meaning": "A contiguous run of elements inside an array."
+  },
+  {
+   "term": "Encapsulation",
+   "meaning": "Keeping an object's data private and changing it only through methods that enforce its rules."
+  },
+  {
+   "term": "Polymorphism",
+   "meaning": "One method call behaving differently depending on the real object it is called on."
+  },
+  {
+   "term": "Overloading",
+   "meaning": "Several methods with the same name but different parameters, chosen at compile time."
+  },
+  {
+   "term": "Overriding",
+   "meaning": "A subclass replacing a parent's method with the same signature, chosen at runtime."
+  },
+  {
+   "term": "Vertical scaling",
+   "meaning": "Handling more load by moving to a bigger machine."
+  },
+  {
+   "term": "Horizontal scaling",
+   "meaning": "Handling more load by adding more machines."
+  },
+  {
+   "term": "Stateless service",
+   "meaning": "A service that keeps no per-user data between requests, so any instance can serve any request."
+  },
+  {
+   "term": "Autoscaling",
+   "meaning": "Automatically adding or removing servers or pods based on load."
+  },
+  {
+   "term": "Prompt",
+   "meaning": "The instructions and context you give an AI model."
+  }
+ ],
+ "checklist": [
+  "Read running totals, range sums and prefix sum + map",
+  "Solve Product of Array Except Self (25 minutes, no AI), then Subarray Sum Equals K",
+  "Explain why {0: 1} seeds the map, out loud",
+  "Explain the four OOP pillars with examples from your own code",
+  "Explain scale up vs scale out using your EKS services",
+  "Run today's weak vs strong prompt exercise",
+  "Add one line to your mistake log"
+ ]
+}

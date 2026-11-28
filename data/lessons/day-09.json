@@ -1,0 +1,765 @@
+{
+ "day": 9,
+ "date": "2026-12-03",
+ "phase": "Foundations",
+ "headline": "Sliding windows, list internals and CDNs: moving fast through data and around the world",
+ "intro": "Today you learn the sliding window, one of the most common patterns for substring and subarray questions. The Java track opens up ArrayList and LinkedList, the design track adds a CDN to serve content close to users, and the AI track shows how to debug with AI without losing control.",
+ "connections": [
+  "The sliding window (Coding) only re-processes what enters and leaves, just as a CDN edge (Design) only fetches what it does not already hold.",
+  "Window code reads s.charAt(i) by index, fast in contiguous memory; the same locality is why ArrayList beats LinkedList (Java).",
+  "The 'abba' bug (AI) is today's sliding-window edge case: left must never move backwards (Coding)."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Sliding window",
+   "minutes": 40,
+   "level": "Intermediate",
+   "why": "Sliding window questions about substrings and subarrays are extremely common at Amazon, Google, Meta and Microsoft. Longest Substring Without Repeating Characters is one of the most asked Medium problems anywhere, and Longest Repeating Character Replacement tests whether you really understand when a window is valid.",
+   "builds_on": "Day 4: subarrays and prefix sums. Days 7–8: two pointers.",
+   "next": "Day 10 adds frequency maps inside the window and the minimum-window technique.",
+   "subtopics": [
+    {
+     "id": "fixed-variable",
+     "title": "Fixed vs variable windows",
+     "in_one_line": "A window is a range [left, right] that slides; fixed windows keep their size, variable windows grow and shrink.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Type",
+        "When",
+        "Example"
+       ],
+       "rows": [
+        [
+         "Fixed size k",
+         "\"…of every subarray of length k\"",
+         "Max sum of any 3 consecutive days"
+        ],
+        [
+         "Variable size",
+         "\"Longest / shortest subarray or substring such that…\"",
+         "Longest substring with no repeats"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "**Analogy:** a train window moving along a platform. You only look at the people in the window; as it moves, one person enters on the right and one leaves on the left. You update what you know instead of recounting everyone."
+      }
+     ]
+    },
+    {
+     "id": "expand-shrink",
+     "title": "Expand and shrink",
+     "in_one_line": "Move right to grow the window; while it breaks the rule, move left to shrink it.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "int left = 0, best = 0;\nfor (int right = 0; right < n; right++) {\n    add(s[right]);                       // grow the window to include right\n    while (windowIsInvalid()) {\n        remove(s[left]);                 // shrink from the left until valid again\n        left++;\n    }\n    best = Math.max(best, right - left + 1);\n}"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Why it is O(n)",
+       "text": "Each index enters the window once (right++) and leaves at most once (left++), so the total work is at most 2n steps, even though there is a while inside the for."
+      }
+     ]
+    },
+    {
+     "id": "inside",
+     "title": "Tracking what is inside the window",
+     "in_one_line": "Keep a small summary (counts, last positions, max frequency) that updates in O(1) per step.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Question",
+        "What to track"
+       ],
+       "rows": [
+        [
+         "Any repeated character?",
+         "Set of characters, or last index of each"
+        ],
+        [
+         "How many of each letter?",
+         "int[26] or int[128] counts"
+        ],
+        [
+         "Most frequent letter count?",
+         "maxFreq, updated as counts grow"
+        ],
+        [
+         "Sum of the window?",
+         "A running sum"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Signal check",
+       "text": "Sliding window needs the window to stay 'monotonic': growing it can only make it more invalid. With negative numbers and sums, that breaks, so use prefix sums (Day 4) instead."
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 3,
+     "title": "Longest Substring Without Repeating Characters",
+     "url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+     "difficulty": "Medium",
+     "statement": "Given a string s, find the length of the longest substring without repeating characters.",
+     "example": "s = \"abcabcbb\" → 3 (\"abc\"). s = \"bbbbb\" → 1. s = \"pwwkew\" → 3 (\"wke\").",
+     "how_to_think": [
+      "Understand: substring means contiguous; characters can be letters, digits, symbols, spaces.",
+      "Brute force: check every substring for repeats. O(n³), or O(n²) with a set per start.",
+      "Improve: a window that never contains a repeat. When s[right] is already inside, move left just past its previous position."
+     ],
+     "hints": [
+      "What makes the window invalid?",
+      "Store each character's last index. If it is inside the window (≥ left), jump left to lastIndex + 1."
+     ],
+     "solution": {
+      "approach": [
+       "Map lastSeen (or int[128]), left = 0, best = 0.",
+       "For each right: c = s[right].",
+       "If lastSeen[c] ≥ left, set left = lastSeen[c] + 1.",
+       "lastSeen[c] = right; best = max(best, right − left + 1)."
+      ],
+      "code": "public int lengthOfLongestSubstring(String s) {\n    int[] lastSeen = new int[128];           // ASCII; stores index + 1, 0 means not seen\n    int left = 0, best = 0;\n    for (int right = 0; right < s.length(); right++) {\n        char c = s.charAt(right);\n        left = Math.max(left, lastSeen[c]);  // jump past the previous copy of c, never backwards\n        lastSeen[c] = right + 1;\n        best = Math.max(best, right - left + 1);\n    }\n    return best;\n}",
+      "time": "O(n): one pass",
+      "space": "O(1): a fixed 128-slot array (O(k) for a map of k distinct characters)"
+     },
+     "alternatives": [
+      {
+       "name": "All substrings",
+       "time": "O(n³)",
+       "space": "O(k)",
+       "note": "Too slow"
+      },
+      {
+       "name": "Window with a HashSet, shrink one by one",
+       "time": "O(n)",
+       "space": "O(k)",
+       "note": "Easy to explain"
+      },
+      {
+       "name": "Window with last index (jump)",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Why Math.max(left, …) and not just lastSeen[c]?",
+       "a": "The previous copy of c may be to the left of the current window; jumping to it would move left backwards and re-include repeats."
+      },
+      {
+       "q": "What if the string is Unicode?",
+       "a": "Use a HashMap<Character, Integer> (or code points) instead of int[128]."
+      }
+     ]
+    },
+    {
+     "num": 424,
+     "title": "Longest Repeating Character Replacement",
+     "url": "https://leetcode.com/problems/longest-repeating-character-replacement/",
+     "difficulty": "Medium",
+     "statement": "Given a string s of uppercase English letters and an integer k, you may change at most k characters to any other uppercase letter. Return the length of the longest substring containing the same letter after these changes.",
+     "example": "s = \"ABAB\", k = 2 → 4. s = \"AABABBA\", k = 1 → 4 (\"AABA\" → \"AAAA\" or \"ABBB\" → \"BBBB\").",
+     "how_to_think": [
+      "Understand: a window is fine if it can be made all one letter with at most k changes.",
+      "Key fact: changes needed = window length − count of its most frequent letter.",
+      "Window: grow right; if length − maxFreq > k, shrink left by one."
+     ],
+     "hints": [
+      "How many changes does a window need to become all one letter?",
+      "Track counts[26] and maxFreq. You never need to decrease maxFreq: only a bigger maxFreq can give a longer answer."
+     ],
+     "solution": {
+      "approach": [
+       "counts = int[26], left = 0, maxFreq = 0, best = 0.",
+       "For each right: counts[s[right]]++; maxFreq = max(maxFreq, that count).",
+       "If (right − left + 1) − maxFreq > k: counts[s[left]]--, left++.",
+       "best = max(best, right − left + 1)."
+      ],
+      "code": "public int characterReplacement(String s, int k) {\n    int[] counts = new int[26];\n    int left = 0, maxFreq = 0, best = 0;\n    for (int right = 0; right < s.length(); right++) {\n        maxFreq = Math.max(maxFreq, ++counts[s.charAt(right) - 'A']);\n        if ((right - left + 1) - maxFreq > k) {   // needs more than k changes\n            counts[s.charAt(left) - 'A']--;\n            left++;                                 // slide; window never shrinks below best\n        }\n        best = Math.max(best, right - left + 1);\n    }\n    return best;\n}",
+      "time": "O(n)",
+      "space": "O(1): 26 counters"
+     },
+     "alternatives": [
+      {
+       "name": "Try every substring",
+       "time": "O(n²) or worse",
+       "space": "O(1)",
+       "note": "Too slow"
+      },
+      {
+       "name": "Window, recompute max over 26 counts",
+       "time": "O(26n)",
+       "space": "O(1)",
+       "note": "Easier to prove correct"
+      },
+      {
+       "name": "Window with stale maxFreq",
+       "time": "O(n)",
+       "space": "O(1)",
+       "note": "Expected answer"
+      }
+     ],
+     "followups": [
+      {
+       "q": "Why is it fine that maxFreq is never decreased?",
+       "a": "The answer only grows when a window has a higher maxFreq. A stale, too-high maxFreq can keep the window from shrinking, but never makes best larger than a real valid window."
+      },
+      {
+       "q": "Why if instead of while here?",
+       "a": "Each step adds one character, so at most one removal is needed to keep the window size from growing; the window slides at a fixed size until a better maxFreq appears."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "When do you use a sliding window?",
+     "a": "For contiguous subarrays or substrings where you want the longest, shortest or count meeting a condition, and growing the window only moves it toward invalid. You keep a summary of the window and update it as both ends move."
+    },
+    {
+     "q": "Why is a sliding window O(n) when it has a loop inside a loop?",
+     "a": "Each element is added once when right passes it and removed at most once when left passes it, so the total number of steps is at most 2n."
+    },
+    {
+     "q": "What do you store to detect repeats in a substring window?",
+     "a": "Either a set of characters currently in the window, or a map of each character's last index so left can jump straight past the repeat."
+    }
+   ],
+   "takeaways": [
+    "Window = [left, right]; grow with right, shrink with left.",
+    "Each index enters and leaves once: O(n).",
+    "Keep an O(1)-update summary of the window.",
+    "Negative numbers usually break the window; use prefix sums."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap: Sliding Window",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Tech Interview Handbook: String cheatsheet",
+     "url": "https://www.techinterviewhandbook.org/algorithms/string/"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Amazon, Google, Meta and Microsoft phone screens and onsites; bank online tests",
+    "how_it_comes_up": "\"Find the length of the longest substring without repeating characters\" and \"…with at most k replacements\"",
+    "strong_answer": "Name the pattern, state what makes the window invalid, what you track inside it, and justify O(n) with the 'enters once, leaves once' argument.",
+    "pitfalls": "Restarting from scratch at each index (O(n²)); off-by-one in window length (right − left + 1); shrinking with if instead of while."
+   }
+  },
+  "java": {
+   "title": "ArrayList vs LinkedList: how they work inside",
+   "minutes": 15,
+   "level": "Intermediate",
+   "why": "\"ArrayList vs LinkedList\" is asked in nearly every Java interview, and the textbook answer ('LinkedList is faster for inserts') is often wrong in practice. Interviewers at banks and Amazon reward candidates who explain the internals and real-world performance.",
+   "builds_on": "Day 2: arrays in memory. Day 8: the Collections framework and Big-O per implementation.",
+   "next": "Day 10 opens up HashMap: buckets, resizing and treeification.",
+   "subtopics": [
+    {
+     "id": "arraylist",
+     "title": "ArrayList inside",
+     "in_one_line": "A resizable array: when full, it copies everything into an array about 1.5 times bigger.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "new ArrayList<>()",
+         "note": "Empty array; first add creates capacity 10"
+        },
+        {
+         "label": "add()",
+         "note": "Write into the next free slot: O(1)"
+        },
+        {
+         "label": "Full",
+         "note": "Grow to about 1.5× and copy: O(n), rare"
+        },
+        {
+         "label": "Amortised",
+         "note": "Average add stays O(1)"
+        }
+       ]
+      },
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "List<Trade> trades = new ArrayList<>(50_000);   // presize when you know the count: no regrowth\ntrades.add(t);                                  // O(1) amortised\ntrades.get(42);                                 // O(1): direct index\ntrades.add(0, t);                               // O(n): shifts everything right"
+      }
+     ]
+    },
+    {
+     "id": "linkedlist",
+     "title": "LinkedList inside",
+     "in_one_line": "A chain of nodes, each holding a value and pointers to the previous and next node.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Operation",
+        "ArrayList",
+        "LinkedList"
+       ],
+       "rows": [
+        [
+         "get(i)",
+         "O(1)",
+         "O(n): walk from the nearer end"
+        ],
+        [
+         "add at end",
+         "O(1) amortised",
+         "O(1)"
+        ],
+        [
+         "add/remove at front",
+         "O(n)",
+         "O(1)"
+        ],
+        [
+         "add/remove in the middle",
+         "O(n) shift",
+         "O(n) to walk there, then O(1)"
+        ],
+        [
+         "Memory per element",
+         "One reference",
+         "Node object with 3 references (~24+ bytes more)"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "The practical truth",
+       "text": "Inserting in the middle of a LinkedList still needs O(n) to walk there. And arrays are stored contiguously, so the CPU cache makes ArrayList faster in almost all real workloads. Use ArrayDeque for queues."
+      }
+     ]
+    },
+    {
+     "id": "choose",
+     "title": "When to use which",
+     "in_one_line": "Default to ArrayList; LinkedList almost never.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Need",
+        "Choose"
+       ],
+       "rows": [
+        [
+         "General list, index access, iteration",
+         "ArrayList"
+        ],
+        [
+         "Queue or stack",
+         "ArrayDeque"
+        ],
+        [
+         "Many inserts at the front only",
+         "ArrayDeque"
+        ],
+        [
+         "Insert/remove while iterating with a ListIterator",
+         "LinkedList can help, but measure first"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you load large result sets into memory in a Spring Boot or batch job, an ArrayList sized up front, or streaming rows instead of holding them all, matters more than any LinkedList trick. That is a realistic performance story."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between ArrayList and LinkedList?",
+     "a": "ArrayList is a resizable array: O(1) index access and amortised O(1) append, but O(n) inserts in the middle. LinkedList is a doubly linked list: O(1) at the ends but O(n) index access and much more memory per element. In practice ArrayList is faster for almost everything because of memory locality."
+    },
+    {
+     "q": "How does ArrayList grow?",
+     "a": "When the backing array is full, it creates a new array about 1.5 times larger and copies the elements. That copy is O(n), but it happens rarely, so appends are amortised O(1)."
+    },
+    {
+     "q": "Is LinkedList faster for inserting in the middle?",
+     "a": "Only the link change is O(1); finding the position is O(n). Combined with poor cache locality, it is usually slower than ArrayList's shift in real benchmarks."
+    },
+    {
+     "q": "What does 'amortised O(1)' mean?",
+     "a": "Most operations are O(1) and an occasional one is expensive, but averaged over many operations the cost per operation is constant."
+    }
+   ],
+   "takeaways": [
+    "ArrayList = resizable array; grows ~1.5× with a copy.",
+    "LinkedList = nodes with prev/next pointers; heavy on memory.",
+    "Default to ArrayList; use ArrayDeque for queues.",
+    "Amortised O(1): rare expensive steps averaged out."
+   ],
+   "resources": [
+    {
+     "title": "Baeldung: ArrayList vs LinkedList",
+     "url": "https://www.baeldung.com/java-arraylist-linkedlist"
+    },
+    {
+     "title": "Oracle Java docs: ArrayList",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Core-Java rounds at UBS, Morgan Stanley and Nomura; Amazon and Microsoft Java checks",
+    "how_it_comes_up": "\"ArrayList vs LinkedList — when would you use each?\", \"How does ArrayList resize?\"",
+    "strong_answer": "Give the internals, the Big-O table, and the practical point about memory locality and walking cost; conclude 'ArrayList by default, ArrayDeque for queues'.",
+    "pitfalls": "Claiming LinkedList is faster for middle inserts without mentioning the walk; not knowing the growth factor; forgetting memory overhead."
+   }
+  },
+  "design": {
+   "title": "CDNs: serving content close to users",
+   "minutes": 12,
+   "level": "Intermediate",
+   "why": "Any design with images, video or a global user base needs a CDN, and interviewers at Google, Meta, Amazon and Netflix-style companies expect you to add one and explain cache keys, TTLs and invalidation. It is caching (Days 7–8) at internet scale.",
+   "builds_on": "Day 2: DNS and HTTP. Days 7–8: caching, TTLs and invalidation.",
+   "next": "Day 10 moves to the data layer: SQL vs NoSQL.",
+   "subtopics": [
+    {
+     "id": "what",
+     "title": "What a CDN is",
+     "in_one_line": "A network of servers around the world that keep copies of your content close to users.",
+     "blocks": [
+      {
+       "type": "flow",
+       "items": [
+        {
+         "label": "User in Mumbai",
+         "note": "Requests logo.png"
+        },
+        {
+         "label": "DNS",
+         "note": "Points to the nearest CDN edge"
+        },
+        {
+         "label": "Edge server (Mumbai)",
+         "note": "Hit: returns in ~10–30 ms"
+        },
+        {
+         "label": "Origin (your servers)",
+         "note": "Miss: edge fetches once, then caches"
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Without a CDN, a user in Mumbai fetching from a server in Virginia pays about 200 ms per round trip. With a nearby edge, the same file arrives many times faster, and your servers barely see the traffic."
+      }
+     ]
+    },
+    {
+     "id": "what-to-cache",
+     "title": "What to put on a CDN",
+     "in_one_line": "Static files always; some API responses with care.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Content",
+        "CDN?",
+        "Notes"
+       ],
+       "rows": [
+        [
+         "Images, CSS, JavaScript, fonts",
+         "Yes",
+         "Long TTL with versioned file names"
+        ],
+        [
+         "Video",
+         "Yes",
+         "Usually chunked into small segments"
+        ],
+        [
+         "Public API responses (e.g. product list)",
+         "Sometimes",
+         "Short TTL; vary by query parameters"
+        ],
+        [
+         "Personal data (account balances)",
+         "No",
+         "Must not be shared between users"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "invalidate",
+     "title": "Push vs pull, TTLs and invalidation",
+     "in_one_line": "Most CDNs pull from origin on a miss; update content by versioning file names.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Term",
+        "Meaning"
+       ],
+       "rows": [
+        [
+         "Pull CDN",
+         "Edge fetches from origin on first request, then caches (most common)"
+        ],
+        [
+         "Push CDN",
+         "You upload content to the CDN ahead of time"
+        ],
+        [
+         "Cache-Control header",
+         "Origin tells the CDN and browser how long to cache"
+        ],
+        [
+         "Purge",
+         "Ask the CDN to delete an object everywhere, can take a little while"
+        ],
+        [
+         "Versioned URLs",
+         "app.3f9a2.js: a new name per release, so no purge is needed"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "For an internal finance web app the CDN may not matter much, but its static frontend assets (JavaScript bundles for a pivot UI) could be served from S3 behind CloudFront. Saying when a CDN is not worth it is also a strong answer."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is a CDN and why use it?",
+     "a": "A globally distributed cache for content, mostly static files. It reduces latency by serving from a nearby edge, cuts load and bandwidth on origin servers, and absorbs traffic spikes."
+    },
+    {
+     "q": "How do you update a file that is cached on a CDN?",
+     "a": "Best: change its URL with a version or content hash, so new pages reference the new file and the old one simply expires. Otherwise purge it, which takes time to propagate."
+    },
+    {
+     "q": "Would you cache API responses on a CDN?",
+     "a": "Only public, non-personal responses that can tolerate short staleness, with a short TTL and the right cache key. Never personalised data."
+    }
+   ],
+   "takeaways": [
+    "CDN = caches at the edge, close to users.",
+    "Great for static files and video; careful with APIs; never personal data.",
+    "Pull CDNs fetch from origin on a miss.",
+    "Version file names instead of purging."
+   ],
+   "resources": [
+    {
+     "title": "Cloudflare Learning: What is a CDN?",
+     "url": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"
+    },
+    {
+     "title": "MDN: Cache-Control header",
+     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Google, Meta, Amazon and media-heavy startups; any design with images or global users",
+    "how_it_comes_up": "\"Users in Asia say the site is slow\" or \"How do you serve images for 100 million users?\"",
+    "strong_answer": "Add a CDN in front of object storage, explain pull on miss, long TTLs with versioned URLs, and keep personalised data off it.",
+    "pitfalls": "Putting personal data on a CDN; relying on purges for every release; forgetting the origin still needs to handle misses."
+   }
+  },
+  "ai": {
+   "title": "AI-assisted debugging",
+   "minutes": 10,
+   "level": "Intermediate",
+   "why": "Debugging unfamiliar code is now a named part of AI-enabled interview rounds at Meta and Google. Using AI well while debugging means giving it the failing input and expected output, and checking its explanation, not asking it to 'fix my code'.",
+   "builds_on": "Day 7: verifying AI output. Day 8: AI-generated test cases.",
+   "next": "Day 10 explains embeddings: how AI represents meaning as numbers.",
+   "subtopics": [
+    {
+     "id": "method",
+     "title": "A debugging method that works with or without AI",
+     "in_one_line": "Reproduce, isolate, explain, fix, add a test.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "**Reproduce:** find the smallest input that fails.",
+        "**Isolate:** trace the variables by hand or with prints to find the first wrong value.",
+        "**Explain:** say in one sentence why it goes wrong.",
+        "**Fix:** change the smallest thing that addresses the cause.",
+        "**Test:** add the failing input as a permanent test."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "prompt",
+     "title": "How to ask AI for debugging help",
+     "in_one_line": "Give code, the failing input, expected and actual output, and ask for the cause before the fix.",
+     "blocks": [
+      {
+       "type": "compare",
+       "items": [
+        {
+         "title": "Weak",
+         "points": [
+          "\"My code doesn't work, fix it.\"",
+          "AI rewrites everything",
+          "You learn nothing and may get new bugs"
+         ]
+        },
+        {
+         "title": "Strong",
+         "points": [
+          "\"Input \"abba\" gives 3, expected 2. Here is the code. Explain the cause in one sentence before suggesting a fix.\"",
+          "AI focuses on the real bug",
+          "You can check its explanation against your trace"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Debug a broken sliding window with and without AI.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Take your Longest Substring solution and remove the Math.max in the left update.",
+        "Find the smallest failing input yourself (hint: try \"abba\").",
+        "Then use the prompt below and compare the AI's explanation with yours.",
+        "Restore the fix and add \"abba\" as a test.",
+        "Type QUIZ JAVA to be quizzed on ArrayList vs LinkedList."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview line",
+       "text": "\"Before changing anything I find the smallest failing input and the first wrong variable. Then I ask the AI to explain the cause, and I verify that explanation against my trace.\""
+      }
+     ]
+    }
+   ],
+   "prompt": "I'm debugging a Java sliding-window solution for LeetCode 3 (Longest Substring Without Repeating Characters). Input \"abba\" returns 3, but the expected answer is 2. Here is my code: [paste code]. First, explain the root cause in one sentence and point to the exact line. Do not give a fix yet. Wait for me to confirm I agree, then suggest the smallest possible change, and finally give me 3 more inputs that would have caught this bug.",
+   "interview_qa": [
+    {
+     "q": "How do you debug a failing piece of code?",
+     "a": "I reproduce it with the smallest failing input, trace variables to find the first wrong value, explain the cause in one sentence, make the smallest fix, and add that input as a test so it cannot come back."
+    },
+    {
+     "q": "How do you use AI when debugging?",
+     "a": "I give it the code, the failing input, expected and actual outputs, and ask for the root cause before any fix. I check its explanation against my own trace and only then apply a minimal change."
+    }
+   ],
+   "takeaways": [
+    "Reproduce, isolate, explain, fix, test.",
+    "Give AI the failing input and expected vs actual output.",
+    "Ask for the cause before the fix, and verify it.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    },
+    {
+     "title": "JetBrains IntelliJ IDEA: Debug code (docs)",
+     "url": "https://www.jetbrains.com/help/idea/debugging-code.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled round (debugging existing code), Google's code comprehension pilot, and Amazon/Microsoft behavioural questions",
+    "how_it_comes_up": "\"This test fails — find out why\" with existing code, or \"Tell me about a hard bug you fixed\"",
+    "strong_answer": "A structured method, the smallest failing input, the one-sentence cause, a minimal fix and a regression test.",
+    "pitfalls": "Randomly changing code; letting AI rewrite everything; not adding a test for the bug."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Sliding window",
+   "meaning": "A technique that keeps a range [left, right] over an array or string and moves its ends instead of recomputing from scratch."
+  },
+  {
+   "term": "Substring",
+   "meaning": "A contiguous run of characters inside a string."
+  },
+  {
+   "term": "Fixed-size window",
+   "meaning": "A sliding window whose length stays the same as it moves."
+  },
+  {
+   "term": "Variable-size window",
+   "meaning": "A sliding window that grows and shrinks to stay valid."
+  },
+  {
+   "term": "Amortised O(1)",
+   "meaning": "Constant cost per operation on average over many operations, even if a few are expensive."
+  },
+  {
+   "term": "Capacity (ArrayList)",
+   "meaning": "The size of the backing array, which can be larger than the number of elements."
+  },
+  {
+   "term": "Doubly linked list",
+   "meaning": "A chain of nodes where each node points to both the previous and next node."
+  },
+  {
+   "term": "Memory locality",
+   "meaning": "Data stored close together in memory, which the CPU can read much faster."
+  },
+  {
+   "term": "CDN",
+   "meaning": "Content Delivery Network: servers around the world that cache content near users."
+  },
+  {
+   "term": "Edge server",
+   "meaning": "A CDN server close to users that serves cached content."
+  },
+  {
+   "term": "Origin server",
+   "meaning": "Your own server that holds the original content a CDN copies from."
+  },
+  {
+   "term": "Cache-Control",
+   "meaning": "An HTTP header that tells browsers and CDNs how long a response may be cached."
+  },
+  {
+   "term": "Regression test",
+   "meaning": "A test added after fixing a bug, so the same bug cannot quietly return."
+  }
+ ],
+ "checklist": [
+  "Read fixed vs variable windows and the expand-and-shrink template",
+  "Solve Longest Substring Without Repeating Characters (25 minutes, no AI), then Longest Repeating Character Replacement",
+  "Explain why the window is O(n) out loud",
+  "Answer the 4 ArrayList vs LinkedList questions out loud",
+  "Add a CDN to your diagram and say what you would and would not cache",
+  "Run the 'abba' debugging exercise",
+  "Add one line to your mistake log"
+ ]
+}

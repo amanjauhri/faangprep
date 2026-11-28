@@ -1,0 +1,847 @@
+{
+ "day": 3,
+ "date": "2026-11-26",
+ "phase": "Foundations",
+ "headline": "Group, count and estimate: hashing patterns, Java Strings and the numbers behind systems",
+ "intro": "Today you use hash maps to group and count, learn why Java Strings never change, and pick up the rough numbers that every system design answer needs. The AI track explains why AI answers vary, so you compare and test them.",
+ "connections": [
+  "Group Anagrams builds String keys (Coding); Strings make great HashMap keys because they are immutable and cache their hash code (Java).",
+  "Top K Frequent's bucket idea reappears in system design as 'top 10 trending items', where throughput and memory numbers decide the design (Design).",
+  "Asking AI twice for Group Anagrams (AI) gives two different solutions; your Big-O knowledge (Coding) decides which is better."
+ ],
+ "tracks": {
+  "dsa": {
+   "title": "Hashing: grouping and counting",
+   "minutes": 40,
+   "level": "Basics",
+   "why": "Grouping and counting with a hash map is behind a huge share of Amazon and Meta questions: group similar items, find the most frequent ones, detect patterns in logs. Top K Frequent is also a common system design warm-up (\"top 10 trending items\").",
+   "builds_on": "Day 2: the hash map and the 'have I seen this before?' pattern; Valid Anagram's letter counts.",
+   "next": "Day 4 adds prefix sums, and combines them with a hash map to count subarrays.",
+   "subtopics": [
+    {
+     "id": "counting",
+     "title": "Counting with a map",
+     "in_one_line": "Walk once, add 1 to a counter for each item: map.merge(item, 1, Integer::sum).",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "Map<String, Integer> freq = new HashMap<>();\nfor (String w : words) {\n    freq.merge(w, 1, Integer::sum);     // add 1, starting from 0 if missing\n}\n// freq: {\"buy\"=3, \"sell\"=1}"
+      },
+      {
+       "type": "table",
+       "head": [
+        "Way to write it",
+        "Notes"
+       ],
+       "rows": [
+        [
+         "freq.merge(k, 1, Integer::sum)",
+         "Short and idiomatic"
+        ],
+        [
+         "freq.put(k, freq.getOrDefault(k, 0) + 1)",
+         "Same result, easy to read"
+        ],
+        [
+         "int[26] or int[128]",
+         "Fastest when keys are letters or ASCII"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "keys",
+     "title": "Choosing a good key",
+     "in_one_line": "Grouping works when all items that belong together produce exactly the same key.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "To group things, design a **key** so that items in the same group get identical keys, and different groups get different keys. Then use `Map<Key, List<Item>>`."
+      },
+      {
+       "type": "table",
+       "head": [
+        "Goal",
+        "Key idea",
+        "Example"
+       ],
+       "rows": [
+        [
+         "Group anagrams",
+         "Sorted letters, or the 26 letter counts",
+         "\"eat\", \"tea\" → \"aet\""
+        ],
+        [
+         "Group trades by day",
+         "The trade date",
+         "2026-11-26 → list of trades"
+        ],
+        [
+         "Group points on a line",
+         "The reduced slope",
+         "(1,2) and (2,4) → \"1/2\""
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "Arrays are bad keys",
+       "text": "An int[] uses identity for equals and hashCode, so two identical count arrays are different keys. Convert to a String (Arrays.toString) or a List first."
+      }
+     ]
+    },
+    {
+     "id": "bucket",
+     "title": "Bucket sort for top-K",
+     "in_one_line": "When counts are at most n, put each item in a bucket indexed by its count, then read buckets from the top.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Count each item with a map: O(n).",
+        "Make an array of lists, buckets[0..n]. Put each item into buckets[count].",
+        "Walk from buckets[n] down to buckets[1], collecting items until you have k."
+       ]
+      },
+      {
+       "type": "table",
+       "head": [
+        "Approach",
+        "Time",
+        "When to use"
+       ],
+       "rows": [
+        [
+         "Sort by count",
+         "O(n log n)",
+         "Simple, fine in practice"
+        ],
+        [
+         "Min-heap of size k",
+         "O(n log k)",
+         "Very large n, small k, or streaming data"
+        ],
+        [
+         "Bucket sort",
+         "O(n)",
+         "Counts are bounded by n"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Interview line",
+       "text": "\"Counts can never exceed n, so I can bucket by count and avoid sorting. That gives O(n).\""
+      }
+     ]
+    }
+   ],
+   "problems": [
+    {
+     "num": 49,
+     "title": "Group Anagrams",
+     "url": "https://leetcode.com/problems/group-anagrams/",
+     "difficulty": "Medium",
+     "statement": "Given an array of strings strs, group the anagrams together. You can return the groups in any order.",
+     "example": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"] → [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]] (any order).",
+     "how_to_think": [
+      "Understand: lowercase letters; the empty string is a valid word; order of groups does not matter.",
+      "Brute force: compare every pair of words with Valid Anagram. O(n² · k).",
+      "Improve: give each word a key shared by all its anagrams. Sorting the letters works: \"eat\" and \"tea\" both become \"aet\"."
+     ],
+     "hints": [
+      "What do all anagrams of a word have in common that you can compute?",
+      "Sort the characters of each word and use that string as the key of a Map<String, List<String>>."
+     ],
+     "solution": {
+      "approach": [
+       "Create Map<String, List<String>> groups.",
+       "For each word, sort its characters to make the key.",
+       "Add the word to groups.computeIfAbsent(key, k -> new ArrayList<>()).",
+       "Return new ArrayList<>(groups.values())."
+      ],
+      "code": "public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> groups = new HashMap<>();\n    for (String w : strs) {\n        char[] c = w.toCharArray();\n        Arrays.sort(c);                          // \"tea\" -> \"aet\"\n        String key = new String(c);\n        groups.computeIfAbsent(key, k -> new ArrayList<>()).add(w);\n    }\n    return new ArrayList<>(groups.values());\n}",
+      "time": "O(n · k log k): n words, sorting each word of length k",
+      "space": "O(n · k): every word stored once"
+     },
+     "alternatives": [
+      {
+       "name": "Compare every pair",
+       "time": "O(n² · k)",
+       "space": "O(n · k)",
+       "note": "Too slow"
+      },
+      {
+       "name": "Key = sorted letters",
+       "time": "O(n · k log k)",
+       "space": "O(n · k)",
+       "note": "Simplest to explain"
+      },
+      {
+       "name": "Key = 26 letter counts as a string",
+       "time": "O(n · k)",
+       "space": "O(n · k)",
+       "note": "Faster when words are long"
+      }
+     ],
+     "followups": [
+      {
+       "q": "How would you make the key without sorting?",
+       "a": "Count letters into int[26] and build a key like \"1#0#0#…\" from the counts. That is O(k) per word."
+      },
+      {
+       "q": "What if the input is a stream of millions of words?",
+       "a": "Process in chunks and keep the map keyed by signature; if it outgrows memory, partition words by key hash across machines."
+      }
+     ]
+    },
+    {
+     "num": 347,
+     "title": "Top K Frequent Elements",
+     "url": "https://leetcode.com/problems/top-k-frequent-elements/",
+     "difficulty": "Medium",
+     "statement": "Given an integer array nums and an integer k, return the k most frequent elements, in any order. The answer is guaranteed to be unique.",
+     "example": "nums = [1,1,1,2,2,3], k = 2 → [1, 2].",
+     "how_to_think": [
+      "Understand: k is between 1 and the number of distinct values; any order is fine.",
+      "Straightforward: count, then sort distinct values by count. O(n log n).",
+      "Improve: a count can never exceed n, so put values into buckets indexed by count and read from the highest bucket down. O(n)."
+     ],
+     "hints": [
+      "First count every value with a HashMap.",
+      "How large can a count be? Use that to index an array of lists."
+     ],
+     "solution": {
+      "approach": [
+       "Count each value into a HashMap.",
+       "Make buckets: an array of n + 1 lists, where buckets[c] holds values seen c times.",
+       "Walk c from n down to 1, adding values to the result until it has k items.",
+       "Return the result."
+      ],
+      "code": "public int[] topKFrequent(int[] nums, int k) {\n    Map<Integer, Integer> count = new HashMap<>();\n    for (int n : nums) count.merge(n, 1, Integer::sum);\n\n    List<Integer>[] buckets = new List[nums.length + 1];   // index = frequency\n    for (Map.Entry<Integer, Integer> e : count.entrySet()) {\n        int f = e.getValue();\n        if (buckets[f] == null) buckets[f] = new ArrayList<>();\n        buckets[f].add(e.getKey());\n    }\n\n    int[] result = new int[k];\n    int i = 0;\n    for (int f = nums.length; f > 0 && i < k; f--) {\n        if (buckets[f] == null) continue;\n        for (int v : buckets[f]) {\n            if (i == k) break;\n            result[i++] = v;\n        }\n    }\n    return result;\n}",
+      "time": "O(n): counting and bucketing are both linear",
+      "space": "O(n): the map and the buckets"
+     },
+     "alternatives": [
+      {
+       "name": "Sort by count",
+       "time": "O(n log n)",
+       "space": "O(n)",
+       "note": "Simplest"
+      },
+      {
+       "name": "Min-heap of size k",
+       "time": "O(n log k)",
+       "space": "O(n + k)",
+       "note": "Good for streams or huge n"
+      },
+      {
+       "name": "Bucket sort",
+       "time": "O(n)",
+       "space": "O(n)",
+       "note": "Best time here"
+      }
+     ],
+     "followups": [
+      {
+       "q": "What if numbers arrive as an endless stream?",
+       "a": "Keep counts in a map and a min-heap of size k; for very large streams use an approximate counter such as Count-Min Sketch."
+      },
+      {
+       "q": "How does this appear in system design?",
+       "a": "\"Top 10 trending hashtags\": count per time window on many machines, then merge each machine's top-K."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "How would you group words that are anagrams of each other?",
+     "a": "Give each word a key that is the same for all its anagrams, such as its sorted letters or its 26 letter counts, and put words in a HashMap from key to list. That is O(n · k log k) with sorting or O(n · k) with counts."
+    },
+    {
+     "q": "How do you find the k most frequent elements faster than sorting?",
+     "a": "Count with a hash map, then either keep a min-heap of size k for O(n log k), or bucket by frequency for O(n), since a frequency can be at most n."
+    },
+    {
+     "q": "Why can't you use an int[] directly as a HashMap key?",
+     "a": "Arrays use identity equals and hashCode, so two arrays with the same contents are different keys. Convert to a String or List, which compare by contents."
+    }
+   ],
+   "takeaways": [
+    "Counting = one pass with map.merge(k, 1, Integer::sum).",
+    "Grouping = design a key that is identical within a group.",
+    "Never use a raw array as a map key.",
+    "Top-K: heap is O(n log k), bucket sort is O(n)."
+   ],
+   "resources": [
+    {
+     "title": "NeetCode roadmap: Arrays & Hashing",
+     "url": "https://neetcode.io/roadmap"
+    },
+    {
+     "title": "Oracle Java docs: Map.merge",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Amazon and Meta phone screens very often; Google uses variants with custom keys",
+    "how_it_comes_up": "\"Group these strings so anagrams are together\" or \"Return the k most frequent elements\", then \"Can you beat O(n log n)?\"",
+    "strong_answer": "Name the key you will group by and why it is identical within a group. For top-K, give the heap and bucket options with Big-O and pick one with a reason.",
+    "pitfalls": "Using a char array as a key; sorting the whole map when a heap or buckets would do; not stating k log k versus n log n."
+   }
+  },
+  "java": {
+   "title": "Strings: immutability, the String pool, StringBuilder",
+   "minutes": 15,
+   "level": "Basics",
+   "why": "\"Why is String immutable?\" and \"String vs StringBuilder vs StringBuffer\" are among the most asked core-Java questions at UBS, Morgan Stanley and Nomura, and they appear in Amazon's Java checks too. They connect memory (Day 2), thread safety and performance.",
+   "builds_on": "Day 2: the heap, references, and comparing objects with equals() instead of ==.",
+   "next": "Day 4 is the OOP refresher, where you will see how immutability is a form of encapsulation.",
+   "subtopics": [
+    {
+     "id": "immutable",
+     "title": "What immutable means",
+     "in_one_line": "Once a String object is created its characters never change; 'changing' it makes a new object.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "String s = \"trade\";\ns.toUpperCase();          // returns a NEW string; s is still \"trade\"\ns = s.toUpperCase();      // now s points to the new object \"TRADE\""
+      },
+      {
+       "type": "table",
+       "head": [
+        "Reason String is immutable",
+        "What it buys you"
+       ],
+       "rows": [
+        [
+         "Safe to share",
+         "Many references can point to one String without risk"
+        ],
+        [
+         "Thread-safe for free",
+         "No locks needed to read it"
+        ],
+        [
+         "Hash code can be cached",
+         "Fast as a HashMap key"
+        ],
+        [
+         "Security",
+         "A file path or URL checked once cannot be changed afterwards"
+        ],
+        [
+         "Enables the String pool",
+         "Identical literals can share one object"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "pool",
+     "title": "The String pool",
+     "in_one_line": "String literals are stored once in a special area of the heap and reused.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "String a = \"EUR\";\nString b = \"EUR\";\nString c = new String(\"EUR\");\nSystem.out.println(a == b);      // true: same pooled object\nSystem.out.println(a == c);      // false: new String forces a new object\nSystem.out.println(a.equals(c)); // true: same characters\nSystem.out.println(a == c.intern()); // true: intern() returns the pooled copy"
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Since Java 7",
+       "text": "The pool lives on the main heap, so pooled strings can be garbage collected like other objects."
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "The rule",
+       "text": "Compare strings with equals(). == only tells you if two references point to the same object."
+      }
+     ]
+    },
+    {
+     "id": "builder",
+     "title": "StringBuilder and StringBuffer",
+     "in_one_line": "Build strings in a loop with StringBuilder; plain + in a loop creates a new object each time.",
+     "blocks": [
+      {
+       "type": "code",
+       "lang": "java",
+       "code": "// Slow: each += copies the whole string so far: O(n^2) for n pieces\nString csv = \"\";\nfor (String id : ids) csv += id + \",\";\n\n// Fast: one growing buffer: O(n)\nStringBuilder sb = new StringBuilder();\nfor (String id : ids) sb.append(id).append(',');\nString result = sb.toString();"
+      },
+      {
+       "type": "table",
+       "head": [
+        "Class",
+        "Mutable?",
+        "Thread-safe?",
+        "Use when"
+       ],
+       "rows": [
+        [
+         "String",
+         "No",
+         "Yes (immutable)",
+         "Most values"
+        ],
+        [
+         "StringBuilder",
+         "Yes",
+         "No",
+         "Building text in one thread (almost always)"
+        ],
+        [
+         "StringBuffer",
+         "Yes",
+         "Yes (synchronized)",
+         "Legacy code; rarely needed now"
+        ]
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "If you have built CSV or report output in a Spring Boot service, such as an export for finance users, StringBuilder (or a streaming writer) is the right tool; string += inside a loop over thousands of rows is a classic slowdown."
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "Why is String immutable in Java?",
+     "a": "So it can be shared safely: it is thread-safe without locks, its hash code can be cached for fast HashMap use, values like file paths cannot change after validation, and identical literals can share one object in the String pool."
+    },
+    {
+     "q": "What is the difference between String, StringBuilder and StringBuffer?",
+     "a": "String is immutable. StringBuilder is mutable and not synchronized, so it is the fast choice for building text in one thread. StringBuffer is mutable and synchronized, which is slower and rarely needed today."
+    },
+    {
+     "q": "What does new String(\"x\") == \"x\" print, and why?",
+     "a": "false. The literal comes from the String pool, while new String creates a separate object on the heap. equals() would return true."
+    },
+    {
+     "q": "Why is string concatenation in a loop slow?",
+     "a": "Each + creates a new String and copies all previous characters, so n appends cost O(n²). A StringBuilder appends into one growing buffer in O(n) total."
+    }
+   ],
+   "takeaways": [
+    "String objects never change; methods return new strings.",
+    "Literals are pooled and shared; new String makes a separate object.",
+    "Always compare strings with equals().",
+    "Use StringBuilder to build strings in loops."
+   ],
+   "resources": [
+    {
+     "title": "Baeldung: Guide to the Java String pool",
+     "url": "https://www.baeldung.com/java-string-pool"
+    },
+    {
+     "title": "Oracle Java docs: StringBuilder",
+     "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/StringBuilder.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Core-Java rounds at UBS, Morgan Stanley and Nomura; quick Java checks at Amazon and Microsoft",
+    "how_it_comes_up": "\"Why is String immutable?\", \"String vs StringBuilder vs StringBuffer?\", \"What does this print?\" with == on strings",
+    "strong_answer": "Give three or four concrete reasons (sharing, thread safety, cached hash, security, pool) instead of just 'for security', and back the StringBuilder point with the O(n²) copy cost.",
+    "pitfalls": "Saying StringBuffer is the modern choice; using == to compare strings; saying the pool is in PermGen (that changed in Java 7)."
+   }
+  },
+  "design": {
+   "title": "Latency vs throughput, and the numbers to know",
+   "minutes": 12,
+   "level": "Basics",
+   "why": "In every system design round you must estimate: how many requests per second, how much storage, how fast. Interviewers at Google and Amazon expect rough numbers, not exact ones, and they notice when a design ignores that a disk read is 100,000 times slower than a memory read.",
+   "builds_on": "Day 2: the journey of a request (DNS, TCP, TLS, HTTP), where each step costs time.",
+   "next": "Day 4 uses these numbers to decide when one server is not enough: scaling up vs scaling out.",
+   "subtopics": [
+    {
+     "id": "two-words",
+     "title": "Latency vs throughput",
+     "in_one_line": "Latency is how long one request takes; throughput is how many requests you finish per second.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "",
+        "Latency",
+        "Throughput"
+       ],
+       "rows": [
+        [
+         "Question it answers",
+         "How long do I wait?",
+         "How much work gets done?"
+        ],
+        [
+         "Unit",
+         "Milliseconds",
+         "Requests per second (RPS)"
+        ],
+        [
+         "Highway picture",
+         "Time for one car to drive the road",
+         "Cars passing per hour"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "They are related but different. Batching raises throughput but can add latency. Adding servers raises throughput but does not make one request faster."
+      },
+      {
+       "type": "callout",
+       "tone": "tip",
+       "title": "Measure the tail",
+       "text": "Report latency as percentiles: p50 (typical), p99 (the slowest 1%). Users notice the p99. A good line: \"Our p99 target was under 200 ms.\""
+      }
+     ]
+    },
+    {
+     "id": "numbers",
+     "title": "Numbers every engineer should know",
+     "in_one_line": "Memory is nanoseconds, SSD is tens of microseconds, network inside a data centre is about half a millisecond, across the world is about 150 ms.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Operation",
+        "Rough time",
+        "Compared to memory"
+       ],
+       "rows": [
+        [
+         "Read from L1 CPU cache",
+         "1 ns",
+         "Faster"
+        ],
+        [
+         "Read from main memory (RAM)",
+         "100 ns",
+         "1×"
+        ],
+        [
+         "Read 1 MB sequentially from memory",
+         "about 10–250 µs",
+         ""
+        ],
+        [
+         "Random read from SSD",
+         "about 16–100 µs",
+         "~1,000× slower"
+        ],
+        [
+         "Round trip inside one data centre",
+         "about 0.5 ms",
+         "~5,000×"
+        ],
+        [
+         "Disk (HDD) seek",
+         "about 2–10 ms",
+         "~100,000×"
+        ],
+        [
+         "Round trip Mumbai ↔ California",
+         "about 150–250 ms",
+         "~2,000,000×"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "Exact values vary by hardware and year. What matters is the **order of magnitude**: memory beats SSD beats network beats spinning disk beats cross-continent."
+      },
+      {
+       "type": "callout",
+       "tone": "work",
+       "title": "From your JPMorgan work",
+       "text": "This is why a cache in front of Oracle or Cassandra helps so much: a memory lookup in Redis is far faster than a database query that may touch disk and crosses the network."
+      }
+     ]
+    },
+    {
+     "id": "estimates",
+     "title": "Back-of-the-envelope estimates",
+     "in_one_line": "Round aggressively: 1 day ≈ 100,000 seconds, then multiply.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Start from users: 10 million daily active users, each makes 10 requests a day = 100 million requests a day.",
+        "Divide by about 100,000 seconds a day: about 1,000 requests per second on average.",
+        "Peak is often 2–3× average: plan for about 3,000 RPS.",
+        "Storage: 100 million records a day × 1 KB = 100 GB a day, about 36 TB a year."
+       ]
+      },
+      {
+       "type": "table",
+       "head": [
+        "Handy number",
+        "Value"
+       ],
+       "rows": [
+        [
+         "Seconds in a day",
+         "86,400 ≈ 100,000"
+        ],
+        [
+         "1 million requests a day",
+         "about 12 per second"
+        ],
+        [
+         "1 KB × 1 million",
+         "1 GB"
+        ],
+        [
+         "1 KB × 1 billion",
+         "1 TB"
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "interview_qa": [
+    {
+     "q": "What is the difference between latency and throughput?",
+     "a": "Latency is the time for one request; throughput is how many requests the system completes per second. You can raise throughput by adding servers without making any single request faster."
+    },
+    {
+     "q": "Why do we talk about p99 latency instead of average?",
+     "a": "Averages hide slow requests. p99 shows what the slowest 1% of users experience, and with many calls per page, most users hit the tail eventually."
+    },
+    {
+     "q": "Estimate requests per second for 50 million daily users making 20 requests each.",
+     "a": "That is 1 billion requests a day. Divided by about 100,000 seconds gives about 10,000 RPS on average, so I would plan for roughly 20,000–30,000 at peak."
+    }
+   ],
+   "takeaways": [
+    "Latency = time per request; throughput = requests per second.",
+    "Use percentiles (p50, p99) for latency.",
+    "Memory ≪ SSD ≪ network ≪ disk ≪ cross-continent.",
+    "1 day ≈ 100,000 seconds; round hard and show your maths."
+   ],
+   "resources": [
+    {
+     "title": "System Design Primer: latency numbers and estimates",
+     "url": "https://github.com/donnemartin/system-design-primer"
+    },
+    {
+     "title": "Colin Scott: Latency numbers every programmer should know (interactive)",
+     "url": "https://colin-scott.github.io/personal_website/research/interactive_latency.html"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Every system design round at Google, Amazon, Meta and Microsoft; banks for latency-sensitive trading systems",
+    "how_it_comes_up": "\"How many servers do we need?\", \"How much storage per year?\", or \"Why is this endpoint slow?\"",
+    "strong_answer": "Say your assumptions aloud, round to easy numbers, give a final figure with units, and say which part (memory, disk, network) dominates.",
+    "pitfalls": "Refusing to estimate; spending five minutes on exact arithmetic; mixing up latency and throughput."
+   }
+  },
+  "ai": {
+   "title": "Context windows, temperature, and why answers vary",
+   "minutes": 10,
+   "level": "Basics",
+   "why": "If you use AI in an interview round, you need to know why it forgets earlier instructions in a long chat and why asking twice gives different code. Explaining this calmly is part of showing you are in control of the tool.",
+   "builds_on": "Day 2: an LLM predicts the next token, one at a time.",
+   "next": "Day 4 turns this into a method: prompts with a clear role, context, constraints and examples.",
+   "subtopics": [
+    {
+     "id": "context",
+     "title": "The context window",
+     "in_one_line": "The model only sees a limited number of tokens at once: your messages, its replies and any pasted code.",
+     "blocks": [
+      {
+       "type": "p",
+       "text": "Everything in the conversation counts toward the **context window**. Modern models have large windows, but quality can still drop when the important instruction is buried far back in a long chat."
+      },
+      {
+       "type": "list",
+       "items": [
+        "Restate key rules when a chat gets long.",
+        "Start a fresh chat for a new problem.",
+        "Paste only the code that matters."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "temperature",
+     "title": "Temperature: how adventurous it is",
+     "in_one_line": "Temperature controls how often the model picks a less likely next token.",
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        "Temperature",
+        "Behaviour",
+        "Good for"
+       ],
+       "rows": [
+        [
+         "Low (close to 0)",
+         "Predictable, repeats the safest choice",
+         "Code, facts, structured output"
+        ],
+        [
+         "Medium",
+         "Some variety",
+         "Explanations, rewording"
+        ],
+        [
+         "High",
+         "Creative, more surprising and more errors",
+         "Brainstorming"
+        ]
+       ]
+      },
+      {
+       "type": "p",
+       "text": "In a chat app you usually cannot set it, but it explains why the same question can produce a different solution each time."
+      }
+     ]
+    },
+    {
+     "id": "vary",
+     "title": "Why answers vary, and what to do",
+     "in_one_line": "Different answers are normal; use them, and verify each one.",
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        "Ask twice and compare: if two answers disagree, that is a signal to check carefully.",
+        "Ask for the reasoning and the Big-O, then check that the code actually matches it.",
+        "Pin the format you want: \"Java only, one method, comments on each step\"."
+       ]
+      },
+      {
+       "type": "callout",
+       "tone": "warn",
+       "title": "In the interview",
+       "text": "If the AI's second answer differs, say it out loud: \"These two disagree, so let me test both on a small example.\" That is exactly the behaviour interviewers want to see."
+      }
+     ]
+    },
+    {
+     "id": "exercise",
+     "title": "Today's exercise",
+     "in_one_line": "Get two different Group Anagrams solutions and compare them yourself.",
+     "blocks": [
+      {
+       "type": "steps",
+       "items": [
+        "Solve Group Anagrams yourself first.",
+        "Use the prompt below in your Interview Coach chat.",
+        "Run both AI solutions by hand on [\"eat\",\"tea\",\"bat\"] and on an empty string.",
+        "Decide which is better and why, in one sentence with Big-O.",
+        "Type QUIZ JAVA to be quizzed on Strings."
+       ]
+      }
+     ]
+    }
+   ],
+   "prompt": "We're practising Group Anagrams (LeetCode 49) in Java. 1) Give me two different correct solutions: one using sorted keys and one using letter counts. 2) For each, state time and space complexity. 3) Do not say which is better. 4) Wait for me to compare them and explain which I would use in an interview and why. 5) Grade my reasoning (weak / ok / strong) and tell me what was missing.",
+   "interview_qa": [
+    {
+     "q": "Why might an AI assistant give different code for the same question?",
+     "a": "It samples the next token from a probability distribution, and settings like temperature allow less likely choices. So I treat each answer as a draft, compare them, and test before trusting either."
+    },
+    {
+     "q": "What is a context window and why does it matter when you use AI for coding?",
+     "a": "It is the amount of text the model can consider at once. In long sessions early instructions get less attention, so I keep chats focused, paste only relevant code, and restate key constraints."
+    }
+   ],
+   "takeaways": [
+    "The context window limits what the model sees at once.",
+    "Temperature controls randomness: low for code.",
+    "Different answers are normal: compare and test.",
+    "Remember: in your Interview Coach chat you can type QUIZ JAVA to be quizzed on today's Java topic."
+   ],
+   "resources": [
+    {
+     "title": "Anthropic docs: Prompt engineering overview",
+     "url": "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"
+    },
+    {
+     "title": "OpenAI Tokenizer",
+     "url": "https://platform.openai.com/tokenizer"
+    }
+   ],
+   "interview_angle": {
+    "asked_at": "Meta's AI-enabled coding round and Google's AI-assisted pilot; AI questions in Amazon and Microsoft behavioural rounds",
+    "how_it_comes_up": "Interviewers watch what you do when the AI's answer is inconsistent or wrong; or ask \"What are the limits of these tools?\"",
+    "strong_answer": "Name the cause (sampling, limited context) in one sentence, then show the habit: compare, test on a small example, keep prompts focused.",
+    "pitfalls": "Blaming the tool vaguely; restarting the chat repeatedly hoping for a better answer instead of testing."
+   }
+  }
+ },
+ "glossary": [
+  {
+   "term": "Frequency map",
+   "meaning": "A hash map from each item to how many times it appears."
+  },
+  {
+   "term": "Grouping key",
+   "meaning": "A value computed from an item so that all items in the same group get exactly the same key."
+  },
+  {
+   "term": "Bucket sort",
+   "meaning": "Sorting by putting items into numbered buckets, here indexed by count, then reading the buckets in order."
+  },
+  {
+   "term": "Top-K",
+   "meaning": "Finding the k largest, smallest or most frequent items without fully sorting everything."
+  },
+  {
+   "term": "Immutable",
+   "meaning": "Cannot be changed after it is created; 'changes' produce a new object."
+  },
+  {
+   "term": "String pool",
+   "meaning": "An area of the heap where Java keeps one shared copy of each string literal."
+  },
+  {
+   "term": "StringBuilder",
+   "meaning": "A mutable, non-synchronized buffer for building strings efficiently."
+  },
+  {
+   "term": "p99 latency",
+   "meaning": "The time within which 99% of requests finish; it shows the slow tail users notice."
+  },
+  {
+   "term": "Requests per second (RPS)",
+   "meaning": "How many requests a system handles each second; a measure of throughput."
+  },
+  {
+   "term": "Back-of-the-envelope estimate",
+   "meaning": "A quick, rounded calculation of load or storage used to size a design."
+  },
+  {
+   "term": "Context window",
+   "meaning": "The maximum amount of text, in tokens, a language model can consider at once."
+  },
+  {
+   "term": "Temperature",
+   "meaning": "A setting that controls how random an LLM's choice of next token is."
+  }
+ ],
+ "checklist": [
+  "Read counting, grouping keys and bucket sort",
+  "Solve Group Anagrams (25 minutes, no AI), then Top K Frequent",
+  "Explain heap vs bucket sort for top-K out loud with Big-O",
+  "Answer the 4 String questions out loud",
+  "Do one estimate: RPS and yearly storage for a service you know",
+  "Run today's AI exercise comparing two solutions",
+  "Add one line to your mistake log"
+ ]
+}
