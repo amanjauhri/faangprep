@@ -167,6 +167,7 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 @media(max-width:600px){.row{grid-template-columns:56px minmax(0,1fr)}.row .dt,.row .st{grid-column:2;text-align:left}.gl{grid-template-columns:1fr}.iv dl{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px}#nav{margin-left:0}#nav a{padding:8px 11px;font-size:14px}}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
 #pdfbtn{display:inline-flex;align-items:center;gap:6px}
+.pick{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:2px 4px 2px 12px;font-weight:600;font-size:14px;vertical-align:middle}.pick select{border:0;background:transparent;color:var(--ink);font:inherit;font-weight:700;padding:4px 6px;cursor:pointer}@media print{.pick{display:none!important}}
 @media(max-width:600px){#pdfbtn{right:88px}}
 @media(max-width:380px){.top .hbtn{font-size:13px;padding:4px 9px}#pdfbtn{right:76px}.brand{font-size:20px}}
 @media print{
@@ -224,8 +225,8 @@ function toggleDone(t,n){const d=done();d[t+"-"+n]=!d[t+"-"+n];store.set("done",
 const known=()=>store.get("known",{});
 function trackDone(t){let c=0;for(let n=1;n<=60;n++)if(isDone(t,n))c++;return c}
 function header(){
- const h=location.hash.slice(1)||"today";{const m=h.match(/^lesson-[a-z]+-(\d+)/),n=m?+m[1]:STATE.latest_day,b=document.getElementById("pdfbtn");b.dataset.pdf=n;b.textContent=`⬇ Day ${n} PDF`}
- const sec=h.startsWith("lesson-")||h.startsWith("track-")||h;
+ const h=location.hash.slice(1)||"today";{const m=h.match(/^(?:lesson-[a-z]+-|day-)(\d+)/),n=m?+m[1]:STATE.latest_day,b=document.getElementById("pdfbtn");b.dataset.pdf=n;b.textContent=`⬇ Day ${n} PDF`}
+ const sec=h.startsWith("day-")?"today":(h.startsWith("lesson-")||h.startsWith("track-")||h);
  document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"],["glossary","Glossary"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
 }
 function block(b){
@@ -242,12 +243,12 @@ function block(b){
 function codeBox(c){return`<div class="codewrap"><button class="copy" data-copy>Copy</button><pre><code style="background:none;border:0;padding:0;color:inherit">${esc(c)}</code></pre></div>`}
 function ring(pct,label,sub){const r=52,C=2*Math.PI*r;return`<div class="ring" role="img" aria-label="${esc(label)} ${esc(sub)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--line)" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--dsa)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/></svg><b>${esc(label)}<small>${esc(sub)}</small></b></div>`}
 const newsRows=()=>NEWS?`<div class="news">${NEWS.items.slice(0,2).map(i=>`<div class="nrow"><span class="tg">${esc(i.tag)}</span><a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.headline)}</a><p><b>Why it matters:</b> ${md(i.why)} <span class="muted">${esc(i.source)}, ${fmt(i.date)}</span></p></div>`).join("")}</div>`:"";
-function viewToday(){
- const L=STATE.latest_day;
+function viewToday(D){
+ const L=D||STATE.latest_day;
  lesson(L).then(les=>{
   const nx=CUR.days[L],total=Object.values(done()).filter(Boolean).length;
   const preview=todayISO()<les.date;
-  app.innerHTML=`<section class="hero"><div><p class="eyebrow"><span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
+  app.innerHTML=`<section class="hero"><div><p class="eyebrow">${dayPicker(L)} <span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
    <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p><p><button class="btn" data-pdf="${L}" style="--tc:var(--btn)">⬇ Download Day ${L} lesson (PDF)</button></p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
   <div class="grid g2">${ORDER.map(t=>{const T=les.tracks[t];return`<article class="tcard" style="${sty(t)}"><header><div class="k"><span>${TR[t].name}</span><span>${T.minutes} min · ${esc(T.level)}</span></div><h3>${esc(T.title)}</h3></header>
    <div class="body">${T.interview_angle?`<div class="ask"><b>In the interview:</b> ${md(T.interview_angle.how_it_comes_up)}</div>`:""}
@@ -263,6 +264,9 @@ function viewToday(){
   </div>`;
  }).catch(()=>app.innerHTML=`<h1>Today's lesson isn't ready yet</h1><p class="lead">It is published every morning by 9:00 IST.</p>`);
 }
+function dayPicker(cur){
+ const opts=CUR.days.map(d=>{const open=d.day<=STATE.latest_day;return`<option value="${d.day}" ${d.day===cur?"selected":""} ${open?"":"disabled"}>Day ${d.day}${open?"":" · opens "+fmt(d.date)}</option>`}).join("");
+ return`<label class="pick"><span>Go to</span><select id="daypick" aria-label="Go to any day">${opts}</select></label>`}
 function trackTabs(cur){return`<div class="tabs">${ORDER.map(t=>`<a href="#track-${t}" style="--c:${TR[t].c}" class="${cur===t?"on":""}">${TR[t].name}</a>`).join("")}</div>`}
 function viewTracks(){
  app.innerHTML=`<h1>Tracks</h1><p class="lead">Four tracks run side by side every day, from basics to interview level.</p><div class="grid g2">${ORDER.map(t=>{const d=trackDone(t);return`<a class="tile" style="${sty(t)}" href="#track-${t}"><h2>${TR[t].name}</h2><span>Today: ${esc(CUR.days[STATE.latest_day-1][t].title)}</span><span style="margin-top:auto">${d} of 60 lessons done</span><div class="meter"><i style="width:${d/60*100}%"></i></div></a>`}).join("")}</div>
@@ -379,6 +383,7 @@ function route(){
  header();
  const h=location.hash.slice(1)||"today";let m;
  if(h==="today")viewToday();
+ else if(m=h.match(/^day-(\d+)$/))(+m[1]>=1&&+m[1]<=STATE.latest_day)?viewToday(+m[1]):(location.hash="today");
  else if(h==="tracks")viewTracks();
  else if(h==="roadmap")viewRoadmap();
  else if(h==="drill")viewDrill();
@@ -397,6 +402,7 @@ if(!store.get("seenGuide",false))setTimeout(openGuide,600);
 const pdfName=()=>{const h=location.hash.slice(1)||"today";let m;const nm={dsa:"Coding",java:"Java",design:"System-design",ai:"AI"};
  if(m=h.match(/^lesson-(dsa|java|design|ai)-(\d+)/))return`FAANG-Prep-Day-${pad(m[2])}-${nm[m[1]]}`;
  if(m=h.match(/^track-(dsa|java|design|ai)$/))return`FAANG-Prep-Track-${nm[m[1]]}`;
+ if(m=h.match(/^day-(\d+)$/)||(h==="today"&&[0,STATE.latest_day]))return`FAANG-Prep-Day-${pad(m[1])}`;
  return"FAANG-Prep-"+h.charAt(0).toUpperCase()+h.slice(1)+"-"+todayISO()};
 function printPage(){
  const t0=document.title,opened=[],shown=[];
@@ -413,6 +419,7 @@ async function downloadDay(n){
   const a=document.createElement("a");a.href=url;a.download=`FAANG-Prep-Day-${pad(n)}.pdf`;document.body.appendChild(a);a.click();a.remove();
  }catch(e){printPage()}
 }
+document.addEventListener("change",e=>{if(e.target.id==="daypick"){const n=+e.target.value;location.hash=n===STATE.latest_day?"today":"day-"+n}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-pdf]");if(b){e.preventDefault();downloadDay(+b.dataset.pdf||STATE.latest_day)}});
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
