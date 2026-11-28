@@ -168,11 +168,12 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 @media(prefers-reduced-motion:no-preference){.tcard,.tile{transition:transform .15s}.tcard:hover,.tile:hover{transform:translateY(-2px)}}
 #pdfbtn{display:inline-flex;align-items:center;gap:6px}
 @media(max-width:600px){#pdfbtn{right:88px}}
+@media(max-width:380px){.top .hbtn{font-size:13px;padding:4px 9px}#pdfbtn{right:76px}.brand{font-size:20px}}
 @media print{
  @page{margin:14mm 12mm}
  :root{color-scheme:light}
  body{background:#fff!important;color:#111!important;font-size:11.5pt}
- .top,dialog,#pdfbtn,.hbtn,.tabs,.railbox,.pager,.acts,[data-reveal],[data-know],[data-done],button{display:none!important}
+ .top,dialog,#pdfbtn,[data-pdf],.hbtn,.tabs,.railbox,.pager,.acts,[data-reveal],[data-know],[data-done],button{display:none!important}
  main{padding:0!important;max-width:none!important}
  .lesson{display:block!important}
  details>*{display:block!important}
@@ -190,7 +191,7 @@ dialog.guide::backdrop{background:rgba(10,12,24,.55)}
 <body>
 <header class="top"><div class="bar">
  <a class="brand" href="#today"><span class="logo" aria-hidden="true"><i style="background:var(--dsa)"></i><i style="background:var(--java)"></i><i style="background:var(--design)"></i><i style="background:var(--ai)"></i></span>FAANG Prep</a>
- <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="pdfbtn" title="Save this page as a PDF">⬇ PDF</button><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
+ <nav id="nav" aria-label="Sections"></nav><button class="hbtn" id="pdfbtn" data-pdf title="Download this day's full lesson as a PDF">⬇ PDF</button><button class="hbtn" id="gopen" aria-haspopup="dialog">Guide</button></div></header>
 <dialog class="guide" id="guide" aria-labelledby="gtitle"><header><h2 id="gtitle">How to use FAANG Prep</h2><p>A two-minute tour. You can reopen this any time from the Guide button.</p></header>
 <ol>
 <li><span class="n" style="background:var(--btn)">1</span><span><b>Start on Today, every morning.</b> A new lesson is ready by 9:00 AM, Monday to Saturday. Sunday is off.</span></li>
@@ -223,7 +224,7 @@ function toggleDone(t,n){const d=done();d[t+"-"+n]=!d[t+"-"+n];store.set("done",
 const known=()=>store.get("known",{});
 function trackDone(t){let c=0;for(let n=1;n<=60;n++)if(isDone(t,n))c++;return c}
 function header(){
- const h=location.hash.slice(1)||"today";
+ const h=location.hash.slice(1)||"today";{const m=h.match(/^lesson-[a-z]+-(\d+)/),n=m?+m[1]:STATE.latest_day,b=document.getElementById("pdfbtn");b.dataset.pdf=n;b.textContent=`⬇ Day ${n} PDF`}
  const sec=h.startsWith("lesson-")||h.startsWith("track-")||h;
  document.getElementById("nav").innerHTML=[["today","Today"],["tracks","Tracks"],["drill","Interview drill"],["roadmap","Roadmap"],["glossary","Glossary"]].map(([id,l])=>`<a href="#${id}" class="${sec===id?"on":""}">${l}</a>`).join("");
 }
@@ -247,7 +248,7 @@ function viewToday(){
   const nx=CUR.days[L],total=Object.values(done()).filter(Boolean).length;
   const preview=todayISO()<les.date;
   app.innerHTML=`<section class="hero"><div><p class="eyebrow"><span class="pill">Day ${L} of 60</span> <span class="pill">${fmt(les.date)}</span> <span class="pill">${esc(les.phase)}</span>${preview?' <span class="pill">Preview · opens '+fmt(les.date)+'</span>':""}</p>
-   <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
+   <h1>${esc(les.headline)}</h1><p class="lead">${md(les.intro)}</p><p><button class="btn" data-pdf="${L}" style="--tc:var(--btn)">⬇ Download Day ${L} lesson (PDF)</button></p></div>${ring(L/60,`${L}/60`,`${total} of 240 done`)}</section>
   <div class="grid g2">${ORDER.map(t=>{const T=les.tracks[t];return`<article class="tcard" style="${sty(t)}"><header><div class="k"><span>${TR[t].name}</span><span>${T.minutes} min · ${esc(T.level)}</span></div><h3>${esc(T.title)}</h3></header>
    <div class="body">${T.interview_angle?`<div class="ask"><b>In the interview:</b> ${md(T.interview_angle.how_it_comes_up)}</div>`:""}
    <ol>${T.subtopics.map(s=>`<li><a href="#lesson-${t}-${L}-${esc(s.id)}">${esc(s.title)}</a></li>`).join("")}</ol>
@@ -397,7 +398,7 @@ const pdfName=()=>{const h=location.hash.slice(1)||"today";let m;const nm={dsa:"
  if(m=h.match(/^lesson-(dsa|java|design|ai)-(\d+)/))return`FAANG-Prep-Day-${pad(m[2])}-${nm[m[1]]}`;
  if(m=h.match(/^track-(dsa|java|design|ai)$/))return`FAANG-Prep-Track-${nm[m[1]]}`;
  return"FAANG-Prep-"+h.charAt(0).toUpperCase()+h.slice(1)+"-"+todayISO()};
-document.getElementById("pdfbtn").onclick=()=>{
+function printPage(){
  const t0=document.title,opened=[],shown=[];
  app.querySelectorAll("details:not([open])").forEach(d=>{d.open=true;opened.push(d)});
  app.querySelectorAll("[hidden]").forEach(e=>{e.hidden=false;shown.push(e)});
@@ -405,7 +406,14 @@ document.getElementById("pdfbtn").onclick=()=>{
  const undo=()=>{opened.forEach(d=>d.open=false);shown.forEach(e=>e.hidden=true);document.title=t0;removeEventListener("afterprint",undo)};
  addEventListener("afterprint",undo);
  setTimeout(()=>window.print(),50);
-};
+}
+async function downloadDay(n){
+ const url=`pdf/FAANG-Prep-Day-${pad(n)}.pdf`;
+ try{const r=await fetch(url,{method:"HEAD",cache:"no-store"});if(!r.ok)throw 0;
+  const a=document.createElement("a");a.href=url;a.download=`FAANG-Prep-Day-${pad(n)}.pdf`;document.body.appendChild(a);a.click();a.remove();
+ }catch(e){printPage()}
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-pdf]");if(b){e.preventDefault();downloadDay(+b.dataset.pdf||STATE.latest_day)}});
 addEventListener("hashchange",route);
 Promise.all([j("data/curriculum.json"),j("data/state.json"),j("data/news.json").catch(()=>null)]).then(([c,s,n])=>{CUR=c;STATE=s;NEWS=n;route()}).catch(()=>app.innerHTML="<h1>Could not load the plan</h1><p class='lead'>Please refresh the page.</p>");
 }
